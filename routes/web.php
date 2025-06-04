@@ -46,7 +46,7 @@ Route::get('reschedule/{id}', function () {
 Route::get('payment/{id}', function () {
     return view('payments.detailPembayaran');
 })->name('payment.index');
-Route::get('payment/success', function () {
+Route::get('payment-success', function () {
     return view('payments.pembayaranBerhasil');
 })->name('payment.success');
 

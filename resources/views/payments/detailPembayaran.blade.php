@@ -281,8 +281,12 @@
                         @csrf
                         <button type="submit"
                             class="w-full py-3 border-2 bg-red-600 text-center text-2xl rounded-xl font-bold text-white flex items-center justify-center">
-                            <img src="{{ asset('assets/icons/icon_shield.svg') }}" alt="Voucher Icon" class="mr-2">
-                            Bayar
+                            <img x-show="!isLoading" src="{{ asset('assets/icons/icon_shield.svg') }}"
+                                alt="Voucher Icon" class="mr-2">
+                            <div x-show="isLoading" class="mr-3">
+                                <img src="{{ asset('assets/icons/loading.gif') }}" width="30" alt="">
+                            </div>
+                            <span>Bayar</span>
                         </button>
                     </form>
                 </div>
@@ -305,9 +309,6 @@
                         class="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition">Tutup</button>
                 </div>
             </div>
-
-            <!-- Loading -->
-
 
         </div>
         {{-- @endsection --}}
@@ -354,12 +355,10 @@
                             this.discount = res.data.data.discount;
                             this.full_total = res.data.data.total_price;
                             this.code_voucher = res.data.data.code_voucher;
-                            console.log(this.schedules);
 
 
                         } catch (e) {
                             this.error = 'Gagal memuat data pembayaran';
-                            console.error(e);
                             window.location.href = '/field-schedule';
                         } finally {
                             this.isLoading = false;
@@ -390,13 +389,12 @@
                     async paymentProcess() {
                         this.isLoading = true;
                         try {
-                            const res = await axios.post('booking/payment/', {
+                            const res = await axios.post('booking/payment', {
                                 booking_id: this.bookingId,
                                 total_price: this.calculateTotal(),
                             });
-                            console.log(res);
-                            console.log(res.data);
-                            window.location.href = '/payment/success';
+                            Alpine.store('user').refreshLocalStorage();
+                            window.location.href = '/payment-success';
                         } catch (e) {
                             this.error = e.response.data.errors;
                             console.error(e);
