@@ -10,7 +10,9 @@
             <div class="relative" x-data="{ profileImage: '$data_user->formattedProfilePhoto' }">
                 <div class="-mt-20 relative bg-cover rounded-full overflow-hidden group size-40 ring-4 ring-red-600">
                     <img id="profileImage" class="profile-image w-full h-full object-cover"
-                        :src="`http://127.0.0.1:8000/storage/${user.profile_photo}`" alt="">
+                        :src="user.profile_photo ? $store.storage.url + user.profile_photo :
+                            '/assets/images/profile.svg'"
+                        alt="">
                     {{-- src="{{ asset('storage/profile-photo/' . $data_user->profile_photo) }}" alt=""> --}}
                     <input name="profile_photo" type="file" id="imageUploud"
                         x-on:change="updateProfileImage($event.target.files[0])" accept="image/*" class="hidden">

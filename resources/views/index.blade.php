@@ -42,7 +42,7 @@
                         class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                         placeholder=" " />
                     <label for="username"
-                        class="absolute text-sm text-gray-500 dark:text-gray-400 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
+                        class="absolute text-sm text-gray-500 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
                         Jam Sewa</label>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                         class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                         placeholder=" " />
                     <label for="username"
-                        class="absolute text-sm text-gray-500 dark:text-gray-400 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
+                        class="absolute text-sm text-gray-500 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
                         Jam Sewa</label>
                 </div> --}}
             </div>
@@ -85,7 +85,7 @@
         <div class="mr-auto place-self-center lg:col-span-7">
             <h1 class="text-5xl font-bold mb-6 max-w-2xl tracking-tight leading-none md:text-5xl xl:text-6xl">
                 Sewa lapangan dengan cepat dan mudah.</h1>
-            <h6 class="text-base mb-8 max-w-2xl font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
+            <h6 class="text-base mb-8 max-w-2xl font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl">
                 Punya rencana berolahraga minggu ini tapi belum tahu mau main di mana? Atau tidak ada waktu untuk datang
                 langsung ke venue hanya untuk booking lapangan?</h6>
             <a href="/field-schedule"
@@ -127,15 +127,13 @@
                 <tbody>
                     <template x-if="sparings.length > 0">
                         <template x-for="sparing in sparings" :key="sparing.id">
-                            {{-- <tr>
-                                <td class="px-5 py-2 bg-transparent" x-text="sparing.id"></td>
-                            </tr> --}}
                             <tr>
                                 <td class="p-4 bg-white text-sm rounded-s-xl ">
                                     <div class="flex items-center text-left">
                                         <div class="flex-shrink-0 w-10 h-10">
                                             <img class="w-full h-full rounded-full"
-                                                :src="$store.storage.url + sparing.list_booking.user.profile_photo"
+                                                :src="sparing.list_booking.user.profile_photo ? $store.storage.url + sparing
+                                                    .list_booking.user.profile_photo : 'assets/images/profile.svg'"
                                                 alt="Profile photo">
                                         </div>
                                         <div class="ml-3">
@@ -191,8 +189,7 @@
             <div class="ml-auto place-self-center lg:col-span-7 md:text-left text-right">
                 <h1 class="text-5xl font-bold mb-6 max-w-2xl tracking-tight leading-none md:text-5xl xl:text-6xl">
                     Sudah punya team tapi gak tau mau lawan siapa?</h1>
-                <h6
-                    class="text-base mb-8 max-w-2xl font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
+                <h6 class="text-base mb-8 max-w-2xl font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl">
                     SKY CLUB punya solusinya! Ikuti komunitas sparing kami dan temukan lawan tanding yang seimbang.
                     Tingkatkan skill dan nikmati pertandingan seru dengan berbagai tim di sini!</h6>
                 <a href="/sparing" class=" bg-red-600 rounded-lg px-6 py-3 font-semibold text-white">Lihat
@@ -206,81 +203,92 @@
             <p class=" text-lg">Testimonials dari teman-teman Sky Club</p>
         </div>
 
+        {{-- TESTIMONIAL CAROUSEL --}}
         <div x-data="carousel()">
             <div class="relative max-w-full overflow-hidden hidden lg:block">
-                <!-- Previous Button -->
-                <button @click="prevSlide"
-                    class="absolute left-1 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full size-14 flex items-center justify-center shadow hover:bg-gray-100 z-10">
-                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                        viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5 12h14M5 12l4-4m-4 4 4 4" />
-                    </svg>
-                </button>
 
-                <!-- Slider Container -->
-                <div class="flex transition-transform duration-500"
-                    :style="`transform: translateX(-${currentSlide * (100 / visibleCards)}%)`">
-                    <template x-for="(slide, index) in slides" :key="index">
-                        {{-- rating card --}}
-                        {{-- <div x-data="{ profile: `storage/${slide.user.profile_photo}` }" class="flex-shrink-0 w-full sm:w-1/3 p-8"> --}}
-                        <div x-data="{ profile: `storage/${slide.user.profile_photo}` }" class="flex-shrink-0 w-full sm:w-1/3 p-8">
-                            {{-- <div @click="console.log(slide)">  --}}
-                            <div @click="ratingModal = true;  selectedSlide = slide"
-                                class="border border-gray-200 rounded-lg bg-white p-6 space-y-6 hover:shadow-xl transform hover:-translate-y-1 transition duration-300 cursor-pointer">
-                                <div class="text-yellow-500 text-left" x-text="'⭐'.repeat(parseInt(slide.rating))">⭐</div>
-                                <p class="text-gray-600 text-left" x-text="slide.comment"></p>
-                                <div class="flex space-x-4">
-                                    {{-- <img class="rounded-full" src="{{ asset('assets/images/profile.svg') }}"> --}}
-                                    <img class="rounded-full" :src="profile" alt="" width="50px">
-                                    <div>
-                                        <p class=" font-semibold text-left" x-text="slide.user.name"></p>
-                                        <p class="text-gray-500 text-sm text-left" x-text="slide.user.team"></p>
+                <template x-if="totalSlides > 0">
+                    <!-- Previous Button -->
+                    <button @click="prevSlide"
+                        class="absolute left-1 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full size-14 flex items-center justify-center shadow hover:bg-gray-100 z-10">
+                        <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 12h14M5 12l4-4m-4 4 4 4" />
+                        </svg>
+                    </button>
+
+                    <!-- Slider Container -->
+                    <div class="flex transition-transform duration-500"
+                        :style="`transform: translateX(-${currentSlide * (100 / visibleCards)}%)`">
+                        <template x-for="(slide, index) in slides" :key="index">
+                            {{-- rating card --}}
+                            {{-- <div x-data="{ profile: `storage/${slide.user.profile_photo}` }" class="flex-shrink-0 w-full sm:w-1/3 p-8"> --}}
+                            <div x-data="{ profile: `storage/${slide.user.profile_photo}` }" class="flex-shrink-0 w-full sm:w-1/3 p-8">
+                                {{-- <div @click="console.log(slide)">  --}}
+                                <div @click="ratingModal = true;  selectedSlide = slide"
+                                    class="border border-gray-200 rounded-lg bg-white p-6 space-y-6 hover:shadow-xl transform hover:-translate-y-1 transition duration-300 cursor-pointer">
+                                    <div class="text-yellow-500 text-left" x-text="'⭐'.repeat(parseInt(slide.rating))">⭐
+                                    </div>
+                                    <p class="text-gray-600 text-left" x-text="slide.comment"></p>
+                                    <div class="flex space-x-4">
+                                        {{-- <img class="rounded-full" src="{{ asset('assets/images/profile.svg') }}"> --}}
+                                        <img class="rounded-full" :src="profile" alt="" width="50px">
+                                        <div>
+                                            <p class=" font-semibold text-left" x-text="slide.user.name"></p>
+                                            <p class="text-gray-500 text-sm text-left" x-text="slide.user.team"></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </template>
-                </div>
+                        </template>
 
-                <!-- Next Button -->
-                <button @click="nextSlide"
-                    class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full size-14 flex items-center justify-center shadow hover:bg-gray-100 z-10">
-                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                        viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19 12H5m14 0-4 4m4-4-4-4" />
-                    </svg>
-                </button>
+                    </div>
 
-                <!-- Rating Modal -->
-                <div x-show="ratingModal" x-cloak
-                    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20 ">
-                    <div @click.away="ratingModal = false" class="bg-white p-6 rounded-lg shadow-lg w-8/12">
-                        <div class="flex justify-end">
-                            <button @click="ratingModal = false" class="hover:text-gray-900 text-gray-400 rounded-lg p-2">
-                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 14 14">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="text-yellow-500 text-left mb-4" x-text="'⭐'.repeat(parseInt(selectedSlide?.rating))">
-                            ⭐⭐⭐⭐⭐</div>
-                        <p class="text-gray-600 text-left mb-4" x-text="selectedSlide?.comment"></p>
-                        <div class="flex space-x-4 mb-4">
-                            <img class="rounded-full w-12 h-12"
-                                :src="`{{ asset('storage/') }}/${selectedSlide?.user.profile_photo}`" alt="">
-                            <div>
-                                <p class="font-semibold text-left" x-text="selectedSlide?.user.name"></p>
-                                <p class="text-gray-500 text-sm text-left" x-text="selectedSlide?.user.team"></p>
+                    <!-- Next Button -->
+                    <button @click="nextSlide"
+                        class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full size-14 flex items-center justify-center shadow hover:bg-gray-100 z-10">
+                        <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 12H5m14 0-4 4m4-4-4-4" />
+                        </svg>
+                    </button>
+
+                    <!-- Rating Modal -->
+                    <div x-show="ratingModal" x-cloak
+                        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20 ">
+                        <div @click.away="ratingModal = false" class="bg-white p-6 rounded-lg shadow-lg w-8/12">
+                            <div class="flex justify-end">
+                                <button @click="ratingModal = false"
+                                    class="hover:text-gray-900 text-gray-400 rounded-lg p-2">
+                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 14 14">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="text-yellow-500 text-left mb-4"
+                                x-text="'⭐'.repeat(parseInt(selectedSlide?.rating))">
+                                ⭐⭐⭐⭐⭐</div>
+                            <p class="text-gray-600 text-left mb-4" x-text="selectedSlide?.comment"></p>
+                            <div class="flex space-x-4 mb-4">
+                                <img class="rounded-full w-12 h-12"
+                                    :src="`{{ asset('storage/') }}/${selectedSlide?.user.profile_photo}`" alt="">
+                                <div>
+                                    <p class="font-semibold text-left" x-text="selectedSlide?.user.name"></p>
+                                    <p class="text-gray-500 text-sm text-left" x-text="selectedSlide?.user.team"></p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </template>
+                <template x-if="totalSlides == 0">
+                    <div class="text-center py-8">
+                        <p class="text-gray-500">Tidak ada testimonial yang tersedia saat ini.</p>
+                    </div>
+                </template>
             </div>
 
             <div class="mx-10 lg:hidden block">
@@ -301,7 +309,7 @@
             </div>
         </div>
 
-        {{-- blog --}}
+        {{-- Blog Artikel --}}
         <div class="mt-20 mx-10">
             <div class="grid grid-row-1 space-y-4 content-center text-left">
                 <h6 class="text-base font-bold">Artikel</h6>
@@ -313,10 +321,10 @@
                 <template x-if="articles.length > 0">
                     <template x-for="article in articles" :key="article.id">
                         <div
-                            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 lg:grid-rows-2 lg:max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 transform hover:-translate-y-1 transition duration-300 hover:shadow-xl">
+                            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 lg:grid-rows-2 lg:max-w-sm bg-white border border-gray-200 rounded-lg shadow transform hover:-translate-y-1 transition duration-300 hover:shadow-xl">
                             <a class="hidden sm:block bg-cover h-72" :href="'/article/' + article.id">
                                 <img class="rounded-s-lg lg:rounded-none lg:rounded-t-lg h-full object-cover w-full"
-                                    :src="article.image || '{{ asset('assets/images/default-article.jpg') }}'"
+                                    :src="article.image || '{{ asset('assets/images/blog-image.svg') }}'"
                                     :alt="article.title" />
                             </a>
                             <div class="p-4 text-left">
@@ -326,7 +334,7 @@
                                             class="mb-2 text-2xl font-bold tracking-tight text-gray-900"></h5>
                                     </a>
                                     <p class="mb-3 font-normal text-gray-700 break-words"
-                                        x-text="article.content.substring(0, 150) + '...'"></p>></p>
+                                        x-text="article.content.text.substring(0, 150) + '...'"></p>
                                 </div>
                                 <div class="flex space-x-4 items-center mt-10">
                                     <img class="rounded-full w-10 h-10"
@@ -357,7 +365,9 @@
             </div>
         </div>
     </div>
+@endsection
 
+@push('script')
     <script>
         function sparingHandler() {
             return {
@@ -379,15 +389,79 @@
                 }
             }
         }
+
+        function carousel() {
+            return {
+                currentSlide: 0,
+                visibleCards: 3,
+                slides: [],
+                async init() {
+                    try {
+                        const response = await axios.get('reviews');
+                        this.slides = response.data.data; // Asumsikan API mengembalikan array objek testimonial
+                    } catch (error) {
+                        console.error('Terjadi Kesalahan Di Server:', error);
+                    }
+                },
+                get totalSlides() {
+                    return this.slides.length;
+                },
+                prevSlide() {
+                    if (this.currentSlide > 0) {
+                        this.currentSlide--;
+                    }
+                },
+                nextSlide() {
+                    if (this.currentSlide < this.totalSlides - this.visibleCards) {
+                        this.currentSlide++;
+                    }
+                },
+                selectedSlide: null,
+                ratingModal: false,
+            };
+        }
+
+        function articlesHandler() {
+            return {
+                articles: [],
+                articleModal: false,
+                isLoading: false,
+                error: null,
+                async fetchArticles() {
+                    this.isLoading = true;
+                    this.error = null;
+                    try {
+                        const response = await axios.get('/articles');
+                        console.log(response.data);
+                        this.articles = response.data.data; // Asumsikan API mengembalikan array objek sparing
+                        console.log(this.articles);
+                    } catch (error) {
+                        console.error('Terjadi Kesalahan Di Server:', error);
+                    } finally {
+                        this.isLoading = false;
+                    }
+                },
+                formatDate(dateString) {
+                    if (!dateString) return '';
+                    const options = {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    };
+                    return new Date(dateString).toLocaleDateString('id-ID', options);
+                }
+            }
+        }
     </script>
-@endsection
-@push('script')
+@endpush
+
+{{-- @push('script')
     <script>
         function carousel() {
             return {
                 currentSlide: 0,
                 visibleCards: 3,
-                {{-- slides: @json($reviews), --}}
+
                 get totalSlides() {
                     return this.slides.length;
                 },
@@ -459,4 +533,4 @@
             }
         }
     </script>
-@endpush
+@endpush --}}

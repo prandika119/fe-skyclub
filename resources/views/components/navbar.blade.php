@@ -62,7 +62,8 @@
                                         id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                         <span class="sr-only">Open user menu</span>
                                         <img class="h-8 w-8 rounded-full"
-                                            :src="`http://127.0.0.1:8000/storage/${user.data.profile_photo}`"
+                                            :src="user.data.profile_photo ? $store.storage.url + user.data.profile_photo :
+                                                '/assets/images/profile.svg'"
                                             alt="">
                                         <span class="ml-2 font-semibold hover:text-red-600"
                                             x-text="user.data.name"></span>

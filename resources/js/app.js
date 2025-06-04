@@ -2,16 +2,6 @@ import "./bootstrap";
 import "flowbite";
 import Alpine from "alpinejs";
 
-// import "./chart";
-// import "./descriptionField";
-// import "./dropzoneFieldPhoto";
-// import "./dropzonePayment";
-// import "./editor";
-// import "./editorUpdate";
-// import "./tableArticle";
-// import "./tableBooking";
-// import "./tableVoucher";
-
 document.addEventListener("alpine:init", () => {
     Alpine.store("user", {
         authenticated: false,
@@ -74,7 +64,7 @@ document.addEventListener("alpine:init", () => {
 
                 // Ambil data user & token baru dari API
                 const response = await axios.get(
-                    "http://localhost:8000/api/users/current"
+                    "http://10.33.35.50/api/users/current"
                 );
                 console.log("API response received:", response.data);
                 const user = response.data.data;
@@ -113,7 +103,7 @@ document.addEventListener("alpine:init", () => {
 
                 // Jika token tidak valid atau tidak ada cache, panggil API
                 const response = await axios.get(
-                    "http://localhost:8000/api/users/current"
+                    "http://10.33.35.50/api/users/current"
                 );
                 this.authenticated = true;
                 this.setUser(response.data.data.user);
@@ -131,7 +121,7 @@ document.addEventListener("alpine:init", () => {
         //     try {
         //         console.log("authCheck");
         //         const response = await axios.get(
-        //             "http://localhost:8000/api/users/current",
+        //             "http://10.33.35.50/api/users/current",
         //             { withCredentials: true }
         //         );
         //         this.authenticated = true;
@@ -146,7 +136,7 @@ document.addEventListener("alpine:init", () => {
         // },
     });
     Alpine.store("storage", {
-        url: "http://localhost:8000/storage/",
+        url: "http://10.33.35.50/storage/",
     });
     Alpine.store("format", {
         rupiah: (value) => {
@@ -161,6 +151,5 @@ document.addEventListener("alpine:init", () => {
         },
     });
 });
-axios.defaults.baseURL = "http://127.0.0.1:8000/api/";
 Alpine.start();
 window.Alpine = Alpine;

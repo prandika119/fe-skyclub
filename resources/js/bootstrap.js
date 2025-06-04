@@ -6,7 +6,7 @@ window.axios = axios;
 //     .querySelector('meta[name="csrf-token"]')
 //     .getAttribute("content");
 
-axios.defaults.baseURL = "http://localhost:8000/api";
+axios.defaults.baseURL = "http://10.33.35.50/api";
 // axios.defaults.withCredentials = true;
 // Optionally, set the Authorization header if you have a token
 const token = localStorage.getItem("auth_token");

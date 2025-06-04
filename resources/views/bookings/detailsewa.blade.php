@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('content')
-    <div x-data="fieldHandler()" x-init="fetchField(98)">
+    <div x-data="fieldHandler()">
         <div class="grid grid-cols-3 grid-rows-2 gap-1 sm:gap-2 md:gap-4 h-[270px] sm:h-[370px] md:h-[470px] lg:h-[670px]">
 
             <!-- Loading -->
@@ -127,8 +127,7 @@
 
 
         {{-- cart & desc --}}
-        <div x-data="calendar()" x-init="init()"
-            class="flex flex-col xl:grid xl:grid-flow-col gap-2 xl:flex-row justify-between my-12">
+        <div class="flex flex-col xl:grid xl:grid-flow-col gap-2 xl:flex-row justify-between my-12">
             <div class=" xl:max-w-[700px] xxl:max-w-full">
                 <div class=" space-y-1">
                     <h1 class="text-4xl font-bold" x-text="field.name">SKY CLUB MINI SOCCER</h1>
@@ -145,16 +144,16 @@
                     </div>
                     <div class="flex">
                         <div class="flex items-center border rounded-lg px-2.5">
-                            <p class="text-sm font-bold text-gray-900" x-text="field.review.average">average rating</p>
+                            <p class="text-sm font-bold text-gray-900" x-text="field.review.average || 0">average rating</p>
                             {{-- <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $averageRating }}</p> --}}
-                            <svg class="ms-1 w-4 h-4 text-yellow-300" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <svg class="ms-1 w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor" viewBox="0 0 22 20">
                                 <path
                                     d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
                             </svg>
                         </div>
                         <p class="p-2.5 text-sm font-medium"
-                            x-text="field.review.average >= 5 ? 'Sangat Baik' : field.review.average >= 4 ? 'Baik' : field.review.average >= 3 ? 'Cukup Baik' : field.review.average >= 2 ? 'Buruk' : 'Sangat Buruk'">
+                            x-text="field.review.average >= 5 ? 'Sangat Baik' : field.review.average >= 4 ? 'Baik' : field.review.average >= 3 ? 'Cukup Baik' : field.review.average >= 2 ? 'Buruk' : field.review.average >=1 ? 'Sangat Buruk' : 'Belum Ada Ulasan'">
                         </p>
                         <p class="font-medium mt-1" x-text="` | ${field.review.count} reviews`"></p>
                     </div>
@@ -515,46 +514,6 @@
                                 </div>
                             </template>
                         </div>
-                        {{-- <div class="flex items-center space-x-6 mb-8">
-                            <p class=" text-gray-500 font-bold"><span
-                                    class="text-black text-3xl">{{ $averageRating }}</span>/5</p>
-                            <div class="flex space-x-1">
-                                @for ($x = 0; $x < 5; $x++)
-                                    <svg class="w-6 h-6 text-yellow-300" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <path
-                                            d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                    </svg>
-                                @endfor
-                            </div>
-                        </div>
-                        <div class="mt-4 space-y-4">
-                            @foreach ($reviews as $review)
-                                <div class="p-4 rounded-lg border">
-                                    <div class="flex justify-between mb-6">
-                                        <div class="flex items-center space-x-4">
-                                            <img class=" rounded-full w-12 h-12"
-                                                src="{{ asset('storage/' . $review->user->profile_photo) }}"
-                                                alt="">
-                                            <div>
-                                                <p class="text-base font-bold">{{ $review->user->name }}</p>
-                                                <p class="text-base">{{ $review->user->team }}</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between items-center p-2 rounded-lg border">
-                                            <svg class="w-6 h-6 text-yellow-300 me-3" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                viewBox="0 0 22 20">
-                                                <path
-                                                    d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <p class="font-semibold text-2xl">{{ $review->rating }}</p>
-                                        </div>
-                                    </div>
-                                    <p>"{{ $review->comment }}"</p>
-                                </div>
-                            @endforeach
-                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -590,30 +549,6 @@
                     </div>
                 </template>
             </div>
-            {{-- <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
-                @foreach ($reviews as $review)
-                    <div class="space-y-6 sm:space-y-8 border-b-2 pb-6 sm:border-b-0 sm:pb-0">
-                        <div class="flex items-center">
-                            @for ($x = 0; $x < $review->rating; $x++)
-                                <svg class="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                    <path
-                                        d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                </svg>
-                            @endfor
-                        </div>
-                        <p>{{ $review->comment }}</p>
-                        <div class="flex items-center sm:block">
-                            <img class=" rounded-full w-14 sm:mb-4 mr-4"
-                                src="{{ 'storage/' . $review->user->profile_photo }}" alt="">
-                            <div>
-                                <p class="text-base font-bold">{{ $review->user->name }}</p>
-                                <p class="text-base">{{ $review->user->team }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div> --}}
             <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700">
             <div class="rounded-lg border border-gray-300">
                 <div class=" grid p-6 sm:p-12 space-y-8">
@@ -630,7 +565,7 @@
         </div>
 
         <!-- Modal Error Besar -->
-        {{-- <div x-show="error" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+        <div x-show="error" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
             <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-8 text-center relative">
                 <button @click="error = null"
                     class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-2xl">&times;</button>
@@ -644,7 +579,7 @@
                 <button @click="error = null"
                     class="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition">Tutup</button>
             </div>
-        </div> --}}
+        </div>
     </div>
     <script>
         function fieldHandler() {
@@ -653,15 +588,37 @@
                 facilities: [],
                 photos: [],
                 reviews: [],
+                fieldId: null,
                 isLoading: false,
                 gallery: false,
                 error: null,
-                async fetchField(fieldId) {
+
+                // Data schedule
+                currentDate: new Date(),
+                weekDays: [],
+                selectedDate: '',
+                timeSlots: [],
+                cart: [],
+                dataServer: [], // Akan diisi dari API
+                minDate: new Date(),
+                maxDate: new Date(new Date().setMonth(new Date().getMonth() + 2)),
+                pricePerSlot: 0,
+
+                async init() {
+                    await this.fetchField();
+                    await this.fetchSchedule();
+                },
+
+                async fetchField() {
                     this.isLoading = true;
                     this.error = null;
                     try {
-                        const response = await axios.get(`fields/${fieldId}`);
-                        console.log(response.data);
+                        const resField = await axios.get('/fields'); // Mengambil ID field pertama
+                        console.log("resField: " + resField);
+                        this.fieldId = resField.data.data[0].id; // Mengambil ID field pertama
+                        console.log("fieldId: " + this.fieldId);
+                        const response = await axios.get(`/fields/${this.fieldId}`);
+                        console.log("testtt" + response);
                         this.field = response.data.data; // Menyimpan data field dari response
                         // this.facilities = response.data.data.facilities; // Menyimpan data facility dari response
                         this.facilities = response.data.data.facilities.map(facility => facility.name);
@@ -675,28 +632,15 @@
                         this.isLoading = false;
                     }
                 },
-                async fetchSchedule(fieldId) {
-                    this.isLoading = true,
-                        this.error = null,
-                        this.dataServer = [];
-                }
-            }
-        }
+                // async fetchSchedule(fieldId) {
+                //     this.isLoading = true,
+                //         this.error = null,
+                //         this.dataServer = [];
+                // },
 
-        function calendar() {
-            return {
-                currentDate: new Date(),
-                weekDays: [],
-                selectedDate: '',
-                timeSlots: [],
-                cart: [],
-                dataServer: [], // Akan diisi dari API
-                minDate: new Date(),
-                maxDate: new Date(new Date().setMonth(new Date().getMonth() + 2)),
-                pricePerSlot: 0,
-
+                // method untuk schedule
                 // Inisialisasi kalender
-                async init() {
+                async fetchSchedule() {
                     await this.fetchScheduleByRange(this.getWeekRange(this.currentDate));
                 },
 
@@ -746,8 +690,9 @@
                 }) {
                     try {
                         const response = await axios.get(
-                            `fields/98/schedules?start_date=${start}&end_date=${end}`
+                            `fields/${this.fieldId}/schedules?start_date=${start}&end_date=${end}`
                         );
+                        console.log('Response:', response.data);
                         this.dataServer = response.data.data;
                         // Pilih tanggal default
                         const todayStr = this.formatDate(new Date());
@@ -898,7 +843,231 @@
                     return d >= min && d <= max;
                     // return date >= this.minDate && date <= this.maxDate;
                 },
-            };
+            }
         }
+
+        // function calendar() {
+        //     return {
+        //         fieldId: null,
+        //         currentDate: new Date(),
+        //         weekDays: [],
+        //         selectedDate: '',
+        //         timeSlots: [],
+        //         cart: [],
+        //         dataServer: [], // Akan diisi dari API
+        //         minDate: new Date(),
+        //         maxDate: new Date(new Date().setMonth(new Date().getMonth() + 2)),
+        //         pricePerSlot: 0,
+
+        //         // Inisialisasi kalender
+        //         async init() {
+        //             await this.fetchScheduleByRange(this.getWeekRange(this.currentDate));
+        //             this.fieldId = await axios.get('fields').data.data[0].id;
+        //         },
+
+        //         async goToPayment() {
+        //             // Simpan cart
+        //             const schedules = this.cart.map(item => ({
+        //                 field_id: this.field?.id || 98,
+        //                 schedule_date: this.formatDateYMD(item.date), // pastikan string "dd-mm-yyyy"
+        //                 schedule_time: item.time,
+        //                 price: this.parsePrice(item.price)
+        //             }));
+        //             console.log('Schedules:', schedules[0]);
+
+        //             // Redirect ke halaman pembayaran
+        //             try {
+        //                 response = await axios.post('booking', {
+        //                     schedules
+        //                 });
+        //                 console.log('Booking response:', response.data.data);
+        //                 booking_id = response.data.data.booking.id;
+        //                 window.location.href = `/payment/${booking_id}`;
+        //             } catch (error) {
+        //                 alert('Gagal membuat booking');
+        //                 console.error('Gagal membuat booking:', error);
+        //             }
+        //         },
+
+        //         // Mendapatkan rentang tanggal awal dan akhir minggu (Senin - Minggu)
+        //         getWeekRange(date) {
+        //             const curr = new Date(date);
+        //             const day = curr.getDay();
+        //             const diffToMonday = (day === 0 ? -6 : 1) - day;
+        //             const monday = new Date(curr);
+        //             monday.setDate(curr.getDate() + diffToMonday);
+        //             const sunday = new Date(monday);
+        //             sunday.setDate(monday.getDate() + 6);
+        //             return {
+        //                 start: this.formatDate(monday),
+        //                 end: this.formatDate(sunday)
+        //             };
+        //         },
+
+        //         // Fetch API berdasarkan rentang minggu
+        //         async fetchScheduleByRange({
+        //             start,
+        //             end
+        //         }) {
+        //             try {
+        //                 const resField = await axios.get('/fields'); // Mengambil ID field pertama
+        //                 console.log("resField: " + resField);
+        //                 this.fieldId = resField.data.data[0].id; // Mengambil ID field pertama
+        //                 const response = await axios.get(
+        //                     `fields/${this.fieldId}/schedules?start_date=${start}&end_date=${end}`
+        //                 );
+        //                 console.log('Response:', response.data);
+        //                 this.dataServer = response.data.data;
+        //                 // Pilih tanggal default
+        //                 const todayStr = this.formatDate(new Date());
+        //                 const found = this.dataServer.find(item => item.date === todayStr);
+        //                 this.selectedDate = found ? todayStr : this.dataServer[0]?.date;
+        //                 this.currentDate = this.parseDate(this.selectedDate);
+        //                 this.pricePerSlot = this.dataServer[0]?.price || 0;
+        //                 this.updateWeekDays();
+        //                 this.loadTimeSlots();
+        //             } catch (error) {
+        //                 console.error('Gagal memuat jadwal:', error);
+        //             }
+        //         },
+
+        //         // Format date ke "dd-mm-yyyy"
+        //         formatDate(date) {
+        //             const d = date.getDate().toString().padStart(2, '0');
+        //             const m = (date.getMonth() + 1).toString().padStart(2, '0');
+        //             const y = date.getFullYear();
+        //             return `${d}-${m}-${y}`;
+        //         },
+
+        //         formatDateYMD(date) {
+        //             // date: Date object
+        //             const y = date.getFullYear();
+        //             const m = (date.getMonth() + 1).toString().padStart(2, '0');
+        //             const d = date.getDate().toString().padStart(2, '0');
+        //             return `${y}-${m}-${d}`;
+        //         },
+
+        //         // Parse "dd-mm-yyyy" ke Date object
+        //         parseDate(str) {
+        //             const [d, m, y] = str.split('-');
+        //             return new Date(`${y}-${m}-${d}`);
+        //         },
+
+        //         updateWeekDays() {
+        //             const startOfWeek = new Date(this.currentDate);
+        //             const day = this.currentDate.getDay();
+        //             const diff = (day === 0 ? -6 : 1) - day;
+        //             startOfWeek.setDate(this.currentDate.getDate() + diff);
+
+        //             this.weekDays = [];
+        //             const dayNames = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+        //             for (let i = 0; i < 7; i++) {
+        //                 const day = new Date(startOfWeek);
+        //                 day.setDate(startOfWeek.getDate() + i);
+        //                 this.weekDays.push({
+        //                     name: dayNames[i],
+        //                     date: day,
+        //                     dateStr: this.formatDate(day)
+        //                 });
+        //             }
+        //         },
+
+        //         selectDate(date) {
+        //             this.currentDate = new Date(date);
+        //             this.selectedDate = this.formatDate(this.currentDate);
+        //             this.loadTimeSlots();
+        //         },
+
+        //         loadTimeSlots() {
+        //             // Cari data tanggal yang sesuai
+        //             const data = this.dataServer.find(item => item.date === this.selectedDate);
+        //             if (data) {
+        //                 this.timeSlots = data.time_slots.map(slot => ({
+        //                     time: slot.time,
+        //                     available: slot.is_available,
+        //                     price: data.price,
+        //                     selected: false
+        //                 }));
+        //                 this.pricePerSlot = data.price;
+        //             } else {
+        //                 this.timeSlots = [];
+        //             }
+        //         },
+
+        //         toggleSlotSelection(slot) {
+        //             if (slot.available && !this.slotInCart(slot)) {
+        //                 slot.selected = true;
+        //                 this.cart.push({
+        //                     ...slot,
+        //                     date: this.parseDate(this.selectedDate)
+        //                 });
+        //             }
+
+        //         },
+
+        //         removeFromCart(item) {
+        //             this.cart = this.cart.filter(slot => slot.time !== item.time || slot.date.toDateString() !== item.date
+        //                 .toDateString());
+        //             this.timeSlots.forEach(slot => {
+        //                 if (slot.time === item.time) {
+        //                     slot.selected = false;
+        //                 }
+        //             });
+        //         },
+
+        //         parsePrice(price) {
+        //             return typeof price === 'string' ? parseInt(price.replace(/[^\d]/g, ''), 10) || 0 : price;
+        //         },
+
+        //         formatRupiah(price) {
+        //             return price.toLocaleString('id-ID', {
+        //                 style: 'currency',
+        //                 currency: 'IDR',
+        //                 minimumFractionDigits: 0,
+        //                 maximumFractionDigits: 0
+        //             });
+        //         },
+
+        //         get totalPrice() {
+        //             return this.cart.reduce((total, item) => total + this.parsePrice(item.price), 0);
+        //         },
+
+        //         slotInCart(slot) {
+        //             return this.cart.some(item => item.time === slot.time && item.date.toDateString() === this.parseDate(
+        //                 this.selectedDate).toDateString());
+        //         },
+
+        //         isSelected(date) {
+        //             return this.selectedDate && date.toDateString() === this.currentDate.toDateString();
+        //         },
+
+        //         async previousWeek() {
+        //             this.currentDate.setDate(this.currentDate.getDate() - 7);
+        //             await this.fetchScheduleByRange(this.getWeekRange(this.currentDate));
+        //         },
+
+        //         async nextWeek() {
+        //             this.currentDate.setDate(this.currentDate.getDate() + 7);
+        //             await this.fetchScheduleByRange(this.getWeekRange(this.currentDate));
+        //         },
+
+        //         async goToSelectedDate() {
+        //             if (this.selectedDate) {
+        //                 this.currentDate = new Date(this.selectedDate);
+        //                 console.log(this.currentDate);
+        //                 await this.fetchScheduleByRange(this.getWeekRange(this.currentDate));
+        //             }
+        //         },
+
+        //         isWithinRange(date) {
+        //             // Set jam, menit, detik ke 0 agar hanya tanggal yang dibandingkan
+        //             const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        //             const min = new Date(this.minDate.getFullYear(), this.minDate.getMonth(), this.minDate.getDate());
+        //             const max = new Date(this.maxDate.getFullYear(), this.maxDate.getMonth(), this.maxDate.getDate());
+        //             return d >= min && d <= max;
+        //             // return date >= this.minDate && date <= this.maxDate;
+        //         },
+        //     };
+        // }
     </script>
 @endsection
