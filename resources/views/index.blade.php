@@ -208,82 +208,86 @@
             <div class="relative max-w-full overflow-hidden hidden lg:block">
 
                 <template x-if="totalSlides > 0">
-                    <!-- Previous Button -->
-                    <button @click="prevSlide"
-                        class="absolute left-1 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full size-14 flex items-center justify-center shadow hover:bg-gray-100 z-10">
-                        <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5 12h14M5 12l4-4m-4 4 4 4" />
-                        </svg>
-                    </button>
+                    <div>
+                        <!-- Previous Button -->
+                        <button @click="prevSlide"
+                            class="absolute left-1 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full size-14 flex items-center justify-center shadow hover:bg-gray-100 z-10">
+                            <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4" />
+                            </svg>
+                        </button>
 
-                    <!-- Slider Container -->
-                    <div class="flex transition-transform duration-500"
-                        :style="`transform: translateX(-${currentSlide * (100 / visibleCards)}%)`">
-                        <template x-for="(slide, index) in slides" :key="index">
-                            {{-- rating card --}}
-                            {{-- <div x-data="{ profile: `storage/${slide.user.profile_photo}` }" class="flex-shrink-0 w-full sm:w-1/3 p-8"> --}}
-                            <div x-data="{ profile: `storage/${slide.user.profile_photo}` }" class="flex-shrink-0 w-full sm:w-1/3 p-8">
-                                {{-- <div @click="console.log(slide)">  --}}
-                                <div @click="ratingModal = true;  selectedSlide = slide"
-                                    class="border border-gray-200 rounded-lg bg-white p-6 space-y-6 hover:shadow-xl transform hover:-translate-y-1 transition duration-300 cursor-pointer">
-                                    <div class="text-yellow-500 text-left" x-text="'⭐'.repeat(parseInt(slide.rating))">⭐
-                                    </div>
-                                    <p class="text-gray-600 text-left" x-text="slide.comment"></p>
-                                    <div class="flex space-x-4">
-                                        {{-- <img class="rounded-full" src="{{ asset('assets/images/profile.svg') }}"> --}}
-                                        <img class="rounded-full" :src="profile" alt="" width="50px">
-                                        <div>
-                                            <p class=" font-semibold text-left" x-text="slide.user.name"></p>
-                                            <p class="text-gray-500 text-sm text-left" x-text="slide.user.team"></p>
+                        <!-- Slider Container -->
+                        <div class="flex transition-transform duration-500"
+                            :style="`transform: translateX(-${currentSlide * (100 / visibleCards)}%)`">
+                            <template x-for="slide in slides" :key="slide.id">
+                                <div class="flex-shrink-0 w-full sm:w-1/3 p-8">
+                                    <div @click="ratingModal = true;  selectedSlide = slide"
+                                        class="border border-gray-200 rounded-lg bg-white p-6 space-y-6 hover:shadow-xl transform hover:-translate-y-1 transition duration-300 cursor-pointer">
+                                        <div class="text-yellow-500 text-left"
+                                            x-text="'⭐'.repeat(parseInt(slide.rating))">⭐
+                                        </div>
+                                        <p class="text-gray-600 text-left" x-text="slide.comment"></p>
+                                        <div class="flex space-x-4">
+                                            <img class="rounded-full"
+                                                :src="slide.user.profile_photo ? $store.storage.url + slide.user
+                                                    .profile_photo : '{{ asset('assets/images/profile.svg') }}'"
+                                                alt="" width="50px">
+                                            <div>
+                                                <p class=" font-semibold text-left" x-text="slide.user.name"></p>
+                                                <p class="text-gray-500 text-sm text-left" x-text="slide.user.team"></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </template>
+                            </template>
+                        </div>
 
-                    </div>
+                        <!-- Next Button -->
+                        <button @click="nextSlide"
+                            class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full size-14 flex items-center justify-center shadow hover:bg-gray-100 z-10">
+                            <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
+                            </svg>
+                        </button>
 
-                    <!-- Next Button -->
-                    <button @click="nextSlide"
-                        class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full size-14 flex items-center justify-center shadow hover:bg-gray-100 z-10">
-                        <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 12H5m14 0-4 4m4-4-4-4" />
-                        </svg>
-                    </button>
-
-                    <!-- Rating Modal -->
-                    <div x-show="ratingModal" x-cloak
-                        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20 ">
-                        <div @click.away="ratingModal = false" class="bg-white p-6 rounded-lg shadow-lg w-8/12">
-                            <div class="flex justify-end">
-                                <button @click="ratingModal = false"
-                                    class="hover:text-gray-900 text-gray-400 rounded-lg p-2">
-                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                        fill="none" viewBox="0 0 14 14">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="text-yellow-500 text-left mb-4"
-                                x-text="'⭐'.repeat(parseInt(selectedSlide?.rating))">
-                                ⭐⭐⭐⭐⭐</div>
-                            <p class="text-gray-600 text-left mb-4" x-text="selectedSlide?.comment"></p>
-                            <div class="flex space-x-4 mb-4">
-                                <img class="rounded-full w-12 h-12"
-                                    :src="`{{ asset('storage/') }}/${selectedSlide?.user.profile_photo}`" alt="">
-                                <div>
-                                    <p class="font-semibold text-left" x-text="selectedSlide?.user.name"></p>
-                                    <p class="text-gray-500 text-sm text-left" x-text="selectedSlide?.user.team"></p>
+                        <!-- Rating Modal -->
+                        <div x-show="ratingModal" x-cloak
+                            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20 ">
+                            <div @click.away="ratingModal = false" class="bg-white p-6 rounded-lg shadow-lg w-8/12">
+                                <div class="flex justify-end">
+                                    <button @click="ratingModal = false"
+                                        class="hover:text-gray-900 text-gray-400 rounded-lg p-2">
+                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="text-yellow-500 text-left mb-4"
+                                    x-text="'⭐'.repeat(parseInt(selectedSlide?.rating))">
+                                    ⭐⭐⭐⭐⭐</div>
+                                <p class="text-gray-600 text-left mb-4" x-text="selectedSlide?.comment"></p>
+                                <div class="flex space-x-4 mb-4">
+                                    <img class="rounded-full w-12 h-12"
+                                        :src="selectedSlide?.user.profile_photo ? $store.storage.url + selectedSlide?.user
+                                            .profile_photo : '{{ asset('assets/images/profile.svg') }}'"
+                                        {{-- :src="`{{ asset('storage/') }}/${selectedSlide?.user.profile_photo}`" --}} alt="">
+                                    <div>
+                                        <p class="font-semibold text-left" x-text="selectedSlide?.user.name"></p>
+                                        <p class="text-gray-500 text-sm text-left" x-text="selectedSlide?.user.team"></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </template>
+
                 <template x-if="totalSlides == 0">
                     <div class="text-center py-8">
                         <p class="text-gray-500">Tidak ada testimonial yang tersedia saat ini.</p>
@@ -399,6 +403,7 @@
                     try {
                         const response = await axios.get('reviews');
                         this.slides = response.data.data; // Asumsikan API mengembalikan array objek testimonial
+                        console.log(this.slides);
                     } catch (error) {
                         console.error('Terjadi Kesalahan Di Server:', error);
                     }

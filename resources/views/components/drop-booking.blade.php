@@ -11,7 +11,10 @@
     <div class=" bg-white rounded-lg py-8 px-6 flex justify-between items-center">
         <div class="bg-cover rounded-xl overflow-hidden group w-20 h-20">
             <img class="w-full h-full object-cover" {{-- src="{{ asset('storage/field/images/' . $sesi->field->photos->first()->photo) }}" alt=""> --}}
-                :src="$store.storage.url + schedule.field.photos[0].photo" alt="">
+                :src="schedule.field.photos.length && schedule.field.photos[0].photo ? $store.storage.url + schedule.field
+                    .photos[0].photo :
+                    '/assets/images/banner/banner.svg'"
+                alt="">
         </div>
         <div class="flex items-center gap-6 ">
             <p class="font-bold text-xl" x-text="schedule.field.name">$sesi->field->name</p>

@@ -1,4 +1,4 @@
-<nav class="bg-white shadow-lg py-2 fixed top-0 left-0 w-full z-50" x-data="{ isOpen: false, user: $store.user }" x-init="user.authCheck()">
+<nav class="bg-white shadow-lg py-2 fixed top-0 left-0 w-full z-50" x-data="{ isOpen: false, user: $store.user, showBalance: false }" x-init="user.authCheck()">
     <div class="mx-auto px-6 sm:px-6 lg:px-8 ">
         <div class="flex h-16 items-center justify-between">
             <div class="flex items-center">
@@ -19,13 +19,22 @@
                     <template x-if="user.authenticated">
                         <div class="flex items-center space-x-3 self-center">
                             <!-- Balance information -->
-                            <svg width="20" height="16" viewBox="0 0 20 16" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M10 0C12.787 0 15.263 1.257 17.026 2.813C17.911 3.594 18.64 4.471 19.154 5.344C19.659 6.201 20 7.13 20 8C20 8.87 19.66 9.799 19.154 10.656C18.64 11.529 17.911 12.406 17.026 13.187C15.263 14.743 12.786 16 10 16C7.213 16 4.737 14.743 2.974 13.187C2.089 12.406 1.36 11.529 0.846 10.656C0.34 9.799 0 8.87 0 8C0 7.13 0.34 6.201 0.846 5.344C1.36 4.471 2.089 3.594 2.974 2.813C4.737 1.257 7.214 0 10 0ZM10 2C7.816 2 5.792 2.993 4.298 4.312C3.554 4.968 2.966 5.685 2.569 6.359C2.163 7.049 2 7.62 2 8C2 8.38 2.163 8.951 2.569 9.641C2.966 10.315 3.554 11.031 4.298 11.688C5.792 13.007 7.816 14 10 14C12.184 14 14.208 13.007 15.702 11.688C16.446 11.031 17.034 10.315 17.431 9.641C17.837 8.951 18 8.38 18 8C18 7.62 17.837 7.049 17.431 6.359C17.034 5.685 16.446 4.969 15.702 4.312C14.208 2.993 12.184 2 10 2ZM10 5C10.088 5 10.175 5.00367 10.261 5.011C10.0439 5.39185 9.95792 5.8335 10.0163 6.26798C10.0747 6.70246 10.2743 7.10572 10.5843 7.41571C10.8943 7.7257 11.2975 7.92525 11.732 7.98366C12.1665 8.04208 12.6081 7.95611 12.989 7.739C13.0416 8.34117 12.911 8.94518 12.6145 9.47189C12.3179 9.9986 11.8692 10.4234 11.327 10.6907C10.7849 10.958 10.1746 11.0553 9.57622 10.9699C8.97784 10.8844 8.41922 10.6202 7.97357 10.2118C7.52792 9.80343 7.21603 9.26995 7.07876 8.68129C6.94149 8.09262 6.98524 7.47621 7.20429 6.91284C7.42334 6.34946 7.80746 5.8654 8.30633 5.52407C8.8052 5.18274 9.39554 5.00008 10 5Z"
-                                    fill="black" />
-                            </svg>
-                            <span class="font-semibold" x-text="$store.format.rupiah(user.data.wallet)">Rp
+
+                            {{-- icon sensor balance --}}
+                            <button @click="showBalance = !showBalance" class="cursor-pointer">
+                                <svg width="20" height="16" viewBox="0 0 20 16" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M10 0C12.787 0 15.263 1.257 17.026 2.813C17.911 3.594 18.64 4.471 19.154 5.344C19.659 6.201 20 7.13 20 8C20 8.87 19.66 9.799 19.154 10.656C18.64 11.529 17.911 12.406 17.026 13.187C15.263 14.743 12.786 16 10 16C7.213 16 4.737 14.743 2.974 13.187C2.089 12.406 1.36 11.529 0.846 10.656C0.34 9.799 0 8.87 0 8C0 7.13 0.34 6.201 0.846 5.344C1.36 4.471 2.089 3.594 2.974 2.813C4.737 1.257 7.214 0 10 0ZM10 2C7.816 2 5.792 2.993 4.298 4.312C3.554 4.968 2.966 5.685 2.569 6.359C2.163 7.049 2 7.62 2 8C2 8.38 2.163 8.951 2.569 9.641C2.966 10.315 3.554 11.031 4.298 11.688C5.792 13.007 7.816 14 10 14C12.184 14 14.208 13.007 15.702 11.688C16.446 11.031 17.034 10.315 17.431 9.641C17.837 8.951 18 8.38 18 8C18 7.62 17.837 7.049 17.431 6.359C17.034 5.685 16.446 4.969 15.702 4.312C14.208 2.993 12.184 2 10 2ZM10 5C10.088 5 10.175 5.00367 10.261 5.011C10.0439 5.39185 9.95792 5.8335 10.0163 6.26798C10.0747 6.70246 10.2743 7.10572 10.5843 7.41571C10.8943 7.7257 11.2975 7.92525 11.732 7.98366C12.1665 8.04208 12.6081 7.95611 12.989 7.739C13.0416 8.34117 12.911 8.94518 12.6145 9.47189C12.3179 9.9986 11.8692 10.4234 11.327 10.6907C10.7849 10.958 10.1746 11.0553 9.57622 10.9699C8.97784 10.8844 8.41922 10.6202 7.97357 10.2118C7.52792 9.80343 7.21603 9.26995 7.07876 8.68129C6.94149 8.09262 6.98524 7.47621 7.20429 6.91284C7.42334 6.34946 7.80746 5.8654 8.30633 5.52407C8.8052 5.18274 9.39554 5.00008 10 5Z"
+                                        fill="black" />
+                                </svg>
+                            </button>
+                            {{-- <span class="font-semibold transition-all duration-300"
+                                :class="showBalance ? '' : 'blur-sm'">
+                                <span x-text="$store.format.rupiah(user.data.wallet)"></span>
+                            </span> --}}
+                            <span class="font-semibold"
+                                x-text="showBalance ? $store.format.rupiah(user.data.wallet) : '••••••'">Rp
                                 1.000.000</span>
                             <a href="/wallet"
                                 class="relative flex items-center rounded-full p-1 text-black focus:outline-none">
@@ -58,7 +67,7 @@
                             <div class="relative ml-3 border-s-2 pl-3 border-red-600" x-data="{ isOpen: false }">
                                 <div class="flex items-center space-x-2">
                                     <button type="button" @click="isOpen = !isOpen"
-                                        class="relative flex max-w-xs items-center rounded-full text-sm "
+                                        class="relative flex max-w-xs items-center rounded-full text-sm cursor-pointer"
                                         id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                         <span class="sr-only">Open user menu</span>
                                         <img class="h-8 w-8 rounded-full"
@@ -75,19 +84,19 @@
                                     x-transition:leave="transition ease-in duration-75 transform"
                                     x-transition:leave-start="opacity-100 scale-100"
                                     x-transition:leave-end="opacity-0 scale-95"q
-                                    class="origin-top-right absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                    class="origin-top-right absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-gray-300 focus:outline-none"
                                     role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
                                     tabindex="-1">
 
                                     <a :href="user.data.role == 'admin' ? '/admin' : '/users/profile-user'"
-                                        class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
-                                        id="user-menu-item-0" x-show="user.authenticated">Your Profile</a>
-
-
-
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-red-600 transition-colors"
+                                        role="menuitem" tabindex="-1" id="user-menu-item-0"
+                                        x-show="user.authenticated">Your
+                                        Profile</a>
                                     <form method="POST" id="logout" x-data="logoutHandler()"
                                         @submit.prevent="$store.user.clearUser(); window.location.href = '/'">
-                                        <button type="submit" class="block px-4 py-2 text-sm text-gray-700"
+                                        <button type="submit"
+                                            class="block w-full text-start px-4 py-2 text-sm text-gray-700  hover:bg-gray-100 hover:text-red-600 transition-colors"
                                             role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</button>
                                     </form>
                                 </div>

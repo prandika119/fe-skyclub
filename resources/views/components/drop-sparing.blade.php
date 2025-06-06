@@ -1,7 +1,8 @@
-<div x-data="{ open: false, cancelSparingModal: false }" class="min-h-full bg-gray-200 shadow rounded-lg">
+<div x-data="{ open: false, cancelSparingModal: false, cancelSparingId: null }" class="min-h-full bg-gray-200 shadow rounded-lg">
     <div class=" bg-white rounded-lg py-8 px-6 flex justify-between items-center">
         <div class="bg-cover rounded-xl overflow-hidden group w-20 h-20">
-            <img class="w-full h-full object-cover" :src="$store.storage.url + sparing.field.photos[0].photo"
+            <img class="w-full h-full object-cover"
+                :src="$store.storage.getPhoto(sparing.field.photos[0]?.photo, '/assets/images/banner/banner.svg')"
                 alt="">
         </div>
         <div class="flex items-center gap-6 ">
@@ -9,7 +10,6 @@
             <div class="border-l border-gray-400 h-7 my-auto"></div>
             <p class="font-bold" x-text="sparing.field.name">
                 $req_sparing->sparing->createdBy->team . ' VS ' . $req_sparing->user->team </p>
-            {{-- <p class="font-bold">Real Madrid vs Manchester United</p> --}}
             <div class="border-l border-gray-400 h-7 my-auto"></div>
             <div>
                 <p class="font-xs" x-text="sparing.date">$req_sparing->sparing->listBooking->formatted_date</p>
@@ -17,9 +17,11 @@
                     $req_sparing->sparing->listBooking->formatted_session </p>
             </div>
         </div>
-        <div x-text="sparing.status" :class="sparingStatusClass(sparing.status)">
-            $req_sparing->formatted_status_request
-        </div>
+        <template x-if="sparing.user.id == $store.user.data.id">
+            <div x-text="sparing.status" :class="sparingStatusClass(sparing.status)">
+                $req_sparing->formatted_status_request
+            </div>
+        </template>
         <div>
             <button @click="open = !open" class="size-12 p-2.5 border border-black rounded-lg">
                 <img x-show="!open" src="{{ asset('assets/icons/icon-angle-right.svg') }}" alt="">
@@ -28,8 +30,10 @@
         </div>
     </div>
     <div x-show="open" class="py-7 mx-6 p-4 ">
+
         <template x-for="sparing_req in sparing.sparing_request">
-            <template x-if="sparing.user.id === $store.user.data.id || sparing_req.user.id === $store.user.data.id">
+            <template
+                x-if="sparing.user.id === $store.user.data.id && sparing_req.status != 'rejected' || sparing_req.user.id === $store.user.data.id ">
                 <div class="mx-auto w-full">
                     <div class="flex items-center gap-10">
                         <div class="flex gap-10 mx-auto">
@@ -105,33 +109,73 @@
                     <div class="flex items-center mt-8 justify-self-center space-x-28">
                         <div class="bg-cover rounded-full overflow-hidden group size-16">
                             <img class="w-full h-full object-cover"
-                                :src="$store.storage.url + sparing.user.profile_photo" alt="">
+                                :src="sparing.user.profile_photo ? $store.storage.url + sparing.user.profile_photo :
+                                    '/assets/images/profile.svg'"
+                                alt="">
                         </div>
-                        <template x-if="sparing_req.status !== 'accepted' && sparing.user.id == $store.user.data.id">
-                            <div class="flex gap-2">
-                                <button @click="acceptSparing(sparing_req.id)"
-                                    class="m-3 px-6 py-3 bg-yellow-200 text-red-700 font-bold rounded-lg">
-                                    Konfirmasi
-                                </button>
-                                <button @click="cancelSparingModal = true"
-                                    class="m-3 px-6 py-3 bg-red-700 text-white font-bold rounded-lg">
-                                    Batalkan
-                                </button>
+                        {{-- view for main user --}}
+                        <template x-if="sparing.user.id == $store.user.data.id && sparing_req.status != 'rejected'">
+                            <div>
+                                <template x-if="sparing_req.status == 'waiting'">
+                                    <div class="flex gap-2">
+                                        <button @click="acceptSparing(sparing_req.id)"
+                                            class="m-3 px-6 py-3 bg-yellow-200 text-red-700 font-bold rounded-lg">
+                                            Konfirmasi
+                                        </button>
+                                        <button @click="cancelSparingModal = true; cancelSparingId = sparing_req.id"
+                                            class="m-3 px-6 py-3 bg-red-700 text-white font-bold rounded-lg">
+                                            Batalkan
+                                        </button>
+                                    </div>
+                                </template>
+                                <template x-if="sparing_req.status == 'accepted'">
+                                    <p>VS</p>
+                                </template>
                             </div>
+                            {{-- <p x-text="sparing_req.status"></p> --}}
                         </template>
-                        <template
-                            x-if="sparing_req.status === 'accepted' || sparing_req.user.id === $store.user.data.id">
-                            <p>VS</p>
+
+                        {{-- view for request user --}}
+                        <template x-if="sparing_req.user.id == $store.user.data.id">
+                            <div>
+                                <template x-if="sparing_req.status === 'accepted'">
+                                    <p>VS</p>
+                                </template>
+                                <template x-if="sparing_req.status !== 'accepted'">
+                                    <p x-text="sparing_req.status" :class="sparingStatusClass(sparing_req.status)">
+                                    </p>
+                                </template>
+                            </div>
                         </template>
                         <div class="bg-cover rounded-full overflow-hidden group size-16">
                             <img class="w-full h-full object-cover"
-                                :src="$store.storage.url + sparing_req.user.profile_photo" alt="">
+                                :src="sparing_req.user.profile_photo ? $store.storage.url + sparing_req.user.profile_photo :
+                                    '/assets/images/profile.svg'"
+                                alt="">
+
                         </div>
                     </div>
                     <hr class="border-gray-300 my-6">
                 </div>
             </template>
         </template>
+
+        <!-- Cancel Modal -->
+        <div x-show="cancelSparingModal" x-cloak
+            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+            <div class="bg-white p-6 rounded-lg justify-center flex flex-col text-center">
+                <h2 class="text-xl font-bold mb-4 font-2xl">Yakin ingin menolak sparing?</h2>
+                <p>Konfirmasi Penolakan Sparing</p>
+                <div class="mt-4 flex justify-center">
+                    <button @click="cancelSparingModal = false; cancelSparingId = null"
+                        class="px-4 py-2 bg-gray-300 rounded-lg mr-2">Kembali</button>
+                    <button @click="rejectSparing(cancelSparingId); cancelSparingModal = false; cancelSparingId = null"
+                        class="px-4 py-2 bg-red-700 text-white rounded-lg">Ya,
+                        Tolak</button>
+                </div>
+            </div>
+        </div>
+
         <template x-if="sparing.sparing_request.length == 0">
             <div class="flex justify-center items-center">
                 <div class="flex gap-10">
@@ -169,31 +213,13 @@
                     <div class="flex space-x-28 items-center justify-self-center">
                         <div class="bg-cover rounded-full overflow-hidden group size-16">
                             <img class="w-full h-full object-cover"
-                                :src="$store.storage.url + sparing.user.profile_photo" alt="">
+                                :src="sparing.user.profile_photo ? $store.storage.url + sparing.user.profile_photo :
+                                    '/assets/images/profile.svg'"
+                                alt="">
                         </div>
                     </div>
                 </div>
             </div>
         </template>
-
-    </div>
-
-    <!-- Cancel Modal -->
-    <div x-show="cancelSparingModal" x-cloak
-        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
-        <div class="bg-white p-6 rounded-lg justify-center flex flex-col text-center">
-            <h2 class="text-xl font-bold mb-4 font-2xl">Yakin ingin batalkan pesanan?</h2>
-            <p>Konfirmasi Pembatalan Pemesanan Anda</p>
-            <div class="mt-4 flex justify-center">
-                <button @click="cancelSparingModal = false"
-                    class="px-4 py-2 bg-gray-300 rounded-lg mr-2">Kembali</button>
-                <faorm action="" method="POST">
-                    {{-- <form action="{{ route('sparing.reject', $req_sparing) }}" method="POST"> --}}
-                    @csrf
-                    @method('PUT')
-                    <button class="px-4 py-2 bg-red-700 text-white rounded-lg">Ya, Batalkan</button>
-                    </form>
-            </div>
-        </div>
     </div>
 </div>

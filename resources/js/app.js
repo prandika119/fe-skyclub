@@ -137,6 +137,12 @@ document.addEventListener("alpine:init", () => {
     });
     Alpine.store("storage", {
         url: "http://10.33.35.50/storage/",
+        getPhoto(path, defaultImage = "/assets/images/profile.svg") {
+            if (!path) {
+                return defaultImage;
+            }
+            return `${this.url}${path}`;
+        },
     });
     Alpine.store("format", {
         rupiah: (value) => {

@@ -1,7 +1,9 @@
-<div x-data="{ open: false, ratingBookingModal: false, rating: 5, review: '' }" class="min-h-full bg-gray-200 shadow rounded-lg">
+<div x-data="{ open: false }" x-effect="console.log('perubahan terjadi')" class="min-h-full bg-gray-200 shadow rounded-lg">
     <div class="bg-white rounded-lg py-8 px-6 flex justify-between items-center">
         <div class="bg-cover rounded-xl overflow-hidden group w-20 h-20">
-            <img class="w-full h-full object-cover" :src="$store.storage.url + booking.field.photos[0]?.photo"
+            <img class="w-full h-full object-cover"
+                :src="booking.field.photos[0] ? $store.storage.url + booking.field.photos[0]?.photo :
+                    '/assets/images/banner/banner.svg'"
                 alt="">
         </div>
         <div class="flex items-center gap-6 ">
@@ -58,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <template x-if="!booking.review.rating">
+            <div x-show="!booking.review.rating">
                 <div class="mt-7 w-fit">
                     <button @click="ratingBookingModal = true"
                         class="py-2 px-3 border-4 border-yellow-300 flex items-center space-x-3 rounded-lg text-yellow-300 font-bold">
@@ -70,7 +72,7 @@
                         <span>Review Sekarang</span>
                     </button>
                 </div>
-            </template>
+            </div>
         </div>
         {{-- <div class="bg-cover rounded-xl overflow-hidden group w-79 h-45">
             <img class="w-full h-full object-cover" :src="booking.booking.uploud_payment_url" alt="">
@@ -113,9 +115,13 @@
             <div class="mt-4 flex justify-end space-x-2">
                 <button @click="ratingBookingModal = false"
                     class="px-4 py-2 bg-gray-300 text-black rounded-md">Cancel</button>
-                <button
-                    @click="addReview(booking.booking_id, rating, review, booking.field.id); ratingBookingModal = false"
-                    class="px-4 py-2 bg-red-500 text-white rounded-md">Save</button>
+                <button @click="addReview(booking.booking_id, rating, review, booking.field.id) "
+                    class="px-4 py-2 bg-red-500 text-white rounded-md">
+                    <div x-show="isLoading">
+                        <img src="{{ asset('assets/icons/loading.gif') }}" width="20" alt="">
+                    </div>
+                    <span x-show="!isLoading">Save</span>
+                </button>
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('content')
-    <div x-data="fieldHandler()">
+    <div x-data="fieldHandler()" x-init="fetchField(98)">
         <div class="grid grid-cols-3 grid-rows-2 gap-1 sm:gap-2 md:gap-4 h-[270px] sm:h-[370px] md:h-[470px] lg:h-[670px]">
 
             <!-- Loading -->
@@ -127,14 +127,14 @@
 
 
         {{-- cart & desc --}}
-        <div class="flex flex-col xl:grid xl:grid-flow-col gap-2 xl:flex-row justify-between my-12">
+        <div x-data="calendar()" x-init="init()"
+            class="flex flex-col xl:grid xl:grid-flow-col gap-2 xl:flex-row justify-between my-12">
             <div class=" xl:max-w-[700px] xxl:max-w-full">
                 <div class=" space-y-1">
                     <h1 class="text-4xl font-bold" x-text="field.name">SKY CLUB MINI SOCCER</h1>
                     <div class="flex space-x-1">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            viewBox="0 0 24 24">
+                        <svg class="w-6 h-6 text-gray-800 aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -144,18 +144,21 @@
                     </div>
                     <div class="flex">
                         <div class="flex items-center border rounded-lg px-2.5">
-                            <p class="text-sm font-bold text-gray-900" x-text="field.review.average || 0">average rating</p>
-                            {{-- <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $averageRating }}</p> --}}
-                            <svg class="ms-1 w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor" viewBox="0 0 22 20">
+                            <p class="text-sm font-bold text-gray-900" x-text="field.review.average">average rating</p>
+                            <svg class="ms-1
+                                w-4 h-4 text-yellow-300" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
                                 <path
                                     d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
                             </svg>
                         </div>
                         <p class="p-2.5 text-sm font-medium"
-                            x-text="field.review.average >= 5 ? 'Sangat Baik' : field.review.average >= 4 ? 'Baik' : field.review.average >= 3 ? 'Cukup Baik' : field.review.average >= 2 ? 'Buruk' : field.review.average >=1 ? 'Sangat Buruk' : 'Belum Ada Ulasan'">
+                            x-text="field.review.average >= 5 ? 'Sangat Baik' : field.review.average >= 4 ? 'Baik' : field.review.average >= 3 ? 'Cukup Baik' : field.review.average >= 2 ? 'Buruk' : 'Sangat Buruk'">
                         </p>
                         <p class="font-medium mt-1" x-text="` | ${field.review.count} reviews`"></p>
+                        {{-- <p class="p-2.5 text-sm font-medium"><span class=" font-bold">Very
+                                Good - </span>countRating reviews</p> --}}
+                        {{-- Good - </span>{{ $countRating }} reviews</p> --}}
                     </div>
                 </div>
                 <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700">
@@ -368,7 +371,7 @@
 
                     <div class="flex justify-between gap-2 xl:hidden">
                         <button type="submit"
-                            class="bg-red-600 w-full text-center py-3 rounded-lg font-bold text-white hover:bg-red-800 cursor-pointer">Bayar</button>
+                            class="bg-red-600 w-full text-center py-3 rounded-lg font-bold text-white hover:bg-red-800 cursor-pointer">Reschedule</button>
                     </div>
                 </div>
             </div>
@@ -481,7 +484,11 @@
                                     </svg>
                                 </template>
                             </div>
-                            <span class="text-gray-500" x-text="countRating + ' reviews'"></span>
+                            <p class="p-2.5 text-sm font-medium"
+                                x-text="field.review.average >= 5 ? 'Sangat Baik' : field.review.average >= 4 ? 'Baik' : field.review.average >= 3 ? 'Cukup Baik' : field.review.average >= 2 ? 'Buruk' : 'Sangat Buruk'">
+                            </p>
+                            <p class="font-medium mt-1" x-text="` | ${field.review.count} reviews`"></p>
+                            {{-- <span class="text-gray-500" x-text="countRating + ' reviews'"></span> --}}
                         </div>
                         <div class="mt-4 space-y-4">
                             <template x-if="reviews.length === 0">
@@ -514,6 +521,46 @@
                                 </div>
                             </template>
                         </div>
+                        {{-- <div class="flex items-center space-x-6 mb-8">
+                            <p class=" text-gray-500 font-bold"><span
+                                    class="text-black text-3xl">{{ $averageRating }}</span>/5</p>
+                            <div class="flex space-x-1">
+                                @for ($x = 0; $x < 5; $x++)
+                                    <svg class="w-6 h-6 text-yellow-300" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                        <path
+                                            d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                @endfor
+                            </div>
+                        </div>
+                        <div class="mt-4 space-y-4">
+                            @foreach ($reviews as $review)
+                                <div class="p-4 rounded-lg border">
+                                    <div class="flex justify-between mb-6">
+                                        <div class="flex items-center space-x-4">
+                                            <img class=" rounded-full w-12 h-12"
+                                                src="{{ asset('storage/' . $review->user->profile_photo) }}"
+                                                alt="">
+                                            <div>
+                                                <p class="text-base font-bold">{{ $review->user->name }}</p>
+                                                <p class="text-base">{{ $review->user->team }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center p-2 rounded-lg border">
+                                            <svg class="w-6 h-6 text-yellow-300 me-3" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                viewBox="0 0 22 20">
+                                                <path
+                                                    d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                            </svg>
+                                            <p class="font-semibold text-2xl">{{ $review->rating }}</p>
+                                        </div>
+                                    </div>
+                                    <p>"{{ $review->comment }}"</p>
+                                </div>
+                            @endforeach
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -549,7 +596,31 @@
                     </div>
                 </template>
             </div>
-            <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700">
+            {{-- <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+                @foreach ($reviews as $review)
+                    <div class="space-y-6 sm:space-y-8 border-b-2 pb-6 sm:border-b-0 sm:pb-0">
+                        <div class="flex items-center">
+                            @for ($x = 0; $x < $review->rating; $x++)
+                                <svg class="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                    <path
+                                        d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                </svg>
+                            @endfor
+                        </div>
+                        <p>{{ $review->comment }}</p>
+                        <div class="flex items-center sm:block">
+                            <img class=" rounded-full w-14 sm:mb-4 mr-4"
+                                src="{{ 'storage/' . $review->user->profile_photo }}" alt="">
+                            <div>
+                                <p class="text-base font-bold">{{ $review->user->name }}</p>
+                                <p class="text-base">{{ $review->user->team }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div> --}}
+            <hr class="h-px my-8 bg-gray-400 border-0">
             <div class="rounded-lg border border-gray-300">
                 <div class=" grid p-6 sm:p-12 space-y-8">
                     <div>
@@ -588,38 +659,17 @@
                 facilities: [],
                 photos: [],
                 reviews: [],
-                fieldId: null,
                 isLoading: false,
                 gallery: false,
                 error: null,
-
-                // Data schedule
-                currentDate: new Date(),
-                weekDays: [],
-                selectedDate: '',
-                timeSlots: [],
-                cart: [],
-                dataServer: [], // Akan diisi dari API
-                minDate: new Date(),
-                maxDate: new Date(new Date().setMonth(new Date().getMonth() + 2)),
-                pricePerSlot: 0,
-
-                async init() {
-                    await this.fetchField();
-                    await this.fetchSchedule();
-                },
-
-                async fetchField() {
+                async fetchField(fieldId) {
                     this.isLoading = true;
                     this.error = null;
                     try {
-                        const resField = await axios.get('/fields'); // Mengambil ID field pertama
-                        console.log("resField: " + resField);
-                        this.fieldId = resField.data.data[0].id; // Mengambil ID field pertama
-                        console.log("fieldId: " + this.fieldId);
-                        const response = await axios.get(`/fields/${this.fieldId}`);
-                        console.log("testtt" + response);
+                        const response = await axios.get(`fields/${fieldId}`);
+                        console.log(response.data);
                         this.field = response.data.data; // Menyimpan data field dari response
+                        // this.facilities = response.data.data.facilities; // Menyimpan data facility dari response
                         this.facilities = response.data.data.facilities.map(facility => facility.name);
                         this.photos = response.data.data.photos; // Menyimpan data photos dari response
                         console.log(this.facility);
@@ -631,8 +681,28 @@
                         this.isLoading = false;
                     }
                 },
-                // method untuk schedule
-                async fetchSchedule() {
+                async fetchSchedule(fieldId) {
+                    this.isLoading = true,
+                        this.error = null,
+                        this.dataServer = [];
+                }
+            }
+        }
+
+        function calendar() {
+            return {
+                currentDate: new Date(),
+                weekDays: [],
+                selectedDate: '',
+                timeSlots: [],
+                cart: [],
+                dataServer: [], // Akan diisi dari API
+                minDate: new Date(),
+                maxDate: new Date(new Date().setMonth(new Date().getMonth() + 2)),
+                pricePerSlot: 0,
+
+                // Inisialisasi kalender
+                async init() {
                     await this.fetchScheduleByRange(this.getWeekRange(this.currentDate));
                 },
 
@@ -656,7 +726,7 @@
                             new_schedule_price: this.parsePrice(this.cart[0]?.price || 0),
                         });
                         console.log('Booking response:', response.data.message);;
-                        window.location.href = '/users/profile-user';
+                        window.location.href = 'users/profile-user';
                     } catch (error) {
                         this.error = error.response.data.error || 'Gagal membuat booking';
                         console.error('Gagal membuat booking:', error);
@@ -685,9 +755,8 @@
                 }) {
                     try {
                         const response = await axios.get(
-                            `fields/${this.fieldId}/schedules?start_date=${start}&end_date=${end}`
+                            `fields/98/schedules?start_date=${start}&end_date=${end}`
                         );
-                        console.log('Response:', response.data);
                         this.dataServer = response.data.data;
                         // Pilih tanggal default
                         const todayStr = this.formatDate(new Date());
@@ -842,7 +911,7 @@
                     return d >= min && d <= max;
                     // return date >= this.minDate && date <= this.maxDate;
                 },
-            }
+            };
         }
     </script>
 @endsection

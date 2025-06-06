@@ -107,83 +107,6 @@
                         </div>
                     </div>
 
-                    {{-- form --}}
-                    {{-- @if ($isAdmin)
-                        pengisian data user untuk admin
-                        <div x-data="{ dropDown: 'up', selectedUser: '{{ session('userOfflineSuccess') }}' }" class="mt-8">
-                            <div class="flex justify-between mb-4">
-                                <h5 class=" font-bold text-2xl">Masukan Data</h5>
-                                <svg x-show="dropDown == 'up'" @click="dropDown='down'"
-                                    class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                    viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m5 15 7-7 7 7" />
-                                </svg>
-                                <svg x-show="dropDown == 'down'" @click="dropDown='up'"
-                                    class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                    viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m19 9-7 7-7-7" />
-                                </svg>
-                            </div>
-
-                            <form class="w-full mx-auto mb-5" x-show="dropDown == 'down'"
-                                action="{{ route('booking.userOffline') }}" method="POST">
-                                @csrf
-                                <label for="user"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                                    User</label>
-                                <select id="user" x-model="selectedUser" name="user"
-                                    class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500">
-                                    <option value="nothing" selected>Belum Pernah Pesan</option>
-                                    @foreach ($users_offline as $user)
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                    @endforeach
-                                </select>
-                                <button type="submit" x-show="selectedUser != 'nothing'"
-                                    class="mb-5 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Pilih</button>
-                                @if (session()->has('userOfflineSuccess'))
-                                    <p class="text-sm text-green-600 dark:text-green-500"><span
-                                            class="font-medium">Sudah
-                                            Terpilih
-                                    </p>
-                                @endif
-                            </form>
-
-                            <form x-data="{ name: '{{ $user_offline['name'] ?? '' }}', no_telp: '{{ $user_offline['no_telp'] ?? '' }}', email: '{{ $user_offline['email'] ?? '' }}' }" class="w-full mx-auto"
-                                x-show="dropDown == 'down' && selectedUser == 'nothing'"
-                                action="{{ route('booking.userOffline') }}" method="POST">
-                                @csrf
-                                <div class="mb-5">
-                                    <label for="name"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-                                    <input type="text" id="name" name="name" x-model="name"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
-                                        required />
-                                </div>
-                                <div class="mb-5">
-                                    <label for="no_telp"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">No.
-                                        Telepon</label>
-                                    <input type="text" id="no_telp" name="no_telp" x-model="no_telp"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
-                                        required />
-                                </div>
-                                <div class="mb-5">
-                                    <label for="email"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                                        email</label>
-                                    <input type="email" id="email" name="email" x-model="email"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
-                                        placeholder="name@flowbite.com" required />
-                                </div>
-                                <button type="submit"
-                                    class="mb-5 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Submit</button>
-                            </form>
-                        </div>
-                    @endif --}}
 
 
                 </div>
@@ -222,14 +145,7 @@
                     </p>
                     <p x-show="validVoucher" class="text-sm text-green-600 dark:text-green-500"><span
                             class="font-medium" x-text="messageVoucher">voucherSuccess</p>
-                    {{-- @if (session()->has('voucher'))
-                        <p class="text-sm text-red-600 dark:text-red-500"><span
-                                class="font-medium">{{ session('voucher') }}
-                        </p>
-                    @elseif (session()->has('voucherSuccess'))
-                        <p class="text-sm text-green-600 dark:text-green-500"><span
-                                class="font-medium">{{ session('voucherSuccess') }}</p>
-                    @endif --}}
+
 
                     {{-- end voucher --}}
                     <div class="border border-gray-600 p-5 rounded-xl">

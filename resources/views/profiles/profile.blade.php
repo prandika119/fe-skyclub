@@ -10,9 +10,7 @@
             <div class="relative" x-data="{ profileImage: '$data_user->formattedProfilePhoto' }">
                 <div class="-mt-20 relative bg-cover rounded-full overflow-hidden group size-40 ring-4 ring-red-600">
                     <img id="profileImage" class="profile-image w-full h-full object-cover"
-                        :src="user.profile_photo ? $store.storage.url + user.profile_photo :
-                            '/assets/images/profile.svg'"
-                        alt="">
+                        :src="$store.storage.getPhoto(user.profile_photo)" alt="">
                     {{-- src="{{ asset('storage/profile-photo/' . $data_user->profile_photo) }}" alt=""> --}}
                     <input name="profile_photo" type="file" id="imageUploud"
                         x-on:change="updateProfileImage($event.target.files[0])" accept="image/*" class="hidden">
@@ -38,8 +36,8 @@
         </div>
 
         {{-- tab --}}
-        {{-- <div x-data="{ activeTab: 'account', activeBookingTab: 'field' }"> --}}
-        <div x-data="{ activeTab: '{{ session()->has('activeTab') ? session('activeTab') : 'account' }}', activeBookingTab: '{{ session()->has('activeBookingTab') ? session('activeBookingTab') : 'field' }}' }">
+        <div x-data="{ activeTab: 'account', activeBookingTab: 'field' }">
+            {{-- <div x-data="{ activeTab: '{{ session()->has('activeTab') ? session('activeTab') : 'account' }}', activeBookingTab: '{{ session()->has('activeBookingTab') ? session('activeBookingTab') : 'field' }}' }"> --}}
             <!-- Tab Menu for Account and History -->
             <div class="mt-8 pt-4 px-6 shadow bg-white rounded-lg">
                 <div class="flex justify-evenly flex-wrap -mb-px text-sm font-semibold" role="tablist">
@@ -161,21 +159,10 @@
                             dipesan
                         </p>
                     </div>
-
-                    {{-- @forelse ($bookings as $booking)
-                    @foreach ($booking->listBooking as $sesi)
-                        @if ($sesi->sparing == null)
-                            <x-drop-booking :booking="$booking" :sesi="$sesi" />
-                        @endif
-                    @endforeach
-                @empty
-                    <p>Tidak ada jadwal yang telah dipesan</p>
-                @endforelse --}}
                 </div>
 
                 <div x-data="sparingData()" x-init="fetchSparings()" x-show="activeBookingTab === 'sparing'"
                     class="mt-8 space-y-10">
-
                     <template x-for="sparing in sparings" :key="sparing.id">
                         <div x-data="{ sparing }">
                             <x-drop-sparing />
@@ -183,50 +170,17 @@
                     </template>
                     <p x-show="sparings.length == 0" class="text-center text-gray-500">Tidak ada sparing yang
                         telah dibuat</p>
-
-                    {{-- @foreach ($sparings as $sparing)
-                    @if ($sparing->request->isEmpty())
-                        <x-drop-sparing-no-request :sparing="$sparing" />
-                    @endif
-                @endforeach
-                @forelse ($request_sparing as $req_sparing)
-                    <x-drop-sparing :sparing="$req_sparing" />
-                @empty
-                    <p>Tidak ada pengajuan sparing</p>
-                @endforelse --}}
-
-                    {{-- @foreach ($sparing->request as $req_sparing)
-                            <x-drop-sparing :sparing="$req_sparing" />
-                        @endforeach --}}
-                    {{-- @dd($sparing->request, $sparing->request->isEmpty() ? 'null' : 'ok') --}}
-                    {{-- @dd($sparing->request == [] ? 'nukk' : 'ok') --}}
-                    {{-- @forelse ($request_sparing as $req_sparing)
-                            <x-drop-sparing :sparing="$req_sparing" />
-                        @empty
-                            <p>Tidak ada pengajuan sparing</p>
-                        @endforelse --}}
                 </div>
-                <div x-data="historyData" x-init="fetchHistoryBookings" x-show="activeBookingTab === 'finish'"
+
+                <div x-data="historyData()" x-init="fetchHistoryBookings()" x-show="activeBookingTab === 'finish'"
                     class="mt-8 space-y-10">
                     <template x-for="booking in historyBookings" :key="booking.id">
                         <div x-data="{ booking }">
                             <x-drop-history-booking />
                         </div>
                     </template>
-                    <p x-show="booking.length == 0" class="text-center text-gray-500">Tidak ada history booking </p>
-                    {{-- @forelse ($history_booking_sparing as $history)
-                    @if ($history->getTable() == 'bookings')
-                        @foreach ($history->listBooking as $booking)
-                            @if ($booking->date < now())
-                                <x-drop-history-booking :listbooking="$booking" />
-                            @endif
-                        @endforeach
-                    @else
-                        <x-drop-history-sparing :sparing="$history" />
-                    @endif
-                @empty
-                    <p>Tidak ada riwayat pesanan atau sparing</p>
-                @endforelse --}}
+                    <p x-show="historyBookings.length == 0" class="text-center text-gray-500">Tidak ada history booking
+                    </p>
                 </div>
             </div>
         </div>
@@ -270,7 +224,7 @@
             return {
                 isLoading: false,
                 error: null,
-                user: null,
+                user: '',
                 async fetchUser() {
                     try {
                         const response = await axios.get('/users/current');
@@ -434,6 +388,8 @@
                     switch (status) {
                         case 'accepted':
                             return 'bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded ';
+                        case 'done':
+                            return 'bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded ';
                         case 'waiting':
                             return 'bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded ';
                         case 'rejected':
@@ -441,13 +397,40 @@
                         default:
                             return 'bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded ';
                     }
-                }
+                },
+                async acceptSparing(sparingReqId) {
+                    try {
+                        const response = await axios.post(`/sparings/${sparingReqId}/accept`);
+                        console.log('Sparing accepted:', response.data);
+                        // Optionally, refresh the sparings data
+                        await this.fetchSparings();
+                    } catch (error) {
+                        console.error('Error accepting sparing:', error);
+                        alert('Gagal menerima sparing, silahkan coba lagi');
+                    }
+                },
+                async rejectSparing(sparingReqId) {
+                    // Logic to reject the sparing
+                    try {
+                        const response = await axios.post(`/sparings/${sparingReqId}/reject`);
+                        console.log('Sparing rejected:', response.data);
+                        // Optionally, refresh the sparings data
+                        await this.fetchSparings();
+                    } catch (error) {
+                        console.error('Error rejecting sparing:', error);
+                        alert('Gagal menolak sparing, silahkan coba lagi');
+                    }
+                },
             }
         }
 
         function historyData() {
             return {
                 historyBookings: [],
+                isLoading: false,
+                ratingBookingModal: false,
+                rating: 5,
+                review: '',
                 async fetchHistoryBookings() {
                     try {
                         const response = await axios.get('/my-booking', {
@@ -458,7 +441,7 @@
                         });
                         this.historyBookings = response.data.data.bookings;
 
-                        console.log('Sparings data loaded:', this.historyBookings);
+                        console.log('History data loaded:', this.historyBookings);
                     } catch (error) {
                         console.error('Error fetching sparings data:', error);
                     }
@@ -467,6 +450,7 @@
                     // Logic to add a review for the booking
                     console.log('Add review for booking ID:', bookingId);
                     try {
+                        this.isLoading = true;
                         const response = await axios.post('/reviews', {
                             booking_id: bookingId,
                             rating: rating,
@@ -476,8 +460,14 @@
                         console.log('Review added:', response.data);
                         // Optionally, refresh the history bookings data
                         await this.fetchHistoryBookings();
+                        this.review = '';
+                        this.rating = 5; // Reset rating to default
                     } catch (error) {
                         console.error('Error adding review:', error);
+                    } finally {
+                        this.isLoading = false;
+                        this.ratingBookingModal = false;
+                        window.location.reload();
                     }
                 },
                 historyStatusClass(status) {
