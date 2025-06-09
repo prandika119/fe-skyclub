@@ -1,12 +1,8 @@
-@php
-    use Carbon\Carbon;
-@endphp
 <div x-data="{
     open: false,
     cancelBookingModal: false,
     scheduleModal: false,
-    sparingModal: false,
-    proofTransfer: false
+    sparingModal: false
 }" class="min-h-full bg-gray-200 shadow rounded-lg">
     <div class=" bg-white rounded-lg py-8 px-6 flex justify-between items-center">
         <div class="bg-cover rounded-xl overflow-hidden group w-20 h-20">
@@ -65,7 +61,7 @@
                     <h6 class="font-semibold text-sm">No. Telepon</h6>
                     <p x-text="schedule.user.no_telp">$booking->rentedBy->no_telp</p>
                 </div>
-
+                <p x-effect="console.log('schedule status broo', canCancelBooking(schedule.status))"></p>
                 <div x-show="canCancelBooking(schedule.status)">
                     <a @click="cancelBookingModal = true"
                         class="my-3 px-6 py-3 bg-red-700 text-white font-bold rounded-lg">Batalkan</a>
@@ -118,17 +114,14 @@
             <h2 class="text-xl font-bold mb-4 font-2xl">Yakin ingin batalkan pesanan?</h2>
             {{-- <p>Konfirmasi Pembatalan Pemesanan Anda</p> --}}
             <div class="mt-4 w-full">
-                <form action="" method="POST"
-                    @submit.prevent="cancelBooking(schedule.id, ); cancelBookingModal = false">
-
-                    <input type="text" name="reason" id="reason"
-                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-4"
-                        placeholder="Masukan alasan pembatalan" x-model="cancelReason" required />
-                    <button @click="cancelBookingModal = false"
-                        class="px-4 py-2 w-1/2 bg-gray-300 rounded-lg mr-2">Kembali</button>
-                    <button type="submit" class="px-4 py-2 bg-red-700 text-white rounded-lg">Ya,
-                        Batalkan</button>
-                </form>
+                <input type="text" name="reason" id="reason"
+                    class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-4"
+                    placeholder="Masukan alasan pembatalan" x-model="cancelReason" required />
+                <button @click="cancelBookingModal = false"
+                    class="px-4 py-2 w-1/2 bg-gray-300 rounded-lg mr-2">Kembali</button>
+                <button @click="cancelBooking(schedule.id ); cancelBookingModal = false"
+                    class="px-4 py-2 bg-red-700 text-white rounded-lg">Ya,
+                    Batalkan</button>
             </div>
         </div>
     </div>
@@ -155,7 +148,7 @@
             <div class="flex justify-end">
                 <button @click="sparingModal = false" type="button"
                     class="px-4 py-2 bg-gray-300 rounded-lg mr-2">Cancel</button>
-                <input type="hidden" name="id_list_booking" value=" $sesi->id ">
+                <input type="hidden" name="id_list_booking">
                 <button type="submit" class="px-4 py-2 bg-red-700 text-white rounded-lg">Save</button>
             </div>
         </form>

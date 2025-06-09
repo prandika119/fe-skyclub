@@ -40,10 +40,10 @@
                     try {
                         await axios.post(`users/current/notifications/${id}/read`);
                         // redirect to my profile
-                        window.location.href = '/users/profile-user';
-
                         await Alpine.store('user').refreshLocalStorage(); // Refresh data user di local storage
                         await this.fetchNotif(); // Refresh data setelah menandai sebagai dibaca
+                        window.location.href = '/users/profile-user';
+
                     } catch (error) {
                         console.error('Error marking notification as read:', error);
                     }

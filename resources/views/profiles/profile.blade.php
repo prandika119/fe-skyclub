@@ -119,7 +119,6 @@
                         </div>
                     </template>
                 </div>
-
             </div>
 
             <!-- History Tab Content -->
@@ -149,8 +148,7 @@
                 <div x-data="bookingData()" x-init="fetchBookings" x-show="activeBookingTab === 'field'"
                     class="mt-8 space-y-10">
                     <template x-for="schedule in schedules" :key="schedule.id">
-                        {{-- <p x-text="schedule.date"></p> --}}
-                        <div x-data="{ schedule }">
+                        <div>
                             <x-drop-booking />
                         </div>
                     </template>
@@ -164,7 +162,7 @@
                 <div x-data="sparingData()" x-init="fetchSparings()" x-show="activeBookingTab === 'sparing'"
                     class="mt-8 space-y-10">
                     <template x-for="sparing in sparings" :key="sparing.id">
-                        <div x-data="{ sparing }">
+                        <div>
                             <x-drop-sparing />
                         </div>
                     </template>
@@ -175,7 +173,7 @@
                 <div x-data="historyData()" x-init="fetchHistoryBookings()" x-show="activeBookingTab === 'finish'"
                     class="mt-8 space-y-10">
                     <template x-for="booking in historyBookings" :key="booking.id">
-                        <div x-data="{ booking }">
+                        <div>
                             <x-drop-history-booking />
                         </div>
                     </template>
@@ -185,36 +183,6 @@
             </div>
         </div>
 
-        {{-- <div x-show="error">
-            <div id="popup-modal" tabindex="-1"
-                class="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
-                <div class="relative p-4 w-full max-w-md max-h-full">
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                        <button type="button"
-                            class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                            data-modal-hide="popup-modal">
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                            </svg>
-                            <span class="sr-only">Close modal</span>
-                        </button>
-                        <div class="p-4 md:p-5 text-center">
-                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                            </svg>
-                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">{{ session('error') }}
-                            </h3>
-                            <button data-modal-hide="popup-modal" type="button"
-                                class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">OK</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
 
     </div>
 @endsection
@@ -225,6 +193,7 @@
                 isLoading: false,
                 error: null,
                 user: '',
+
                 async fetchUser() {
                     try {
                         const response = await axios.get('/users/current');
@@ -317,7 +286,7 @@
                         console.log('Sparing created:', response.data);
                         // Optionally, refresh the bookings data
                         await this.fetchBookings();
-
+                        console.log('schedules', this.schedules);
                         // fetch sparings data
                         await this.fetchSparings();
                     } catch (error) {
@@ -335,6 +304,7 @@
                         console.log('Booking canceled:', response.data);
                         // Optionally, refresh the bookings data
                         await this.fetchBookings();
+                        console.log('Nyoba cancel', this.schedules);
                     } catch (error) {
                         console.error('Error canceling booking:', error);
                         this.error = error.response.data.error || 'Failed to cancel booking';

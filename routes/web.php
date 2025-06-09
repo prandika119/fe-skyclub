@@ -71,7 +71,7 @@ Route::get('notification', function () {
 Route::get('articles', function () {
     return view('articles.userIndex');
 })->name('article.index');
-Route::view('/article/{id}', 'app')->where('id', '[0-9]+');
+Route::view('/articles/{id}', 'articles.articledetail')->where('id', '[0-9]+');
 
 // Admin
 Route::prefix('admin')->name('admin.')->group(function () {
