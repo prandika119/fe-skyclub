@@ -423,7 +423,12 @@
                         </template>
                         <div class="flex space-x-4">
                             <button type="submit"
-                                class="bg-red-600 w-full text-center py-3 rounded-lg font-bold text-white hover:bg-red-800 cursor-pointer">Bayar</button>
+                                class="flex justify-center space-x-3 items-center bg-red-600 w-full text-center py-3 rounded-lg font-bold text-white hover:bg-red-800 cursor-pointer">
+                                <div x-show="isLoading">
+                                    <img src="{{ asset('assets/icons/loading.gif') }}" width="20" alt="">
+                                </div>
+                                <span>Bayar</span>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -632,11 +637,7 @@
                         this.isLoading = false;
                     }
                 },
-                // async fetchSchedule(fieldId) {
-                //     this.isLoading = true,
-                //         this.error = null,
-                //         this.dataServer = [];
-                // },
+
 
                 // method untuk schedule
                 // Inisialisasi kalender
@@ -656,6 +657,7 @@
 
                     // Redirect ke halaman pembayaran
                     try {
+                        this.isLoading = true;
                         response = await axios.post('booking', {
                             schedules
                         });
@@ -663,8 +665,11 @@
                         booking_id = response.data.data.booking.id;
                         window.location.href = `/payment/${booking_id}`;
                     } catch (error) {
-                        alert('Gagal membuat booking');
+                        // alert('Gagal membuat booking');
+                        this.error = error.response?.data?.errors || 'Gagal melakukan pembayaran';
                         console.error('Gagal membuat booking:', error);
+                    } finally {
+                        this.isLoading = false;
                     }
                 },
 
@@ -778,7 +783,6 @@
                             date: this.parseDate(this.selectedDate)
                         });
                     }
-
                 },
 
                 removeFromCart(item) {

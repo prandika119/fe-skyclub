@@ -35,8 +35,15 @@
             <p class="text-base text-gray-700" x-text="user.email">$data_user->email</p>
         </div>
 
+        @php
+            // Logika untuk menentukan tab awal
+            // Misalnya, jika ada parameter ?tab=settings di URL
+            $initialTab = request()->get('tab', 'account'); // Default 'account'
+            $initialBookingTab = request()->get('booking_tab', 'field'); // Default 'field'
+        @endphp
+
         {{-- tab --}}
-        <div x-data="{ activeTab: 'account', activeBookingTab: 'field' }">
+        <div x-data="{ activeTab: '{{ $initialTab }}', activeBookingTab: '{{ $initialBookingTab }}' }">
             {{-- <div x-data="{ activeTab: '{{ session()->has('activeTab') ? session('activeTab') : 'account' }}', activeBookingTab: '{{ session()->has('activeBookingTab') ? session('activeBookingTab') : 'field' }}' }"> --}}
             <!-- Tab Menu for Account and History -->
             <div class="mt-8 pt-4 px-6 shadow bg-white rounded-lg">
@@ -58,29 +65,8 @@
                 <h2 class="font-bold text-3xl mb-4">Account</h2>
 
                 {{-- modal --}}
-                <div id="alert-1"
-                    class="hidden items-center p-4 mb-4 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
-                    role="alert">
-                    <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                    </svg>
-                    <span class="sr-only">Info</span>
-                    <div class="ms-3 text-sm font-medium">
-                        Berhasil Melakukan Update
-                    </div>
-                    <button type="submit"
-                        class="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700"
-                        data-dismiss-target="#alert-1" aria-label="Close">
-                        <span class="sr-only">Close</span>
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                        </svg>
-                    </button>
-                </div>
+                <x-modal-success message="Update Data Berhasil" />
+                <x-modal-error />
                 <div class="px-6 py-8 rounded-lg bg-white shadow space-y-8">
                     <template
                         x-for="field in [
@@ -182,8 +168,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 @endsection
 @push('script')
@@ -193,7 +177,7 @@
                 isLoading: false,
                 error: null,
                 user: '',
-
+                alertSuccess: false,
                 async fetchUser() {
                     try {
                         const response = await axios.get('/users/current');
@@ -201,7 +185,7 @@
                         console.log('User data loaded:', this.user);
                     } catch (error) {
                         console.error('Error fetching user data:', error);
-                        this.error = 'Failed to load user data';
+                        this.error = error.response?.data?.errors || 'Failed to load user data';
                     } finally {
                         this.isLoading = false;
                     }
@@ -218,13 +202,25 @@
                         const response = await axios.post('/users/current', {
                             [field]: fieldValue
                         })
-
+                        this.alertSuccess = true;
                         // refresh local storage
                         Alpine.store('user').refreshLocalStorage();
                         console.log('User updated:', response.data);
                     } catch (error) {
                         console.error('Error updating user:', error);
-                        this.error = 'Failed to update user';
+                        // Ambil semua key error
+                        const errors = error.response?.data?.errors;
+                        let message = 'Failed to load user data';
+
+                        if (errors && typeof errors === 'object') {
+                            // Ambil key pertama dari errors
+                            const firstField = Object.keys(errors)[0];
+                            if (firstField && errors[firstField][0]) {
+                                message = errors[firstField][0];
+                            }
+                        }
+                        await this.fetchUser();
+                        this.error = message;
                     } finally {
                         this.isLoading = false;
                     }
@@ -240,6 +236,7 @@
                         console.log(response);
                     } catch (error) {
                         console.error("error uplouding")
+                        this.error = error.response?.data?.errors || 'Failed to load user data';
                     }
                 }
             }
@@ -437,7 +434,6 @@
                     } finally {
                         this.isLoading = false;
                         this.ratingBookingModal = false;
-                        window.location.reload();
                     }
                 },
                 historyStatusClass(status) {

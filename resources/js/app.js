@@ -98,9 +98,11 @@ document.addEventListener("alpine:init", () => {
                             "Authorization"
                         ] = `Bearer ${cachedToken}`;
                         return;
+                    } else {
+                        // Jika token sudah kadaluarsa, hapus cache
+                        this.clearUser();
                     }
                 }
-
                 // Jika token tidak valid atau tidak ada cache, panggil API
                 const response = await axios.get(
                     "http://10.33.35.50/api/users/current"

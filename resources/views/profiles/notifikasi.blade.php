@@ -42,7 +42,7 @@
                         // redirect to my profile
                         await Alpine.store('user').refreshLocalStorage(); // Refresh data user di local storage
                         await this.fetchNotif(); // Refresh data setelah menandai sebagai dibaca
-                        window.location.href = '/users/profile-user';
+                        window.location.href = '/users/profile-user?tab=history';
 
                     } catch (error) {
                         console.error('Error marking notification as read:', error);
