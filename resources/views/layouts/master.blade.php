@@ -11,9 +11,10 @@
 
     </head>
 
-    <body class="h-full bg-basic ">
+    <body class="h-full bg-basic bg-[#FAFBFC] ">
         <x-navbar></x-navbar>
 
+        <div class="h-20"></div>
         {{-- <main class="min-h-full px-26 my-10">
         @yield('content')
     </main> --}}

@@ -1,262 +1,192 @@
-
 @extends('layouts.adminFullPage')
 
-@push('header')
-    @vite(['resources/js/tableArticle.js'])
-@endpush
+@section('alert')
+@if(session('success'))
+<div id="toast-success" class="fixed top-10 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 z-100" role="alert">
+    <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+        </svg>
+        <span class="sr-only">Check icon</span>
+    </div>
+    <div class="ms-3 text-sm font-normal"> {{ session('success') }}</div>
+    <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-success" aria-label="Close">
+        <span class="sr-only">Close</span>
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+    </button>
+</div>
+@endif
+
+@if($errors->any())
+<div id="toast-danger" class="fixed top-10 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 z-100" role="alert">
+    <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
+        </svg>
+        <span class="sr-only">Error icon</span>
+    </div>
+    <div class="ms-3 text-sm font-normal">
+        @foreach($errors->all() as $error)
+            <span>{{ $error }}</span>
+        @endforeach
+    </div>
+    <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-danger" aria-label="Close">
+        <span class="sr-only">Close</span>
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+    </button>
+</div>
+@endif
+@endsection
 
 @section('content')
-<div x-data="articleTable()" x-init="fetchArticles()">
-    <!-- Search and Create Button -->
-    <div class="flex justify-between mb-4">
-        <div class="relative w-64">
-            <input 
-                type="text" 
-                x-model="searchQuery" 
-                @input.debounce.500ms="searchArticles"
-                placeholder="Search articles..."
-                class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
-            </div>
-        </div>
-        <a 
-            href="{{ route('admin.article.create') }}" 
-            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+<div class="px-5 mb-4 flex items-center justify-between">
+    <div class="relative w-full">
+        <label for="table-search" class="sr-only">Search</label>
+        <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
             </svg>
-            Create Article
-        </a>
+        </div>
+        <input type="text" id="searchInput" onkeyup="searchTable()" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:outline-none focus:ring focus:ring-red-600 focus:border-red-600" placeholder="Search...">
     </div>
-
-    <!-- Loading State -->
-    <div x-show="loading" class="text-center py-8">
-        <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-        <p class="mt-2">Loading articles...</p>
+    <div class='w-full grid grid-cols-2 lg:flex lg:justify-end gap-x-4 md:gap-x-2'>
+        <button data-modal-target="createVoucherModal" data-modal-toggle="createVoucherModal" class="flex items-center justify-center px-6 py-2 bg-red-600 text-white font-medium text-md  rounded-lg hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:ring-0 active:bg-red-800 ">
+            <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+            </svg>
+            Tambah Article
+        </button>
+        {{-- <label>
+            <select class='${options.classes.selector} w-full focus:ring-red-600 focus:border-red-600'></select>
+        </label> --}} 
     </div>
+</div>
 
-    <!-- Error State -->
-    <div x-show="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert" x-text="error"></div>
-
-    <!-- Articles Table -->
-    <div x-show="!loading && !error" class="overflow-x-auto">
-        <table class="min-w-full bg-white rounded-lg overflow-hidden">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-6 py-3 text-left">
-                        <button @click="sortBy('title')" class="flex items-center font-medium text-gray-700 uppercase tracking-wider">
-                            Title
-                            <svg class="w-4 h-4 ml-1" :class="{ 'transform rotate-180': sortField === 'title' && sortDirection === 'desc' }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-                    </th>
-                    <th class="px-6 py-3 text-left">
-                        <button @click="sortBy('author')" class="flex items-center font-medium text-gray-700 uppercase tracking-wider">
-                            Author
-                            <svg class="w-4 h-4 ml-1" :class="{ 'transform rotate-180': sortField === 'author' && sortDirection === 'desc' }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-                    </th>
-                    <th class="px-6 py-3 text-left">
-                        <button @click="sortBy('created_at')" class="flex items-center font-medium text-gray-700 uppercase tracking-wider">
-                            Created At
-                            <svg class="w-4 h-4 ml-1" :class="{ 'transform rotate-180': sortField === 'created_at' && sortDirection === 'desc' }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-                    </th>
-                    <th class="px-6 py-3 text-left font-medium text-gray-700 uppercase tracking-wider">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
+<div class="relative overflow-x-auto px-5 pt-2">
+    <table x-data="articleHandler()" x-init="fetchArticles()" class="min-w-full leading-normal">
+        <thead>
+            <tr class="shadow-lg rounded-xl ring-1 ring-gray-200">
+                <th scope="col" class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-s-xl">
+                    Title
+                </th>
+                <th scope="col" class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Author
+                </th>
+                <th scope="col" class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Created At
+                </th>
+                <th scope="col" class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-e-xl">
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <template x-if="articles.length > 0">
                 <template x-for="article in articles" :key="article.id">
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900" x-text="article.title"></div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900" x-text="article.author.name"></div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900" x-text="formatDate(article.created_at)"></div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <tr class="rounded-xl hover:bg-gray-50 divide-y divide-gray-200">
+                        <td x-text="article.title" class="py-4 px-5 text-left text-sm align-middle"></td>
+                        <td x-text="article.author.name" class="py-4 px-5 text-left text-sm align-middle"></td>
+                        <td x-text="article.created_at" class="py-4 px-5 text-left text-sm align-middle"></td>
+                        <td class="py-4 px-5 text-left text-sm border-b border-gray-200 align-middle">
                             <div class="inline-flex rounded-md shadow-sm" role="group">
-                                <a :href="`/admin/articles/${article.id}`" class="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-l-lg hover:bg-blue-600">
-                                    Show
-                                </a>
-                                <a :href="`/admin/articles/${article.id}/edit`" class="px-3 py-1 text-sm font-medium text-white bg-green-500 hover:bg-green-600">
-                                    Edit
-                                </a>
-                                <button @click="confirmDelete(article.id)" class="px-3 py-1 text-sm font-medium text-white bg-red-500 rounded-r-lg hover:bg-red-600">
-                                    Delete
+                                <button @click="openEditModal(voucher)" class="w-20 py-2 text-sm font-medium text-white bg-blue-500 rounded-s-lg hover:bg-blue-600 focus:text-white">
+                                Show
+                                </button>
+                                <button @click="openEditModal(voucher)" class="w-20 py-2 text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:text-white">
+                                Edit
+                                </button>
+                                <button @click="openDeleteModal(voucher)" class="w-20 py-2 text-sm font-medium text-white bg-red-500 rounded-e-lg hover:bg-red-600 focus:text-white">
+                                Delete
                                 </button>
                             </div>
                         </td>
                     </tr>
                 </template>
-                <tr x-show="articles.length === 0">
-                    <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
-                        No articles found
-                    </td>
+            </template>
+            <template x-if="articles.length === 0 && !isLoading">
+                <tr>
+                    <td colspan="8" class="py-4 text-center text-sm text-gray-500">No articles found</td>
                 </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Pagination -->
-    <div x-show="!loading && articles.length > 0" class="mt-4 flex items-center justify-between">
-        <div class="text-sm text-gray-700">
-            Showing <span x-text="meta.from"></span> to <span x-text="meta.to"></span> of <span x-text="meta.total"></span> articles
-        </div>
-        <div class="flex space-x-2">
-            <button 
-                @click="prevPage" 
-                :disabled="meta.current_page === 1"
-                class="px-3 py-1 border rounded"
-                :class="{ 'opacity-50 cursor-not-allowed': meta.current_page === 1 }"
-            >
-                Previous
-            </button>
-            <button 
-                @click="nextPage"
-                :disabled="meta.current_page >= meta.last_page"
-                class="px-3 py-1 border rounded"
-                :class="{ 'opacity-50 cursor-not-allowed': meta.current_page >= meta.last_page }"
-            >
-                Next
-            </button>
-        </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div x-show="showDeleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
-            <div class="p-6 text-center">
-                <svg class="mx-auto mb-4 w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                <h3 class="mb-5 text-lg font-normal text-gray-500">Are you sure you want to delete this article?</h3>
-                <div class="flex justify-center space-x-4">
-                    <button 
-                        @click="deleteArticle" 
-                        class="text-white bg-red-600 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5"
-                    >
-                        Delete
-                    </button>
-                    <button 
-                        @click="showDeleteModal = false" 
-                        class="text-gray-500 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5"
-                    >
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+            </template>
+        </tbody>
+    </table>
 </div>
-@endsection
 
-@push('scripts')
 <script>
-document.addEventListener('alpine:init', () => {
-    Alpine.data('articleTable', () => ({
+function articleHandler() {
+    return {
         articles: [],
-        meta: {},
-        loading: false,
-        error: null,
-        searchQuery: '',
-        sortField: 'created_at',
-        sortDirection: 'desc',
+        selectedVoucher: {},
+        voucherModal: false,
+        showEditModal: false,
         showDeleteModal: false,
-        articleToDelete: null,
-
+        isLoading: false,
         async fetchArticles() {
-            this.loading = true;
-            this.error = null;
-            
+            this.isLoading = true;
             try {
-                const params = new URLSearchParams({
-                    page: this.meta.current_page || 1,
-                    search: this.searchQuery,
-                    sort_by: this.sortField,
-                    sort_dir: this.sortDirection
-                });
-                
-                const response = await axios.get(`/articles?${params}`);
-                
-                if (response.data.status === 'success') {
-                    this.articles = response.data.data;
-                    this.meta = response.data.meta || {};
-                } else {
-                    this.error = 'Failed to load articles';
-                }
-            } catch (err) {
-                console.error('Error fetching articles:', err);
-                this.error = err.response?.data?.message || 'Error loading articles';
+                const response = await axios.get('/articles');
+                this.articles = response.data.data || [];
+            } catch (error) {
+                console.error('Error fetching articles:', error);
+                this.articles = [];
             } finally {
-                this.loading = false;
+                this.isLoading = false;
             }
         },
 
-        searchArticles() {
-            this.meta.current_page = 1;
-            this.fetchArticles();
-        },
-
-        sortBy(field) {
-            if (this.sortField === field) {
-                this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-            } else {
-                this.sortField = field;
-                this.sortDirection = 'asc';
-            }
-            this.fetchArticles();
-        },
-
-        prevPage() {
-            if (this.meta.current_page > 1) {
-                this.meta.current_page--;
-                this.fetchArticles();
+        async openEditModal(voucher) {
+            this.isLoading = true;
+            try {
+                const res = await axios.get('/vouchers/${voucher}');
+                this.selectedVoucher = res.data.data;
+                console.log(selectedVoucher);
+                this.showEditModal = true;
+            } catch (error) {
+                console.error('Error fetching voucher by id:', error);
+            } finally {
+                this.isLoading = false;
             }
         },
 
-        nextPage() {
-            if (this.meta.current_page < this.meta.last_page) {
-                this.meta.current_page++;
-                this.fetchArticles();
-            }
-        },
-
-        confirmDelete(id) {
-            this.articleToDelete = id;
+        openDeleteModal(voucher) {
+            this.selectedVoucher = { ...voucher }; // salin data
             this.showDeleteModal = true;
         },
 
-        async deleteArticle() {
-            try {
-                await axios.delete(`/articles/${this.articleToDelete}`);
-                this.showDeleteModal = false;
-                this.fetchArticles();
-            } catch (err) {
-                console.error('Error deleting article:', err);
-                this.error = err.response?.data?.message || 'Error deleting article';
-            }
+        async submitEdit() {
+            await axios.put(`/api/vouchers/${this.selectedVoucher.id}`, this.selectedVoucher);
+            this.showEditModal = false;
+            this.fetchVouchers(); // refresh data
         },
 
-        formatDate(dateString) {
-            if (!dateString) return '';
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString('en-US', options);
+        async submitDelete() {
+            await axios.delete(`/api/vouchers/${this.selectedVoucher.id}`);
+            this.showDeleteModal = false;
+            this.fetchVouchers(); // refresh data
+        },
+    }
+}
+function searchTable() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const table = document.getElementById("dataTable");
+    const tr = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < tr.length; i++) {
+        const tdArray = tr[i].getElementsByTagName("td");
+        let found = false;
+
+        for (let j = 0; j < tdArray.length; j++) {
+            if (tdArray[j] && tdArray[j].textContent.toLowerCase().includes(input)) {
+                found = true;
+                break;
+            }
         }
-    }));
-});
+        tr[i].style.display = found ? "" : "none";
+    }
+}
 </script>
-@endpush
 @endsection
