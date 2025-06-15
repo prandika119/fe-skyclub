@@ -121,7 +121,7 @@
                             Tanggal
                             <i class="fas fa-sort-down"></i>
                         </th>
-                        <th class="px-5 py-3 bg-white rounded-e-xl">Lihat</th>
+                        <th class="px-5 py-3 bg-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-e-xl">Lihat</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -175,7 +175,7 @@
                 </tbody>
                 <template x-if="sparings.length === 0">
                     <tr>
-                        <td colspan="4" class="px-5 py-2 bg-transparent">Tidak ada Sparing</td>
+                        <td colspan="5" class="px-5 py-6 bg-transparent">Tidak ada Sparing</td>
                     </tr>
                 </template>
             </table>

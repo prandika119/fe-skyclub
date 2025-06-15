@@ -80,34 +80,41 @@ Route::prefix('admin')->name('admin.')->group(function () {
         return view('admin.index');
     })->name('index');
 
+    // Field
+    Route::get('/field-photo', function () {
+        return view('admin.field.fieldPhotos');
+    })->name('field.photo');
+    Route::get('/field-description', function () {
+        return view('admin.field.description');
+    })->name('field.description');
+
     // Profile
     Route::get('/profile', function () {
         return view('profiles.profileAdmin');
     })->name('profile');
 
-    // Rute FE untuk tampilan show artikel
-    Route::get('/articles/{id}', function ($id) {
-        return view('articles.articledetail', ['articleId' => $id]);
-    })->name('articles.show');
-
-    // Rute FE untuk tampilan edit artikel
-    Route::get('/articles/{id}/edit', function ($id) {
-        return view('admin.article.update-article', ['articleId' => $id]);
-    })->name('articles.edit');
-
+    // Bookings
     // Melihat semua booking
     Route::get('/all-booking', function () {
         return view('admin.booking.allBooking');
-    })->name('allBooking');
-
+    })->name('booking.allBooking');
     // Reschedule booking
     Route::get('/reschedule-booking', function () {
         return view('admin.booking.rescheduleBooking');
-    })->name('reschedule');
-
-    // Reschedule booking
+    })->name('booking.reschedule');
+    // Cancel booking
     Route::get('/cancel-booking', function () {
         return view('admin.booking.cancelBooking');
-    })->name('cancel');
+    })->name('booking.cancel');
+
+    // Article
+    Route::get('/articles', function () {
+        return view('admin.article.article');
+    })->name('articles');
+
+    // Voucher
+    Route::get('/voucher', function () {
+    return view('admin.voucher.voucher');
+    })->name('voucher');
 });
 

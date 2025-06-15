@@ -1,7 +1,7 @@
 <!-- filepath: resources/views/auth/login.blade.php -->
 @extends('layouts.auth')
 @section('content')
-    <div x-init="$store.user.guestOnly()" class="w-[512px]">
+    <div class="w-[512px]">
         <img class="mb-9" src="{{ asset('assets/icons/icon_auth.svg') }}" alt="">
         <div class="space-y-4 mb-12">
             <h4 class="text-4xl font-bold">Login</h4>

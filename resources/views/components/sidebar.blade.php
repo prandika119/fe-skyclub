@@ -19,13 +19,11 @@
                         class="ml-3 text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.index') ? 'text-red-600' : '' }}">Dashboard</span>
                 </a>
             </li>
-            <li>
-                <button type="button"
-                    class="flex items-center p-2 w-full text-base font-medium rounded-lg transition duration-75 group hover:bg-rose-100 hover:ring-red-600 hover:ring-1 {{ request()->routeIs('field.photo', 'field.description') ? 'bg-rose-100 ring-red-600 ring-1' : '' }}"
-                    aria-controls="dropdown-pages" data-collapse-toggle="dropdown-pages">
-                    <svg class="flex-shrink-0 w-6 h-6 fill-gray-500 transition duration-75  group-hover:fill-red-600 {{ request()->routeIs('field.photo', 'field.description') ? 'fill-red-600' : '' }}"
-                        version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink"viewBox="0 0 32 32" xml:space="preserve">
+            <li x-data="{ isOpen: {{ request()->routeIs('admin.field.photo', 'admin.field.description') ? 'true' : 'false' }} }">
+                <button @click="isOpen = !isOpen" type="button"
+                    class="flex items-center p-2 w-full text-base font-medium rounded-lg transition duration-75 group hover:bg-rose-100 hover:ring-red-600 hover:ring-1 {{ request()->routeIs('field.photo', 'field.description') ? 'bg-rose-100 ring-red-600 ring-1' : '' }}">
+                    <svg class="flex-shrink-0 w-6 h-6 fill-gray-500 transition duration-75 group-hover:fill-red-600 {{ request()->routeIs('admin.field.photo', 'admin.field.description') ? 'fill-red-600' : '' }}"
+                        version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                         <g>
                             <path d="M16,13c-1.3,0-2.4,0.8-2.8,2h5.6C18.4,13.8,17.3,13,16,13z" />
                             <path d="M11.1,15c0.5-2.3,2.5-4,4.9-4s4.4,1.7,4.9,4H25V7c0-2.8-2.2-5-5-5v5c0,0.6-0.4,1-1,1h-6c-0.6,0-1-0.4-1-1V2
@@ -37,118 +35,69 @@
                             <rect x="14" y="26" width="4" height="4" />
                         </g>
                     </svg>
-                    <span
-                        class="flex-1 ml-3 text-left whitespace-nowrap text-gray-500 group-hover:text-red-600 {{ request()->routeIs('field.photo', 'field.description') ? 'text-red-600' : '' }}">Lapangan</span>
-                    <svg aria-hidden="true"
-                        class="w-6 h-6 text-gray-500 group-hover:text-red-600 {{ request()->routeIs('field.photo', 'field.description') ? 'text-red-600' : '' }}"
-                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <span class="flex-1 ml-3 text-left whitespace-nowrap text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.field.photo', 'admin.field.description') ? 'text-red-600' : '' }}">
+                        Lapangan
+                    </span>
+                    <svg aria-hidden="true" class="w-6 h-6 text-gray-500 transition-transform duration-200"
+                        :class="{ 'rotate-180 text-red-600': isOpen, 'group-hover:text-red-600': !isOpen }"
+                        fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                             clip-rule="evenodd"></path>
                     </svg>
                 </button>
-                <ul id="dropdown-pages" class="hidden py-2 space-y-2">
+                
+                <ul x-show="isOpen" x-collapse class="py-2 space-y-2">
                     <li>
-                        {{-- <a href="{{ route('field.photo') }}"
-                           class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 ">
-                           <span
-                               class="text-gray-500 group-hover:text-red-600 {{ request()->routeIs('field.photo') ? 'text-red-600' : '' }}">Foto
-                               Lapangan</span></a> --}} 
-                        <a href="#"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 ">
-                            <span
-                                class="text-gray-500 group-hover:text-red-600">Foto
-                                Lapangan</span>
+                        <a href="{{ route('admin.field.photo') }}"
+                            class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 hover:bg-gray-100 {{ request()->routeIs('field.photo') ? 'text-red-600 font-semibold' : 'text-gray-500 hover:text-red-600' }}">
+                            Foto Lapangan
                         </a>
                     </li>
                     <li>
-                        {{-- 
-                        <a href="{{ route('field.description') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 ">
-                            <span
-                                class="text-gray-500 group-hover:text-red-600 {{ request()->routeIs('field.description') ? 'text-red-600' : '' }}">Deskripsi</span>
-                        </a>
-                            --}} 
-                        <a href="#"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 ">
-                            <span
-                                class="text-gray-500 group-hover:text-red-600">Deskripsi</span>
+                        <a href="{{ route('admin.field.description') }}"
+                            class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 hover:bg-gray-100 {{ request()->routeIs('field.description') ? 'text-red-600 font-semibold' : 'text-gray-500 hover:text-red-600' }}">
+                            Deskripsi
                         </a>
                     </li>
                 </ul>
             </li>
-            <li>
-                <button type="button"
-                    class="flex items-center p-2 w-full text-base font-medium rounded-lg transition duration-75 group hover:bg-rose-100 hover:ring-red-600 hover:ring-1 {{ request()->routeIs('admin.allBooking', 'admin.booking', 'admin.reschedule', 'admin.cancel') ? 'bg-rose-100 ring-red-600 ring-1' : '' }}"
-                    aria-controls="dropdown-sales" data-collapse-toggle="dropdown-sales">
-                    <svg class="flex-shrink-0 w-6 h-6 fill-gray-500 transition duration-75  group-hover:fill-red-600 {{ request()->routeIs('admin.allBooking', 'admin.booking', 'admin.reschedule', 'admin.cancel') ? 'fill-red-600' : '' }}"
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M6 5V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1h1a2 2 0 0 1 2 2v2H3V7a2 2 0 0 1 2-2h1ZM3 19v-8h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm5-6a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H8Z"
-                            clip-rule="evenodd" />
+            <li x-data="{ isOpen: {{ request()->routeIs('admin.booking*') ? 'true' : 'false' }} }">
+                <button @click="isOpen = !isOpen" type="button" class="flex items-center p-2 w-full text-base font-medium rounded-lg transition duration-75 group hover:bg-rose-100 hover:ring-red-600 hover:ring-1 {{ request()->routeIs('admin.booking*') ? 'bg-rose-100 ring-red-600 ring-1' : '' }}">
+                    <!-- Icon booking -->
+                    <svg class="flex-shrink-0 w-6 h-6 fill-gray-500 transition duration-75 group-hover:fill-red-600 {{ request()->routeIs('admin.booking*') ? 'fill-red-600' : '' }}" 
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M6 5V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1h1a2 2 0 0 1 2 2v2H3V7a2 2 0 0 1 2-2h1ZM3 19v-8h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm5-6a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H8Z" clip-rule="evenodd"/>
                     </svg>
-                    <span
-                        class="flex-1 ml-3 text-left whitespace-nowrap text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.allBooking', 'admin.booking', 'admin.reschedule', 'admin.cancel') ? 'text-red-600' : '' }}">Booking</span>
-                    <svg aria-hidden="true"
-                        class="w-6 h-6 text-gray-500 group-hover:text-red-600 {{ request()->routeIs('a') ? 'text-red-600' : '' }}"
-                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
+                    <span class="flex-1 ml-3 text-left whitespace-nowrap text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.booking*') ? 'text-red-600' : '' }}">Booking</span>
+                    <!-- Panah dropdown -->
+                    <svg class="w-6 h-6 text-gray-500 transition-transform duration-200" :class="{ 'rotate-180 text-red-600': isOpen }" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
                     </svg>
                 </button>
-                <ul id="dropdown-sales" class="hidden py-2 space-y-2">
+                
+                <ul x-show="isOpen" x-collapse class="py-2 space-y-2">
                     <li>
-                        <a href="{{ route('admin.allBooking') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            <span
-                                class="text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.allBooking') ? 'text-red-600' : '' }}">Daftar
-                                Semua Pesanan</span>
-                            {{-- Daftar Semua Pesanan --}}
-                        </a>
-                    </li>
-                    {{-- <li>
-                        <a href="{{ route('admin.booking') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            <span
-                                class="text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.booking') ? 'text-red-600' : '' }}">Persetujuan
-                                Pesanan</span>
-                        </a>
-                        <a href="{{ route('admin.booking') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            <span
-                                class="text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.booking') ? 'text-red-600' : '' }}">Persetujuan
-                                Pesanan</span>
-                        </a>
-                    </li> --}} 
-                    <li>
-                        <a href="{{ route('admin.reschedule') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            <span
-                                class="text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.reschedule') ? 'text-red-600' : '' }}">Ubah
-                                Jadwal</span>
+                        <a href="{{ route('admin.booking.allBooking') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 hover:bg-gray-100 {{ request()->routeIs('admin.booking.allBooking') ? 'text-red-600 font-semibold' : 'text-gray-500 hover:text-red-600' }}">
+                            Daftar Semua Pesanan
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.cancel') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            <span
-                                class="text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.cancel') ? 'text-red-600' : '' }}">Pembatalan
-                                Jadwal</span>
+                        <a href="{{ route('admin.booking.reschedule') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 hover:bg-gray-100 {{ request()->routeIs('admin.booking.reschedule') ? 'text-red-600 font-semibold' : 'text-gray-500 hover:text-red-600' }}">
+                            Ubah Jadwal
                         </a>
-                        <a href="#"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium  rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            <span
-                                class="text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.index') ? 'text-red-600' : '' }}">Sparing</span>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.booking.cancel') }}" class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 hover:bg-gray-100 {{ request()->routeIs('admin.booking.cancel') ? 'text-red-600 font-semibold' : 'text-gray-500 hover:text-red-600' }}">
+                            Pembatalan Jadwal
                         </a>
                     </li>
                 </ul>
             </li>
             <li>
-                {{-- <a href="{{ route('admin.article') }}"
-                    class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-rose-100 hover:ring-red-600 hover:ring-1 {{ request()->routeIs('admin.article') ? 'bg-rose-100 ring-red-600 ring-1' : '' }} group">
-                    <svg class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75  group-hover:text-red-600 {{ request()->routeIs('admin.article') ? 'text-red-600' : '' }}"
+                <a href="{{ route('admin.articles') }}"
+                    class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-rose-100 hover:ring-red-600 hover:ring-1 {{ request()->routeIs('admin.articles') ? 'bg-rose-100 ring-red-600 ring-1' : '' }} group">
+                    <svg class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75  group-hover:text-red-600 {{ request()->routeIs('admin.articles') ? 'text-red-600' : '' }}"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         fill="currentColor" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -156,22 +105,10 @@
                             clip-rule="evenodd" />
                     </svg>
                     <span
-                        class="ml-3 text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.article') ? 'text-red-600' : '' }}">Artikel</span>
-                </a> --}}
-                <a href="#"
-                    class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-rose-100 hover:ring-red-600 hover:ring-1 group">
-                    <svg class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75  group-hover:text-red-600"
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7ZM8 16a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1-5a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <span
-                        class="ml-3 text-gray-500 group-hover:text-red-600">Artikel</span>
+                        class="ml-3 text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.articles') ? 'text-red-600' : '' }}">Artikel</span>
                 </a>
             </li>
-            {{-- <li>
+            <li>
                 <a href="{{ route('admin.voucher') }}"
                     class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-rose-100 hover:ring-red-600 hover:ring-1 {{ request()->routeIs('admin.voucher') ? 'bg-rose-100 ring-red-600 ring-1' : '' }} group ">
                     <svg class="flex-shrink-0 w-6 h-6 fill-gray-500 transition duration-75  group-hover:fill-red-600 {{ request()->routeIs('admin.voucher') ? 'fill-red-600' : '' }}"
@@ -186,22 +123,22 @@
                     <span
                         class="ml-3 text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.voucher') ? 'text-red-600' : '' }}">Voucher</span>
                 </a>
-            </li> --}}
+            </li>
         </ul>
-        {{-- <ul class="mt-5 space-y-2">
+        <ul class="mt-5 space-y-2">
             <li>
-                <a href="#"
-                    class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                <a href="{{ route('admin.profile') }}"
+                    class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-rose-100 hover:ring-red-600 hover:ring-1 {{ request()->routeIs('admin.profile') ? 'bg-rose-100 ring-red-600 ring-1' : '' }} group ">
+                    <svg class="flex-shrink-0 w-6 h-6 fill-gray-500 transition duration-75  group-hover:fill-red-600 {{ request()->routeIs('admin.profile') ? 'fill-red-600' : '' }}"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         fill="currentColor" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
                             d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
                             clip-rule="evenodd" />
                     </svg>
-                    <span class="ml-3">Account</span>
+                    <span class="ml-3 text-gray-500 group-hover:text-red-600 {{ request()->routeIs('admin.profile') ? 'text-red-600' : '' }}">Account</span>
                 </a>
             </li>
-        </ul> --}}
+        </ul>
     </div>
 </aside>
