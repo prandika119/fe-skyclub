@@ -158,6 +158,24 @@ document.addEventListener("alpine:init", () => {
             return new Date(dateString).toLocaleDateString("id-ID", options);
         },
     });
+    Alpine.store("field", {
+        data: 1,
+        setData(data) {
+            this.data = data;
+            localStorage.setItem("field_data", JSON.stringify(data));
+        },
+        getData() {
+            const cachedData = localStorage.getItem("field_data");
+            if (cachedData) {
+                this.data = JSON.parse(cachedData);
+            }
+            return this.data;
+        },
+        clearData() {
+            this.data = null;
+            localStorage.removeItem("field_data");
+        },
+    });
 });
 Alpine.start();
 window.Alpine = Alpine;

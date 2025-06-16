@@ -60,12 +60,18 @@ function initializeDropzoneSlider(elementId, fileIndex) {
                             },
                         })
                         .then((response) => {
-                            console.log("File uploaded successfully:", response.data);
+                            console.log(
+                                "File uploaded successfully:",
+                                response.data
+                            );
                             // Hapus gambar kecil dari Dropzone
                             myDropzone.removeFile(file);
                         })
                         .catch((error) => {
-                            console.error("Upload error:", error.response?.data || error.message);
+                            console.error(
+                                "Upload error:",
+                                error.response?.data || error.message
+                            );
                         });
                 });
 
@@ -84,22 +90,19 @@ function initializeDropzoneSlider(elementId, fileIndex) {
 }
 
 // Fungsi untuk menginisialisasi Dropzone image
-function initializeDropzoneImage(elementId, uploadUrl) {
+function initializeDropzoneImage(elementId, fieldId) {
+    console.log("fieldId: ", fieldId);
+    // Ambil elemen Dropzone berdasarkan ID
     const dropzoneElement = document.querySelector(elementId);
 
     // Pastikan elemen ditemukan
     if (dropzoneElement) {
-        const csrfToken = document.querySelector('input[name="_token"]').value;
-
         // Inisialisasi Dropzone
         const myDropzone = new Dropzone(dropzoneElement, {
-            url: uploadUrl, // Endpoint backend untuk upload
+            url: `fields/${fieldId}/photos`, // Endpoint backend untuk upload
             autoProcessQueue: false, // Nonaktifkan default upload
             maxFilesize: 2, // Maksimal ukuran file dalam MB
             acceptedFiles: ".png,.jpg,.jpeg,.gif,.svg",
-            headers: {
-                "X-CSRF-TOKEN": csrfToken, // Kirim CSRF token
-            },
             dictDefaultMessage: `
                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                     <svg class="w-8 h-8 mb-4 text-red-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -128,17 +131,16 @@ function initializeDropzoneImage(elementId, uploadUrl) {
 
                     // Kirim file menggunakan Axios
                     const formData = new FormData();
-                    formData.append("file", file);
+                    formData.append("photo", file);
+                    formData.append("title", file.name); // Tambahkan nama file ke formData
 
                     axios
-                        .post(uploadUrl, formData, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                                "X-CSRF-TOKEN": csrfToken,
-                            },
-                        })
+                        .post(`fields/${fieldId}/photos`, formData)
                         .then((response) => {
-                            console.log("File uploaded successfully:", response.data);
+                            console.log(
+                                "File uploaded successfully:",
+                                response.data
+                            );
                             // Hapus gambar kecil dari Dropzone
                             this.removeFile(file);
 
@@ -146,7 +148,10 @@ function initializeDropzoneImage(elementId, uploadUrl) {
                             location.reload();
                         })
                         .catch((error) => {
-                            console.error("Upload error:", error.response?.data || error.message);
+                            console.error(
+                                "Upload error:",
+                                error.response?.data || error.message
+                            );
                         });
                 });
 
@@ -219,12 +224,18 @@ function initializeDropzoneBanner(elementId, fileIndex) {
                             },
                         })
                         .then((response) => {
-                            console.log("File uploaded successfully:", response.data);
+                            console.log(
+                                "File uploaded successfully:",
+                                response.data
+                            );
                             // Hapus gambar kecil dari Dropzone
                             myDropzone.removeFile(file);
                         })
                         .catch((error) => {
-                            console.error("Upload error:", error.response?.data || error.message);
+                            console.error(
+                                "Upload error:",
+                                error.response?.data || error.message
+                            );
                         });
                 });
 
@@ -242,6 +253,17 @@ function initializeDropzoneBanner(elementId, fileIndex) {
     }
 }
 
+async function fetchFieldId() {
+    try {
+        const response = await axios.get("/fields");
+        console.log("fiel id ==== ", response.data.data[0].id);
+        return response.data.data[0].id; // Mengambil ID field pertama
+    } catch (error) {
+        console.error("Error fetching field ID:", error);
+        throw error;
+    }
+}
+
 // Inisialisasi Dropzone slider untuk setiap elemen dengan fileIndex yang sesuai
 initializeDropzoneSlider("#dropzone-slider-1", 1);
 initializeDropzoneSlider("#dropzone-slider-2", 2);
@@ -251,6 +273,4 @@ initializeDropzoneSlider("#dropzone-slider-3", 3);
 initializeDropzoneBanner("#dropzone-banner-1", 1);
 
 // Inisialisasi Dropzone image untuk setiap elemen dengan fileIndex yang sesuai
-initializeDropzoneImage("#dropzone-image", '/admin/upload-image-image');
-
-
+initializeDropzoneImage("#dropzone-image", await fetchFieldId());

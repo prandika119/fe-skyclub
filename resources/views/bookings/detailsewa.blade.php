@@ -24,7 +24,7 @@
                         'bg-cover bg-center rounded-tr-3xl h-full w-full': index === 1,
                         'relative bg-cover bg-center rounded-br-3xl h-full w-full': index === 2
                     }"
-                        :style="`background-image: url('http://localhost:8000/storage/${photo.photo}')`">
+                        :style="`background-image: url('${$store.storage.getPhoto(photo.photo)}`">
                         <template x-if="index === 2">
                             <button @click="gallery = true"
                                 class="absolute bottom-2 right-2 sm:bottom-5 sm:right-5 bg-red-600 rounded p-1 sm:px-4 sm:py-2 font-semibold text-white sm:text-base text-sm">
