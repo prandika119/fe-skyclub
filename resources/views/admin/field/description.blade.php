@@ -5,202 +5,183 @@
 @endpush
 
 @section('content')
-    <div class="bg-white shadow rounded-lg border-gray-600 dark:border-gray-600 h-fit mb-4 p-6">
-        <p class="font-semibold mb-2 text-2xl">Deskripsi Lapangan</p>
-        <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">Masukkan deskripsi Lapangan</p>
-        <div class="mb-4">
-            <form action="{{ route('description.update') }}" method="post">
-                @csrf
-                <textarea id="description" maxlength="2999" name="description"
-                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-red-500 focus:border-red-500 h-64 custom-scrollbar"
-                    placeholder="Tulis deskripsi lapangan disini..." rows="4">{{ $fieldDescription }}</textarea>
-                <div class="flex justify-between">
-                    <div class="flex mt-2 items-center space-x-2">
-                        <p id="charCount" class="text-sm text-gray-500 dark:text-gray-400">0 characters</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">|</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Max 2999 characters</p>
+    <div x-data="fieldDescHandler()">
+        <div class="bg-white shadow rounded-lg border-gray-600 dark:border-gray-600 h-fit mb-4 p-6">
+            <p class="font-semibold mb-2 text-2xl">Update Data Lapangan</p>
+            <p class="mb-5 font-light text-gray-500 sm:text-xl">Silahkah atur data lapangan anda</p>
+            <div class="mb-4">
+                <form action="" method="post">
+                    <!-- input field name -->
+                    <div class="mt-4">
+                        <label for="field_name" class="block mb-2 text-sm font-medium text-gray-900 ">Nama Lapangan</label>
+                        <input type="text" id="field_name" name="field_name"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5"
+                            placeholder="Masukkan nama lapangan" x-model="field.name">
                     </div>
-                    <button id="updateButton"
-                        class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-gradient-to-r hover:from-red-500 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
-                        Update
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <div x-data="facilitySelection({{ json_encode($selectedFacilities) }})" class="bg-white shadow rounded-lg border-gray-600 dark:border-gray-600 h-fit mb-4 p-6">
-        <p class="font-semibold mb-2 text-2xl">Fasilitas Lapangan</p>
-        <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">Pilih Fasilitas Lapangan</p>
-        <div class="mb-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <label
-                    class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
-                    :class="{ 'bg-red-300': selected.includes('mushola') }">
-                    <input type="checkbox" name="fasilitas[]" value="mushola" class="hidden"
-                        @change="toggleSelection('mushola')">
-                    <img class="w-10 h-10" src="{{ asset('assets/icons/icon_mosque.svg') }}" alt="">
-                    <p class="ml-2">Mushola</p>
-                </label>
-                <label
-                    class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
-                    :class="{ 'bg-red-300': selected.includes('parking') }">
-                    <input type="checkbox" name="fasilitas[]" value="parking" class="hidden"
-                        @change="toggleSelection('parking')">
-                    <img class="w-10 h-10" src="{{ asset('assets/icons/icon_parking.svg') }}" alt="">
-                    <h1>Parkir Penonton</h1>
-                </label>
-                <label
-                    class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
-                    :class="{ 'bg-red-300': selected.includes('tribune') }">
-                    <input type="checkbox" name="fasilitas[]" value="tribune" class="hidden"
-                        @change="toggleSelection('tribune')">
-                    <img class="w-10 h-10" src="{{ asset('assets/icons/icon_tribune.svg') }}" alt="">
-                    <p>Tribun Penonton</p>
-                </label>
-                <label
-                    class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
-                    :class="{ 'bg-red-300': selected.includes('wifi') }">
-                    <input type="checkbox" name="fasilitas[]" value="wifi" class="hidden"
-                        @change="toggleSelection('wifi')">
-                    <img class="w-10 h-10" src="{{ asset('assets/icons/icon_wifi.svg') }}" alt="">
-                    <p>Wifi</p>
-                </label>
-                <label
-                    class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
-                    :class="{ 'bg-red-300': selected.includes('toilet') }">
-                    <input type="checkbox" name="fasilitas[]" value="toilet" class="hidden"
-                        @change="toggleSelection('toilet')">
-                    <img class="w-10 h-10" src="{{ asset('assets/icons/icon_toilet.svg') }}" alt="">
-                    <p>Toilet</p>
-                </label>
-                <label
-                    class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
-                    :class="{ 'bg-red-300': selected.includes('shower') }">
-                    <input type="checkbox" name="fasilitas[]" value="shower" class="hidden"
-                        @change="toggleSelection('shower')">
-                    <img class="w-10 h-10" src="{{ asset('assets/icons/icon_shower.svg') }}" alt="">
-                    <p>Shower</p>
-                </label>
-                <label
-                    class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
-                    :class="{ 'bg-red-300': selected.includes('canteen') }">
-                    <input type="checkbox" name="fasilitas[]" value="canteen" class="hidden"
-                        @change="toggleSelection('canteen')">
-                    <img class="w-10 h-10" src="{{ asset('assets/icons/icon_eat.svg') }}" alt="">
-                    <p>Kantin</p>
-                </label>
-                <label
-                    class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
-                    :class="{ 'bg-red-300': selected.includes('sauna') }">
-                    <input type="checkbox" name="fasilitas[]" value="sauna" class="hidden"
-                        @change="toggleSelection('sauna')">
-                    <img class="w-10 h-10" src="{{ asset('assets/icons/icon_sauna.svg') }}" alt="">
-                    <p>Sauna</p>
-                </label>
-                <label
-                    class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
-                    :class="{ 'bg-red-300': selected.includes('medical') }">
-                    <input type="checkbox" name="fasilitas[]" value="medical" class="hidden"
-                        @change="toggleSelection('medical')">
-                    <img class="w-10 h-10" src="{{ asset('assets/icons/icon_med.svg') }}" alt="">
-                    <p>Medis</p>
-                </label>
-                <label
-                    class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
-                    :class="{ 'bg-red-300': selected.includes('locker') }">
-                    <input type="checkbox" name="fasilitas[]" value="locker" class="hidden"
-                        @change="toggleSelection('locker')">
-                    <img class="w-10 h-10" src="{{ asset('assets/icons/icon_locker.svg') }}" alt="">
-                    <p>Locker</p>
-                </label>
-                <label
-                    class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
-                    :class="{ 'bg-red-300': selected.includes('gym') }">
-                    <input type="checkbox" name="fasilitas[]" value="gym" class="hidden"
-                        @change="toggleSelection('gym')">
-                    <img class="w-10 h-10" src="{{ asset('assets/icons/icon_weight.svg') }}" alt="">
-                    <p>GYM</p>
-                </label>
-                <label
-                    class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
-                    :class="{ 'bg-red-300': selected.includes('run') }">
-                    <input type="checkbox" name="fasilitas[]" value="run" class="hidden"
-                        @change="toggleSelection('run')">
-                    <img class="w-10 h-10" src="{{ asset('assets/icons/icon_run.svg') }}" alt="">
-                    <p>Lintasan Lari</p>
-                </label>
-                <label
-                    class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
-                    :class="{ 'bg-red-300': selected.includes('security') }">
-                    <input type="checkbox" name="fasilitas[]" value="security" class="hidden"
-                        @change="toggleSelection('security')">
-                    <img class="w-10 h-10" src="{{ asset('assets/icons/icon_security.svg') }}" alt="">
-                    <p>Security</p>
-                </label>
+
+                    <!-- input description -->
+                    <div class="mt-4">
+                        <label for="description" class="block mb-2 text-sm font-medium text-gray-900 ">Deskripsi</label>
+                        <textarea id="description" maxlength="2999" name="description"
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-red-500 focus:border-red-500 h-64 custom-scrollbar"
+                            placeholder="Tulis deskripsi lapangan disini..." rows="4" x-model="field.description">$fieldDescription</textarea>
+                        <div class="flex mt-2 items-center space-x-2">
+                            <p id="charCount" class="text-sm text-gray-500">0 characters</p>
+                            <p class="text-sm text-gray-500">|</p>
+                            <p class="text-sm text-gray-500">Max 2999 characters</p>
+                        </div>
+                    </div>
+
+                    <!-- input price in weekday -->
+                    <div class="mt-4">
+                        <label for="price_weekday" class="block mb-2 text-sm font-medium text-gray-900 ">Harga
+                            (Weekday)</label>
+                        <input type="number" id="price_weekday" name="price_weekday"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5"
+                            placeholder="Masukkan harga untuk weekday" x-model="field.weekday_price">
+                    </div>
+
+                    <!-- input price in weekend -->
+                    <div class="mt-4">
+                        <label for="price_weekend" class="block mb-2 text-sm font-medium text-gray-900 ">Harga
+                            (Weekend)</label>
+                        <input type="number" id="price_weekend" name="weekend_price"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5"
+                            placeholder="Masukkan harga untuk weekend" x-model="field.weekend_price">
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button id="updateButton" @click.prevent="updateField()"
+                            class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-gradient-to-r hover:from-red-500 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+                            Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg border-gray-600 dark:border-gray-600 h-fit mb-4 p-6">
+            <p class="font-semibold mb-2 text-2xl">Fasilitas Lapangan</p>
+            <p class="mb-5 font-light text-gray-500 sm:text-xl">Pilih Fasilitas Lapangan</p>
+            <div class="mb-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <template x-for="facility in facilities" :key="facility.id">
+                        <label
+                            class="rounded-lg flex items-center space-x-4 text-xl border border-gray-800 hover:bg-red-500 p-2 cursor-pointer font-semibold"
+                            :class="{ 'bg-red-300': selected.includes(facility.id) }">
+                            <input type="checkbox" :name="facility.name" :value="facility.id" class="hidden"
+                                @change="toggleSelection(facility.id)">
+                            <img class="w-10 h-10" :src="`/assets/icons/icon_${facility.name}.svg`" alt="">
+                            <p x-text="facility.name"></p>
+                        </label>
+                    </template>
+                </div>
             </div>
         </div>
     </div>
-    {{-- <div class="bg-white shadow rounded-lg border-gray-600 dark:border-gray-600 h-fit mb-4 p-6">
-    <p class="font-semibold mb-2 text-2xl">Fasilitas Lapangan</p>
-    <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">Pilih Fasilitas Lapangan</p>
-    <div class="mb-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <label class="rounded-lg flex items-center space-x-8 text-2xl border border-gray-800 hover:border-red-500 p-4 cursor-pointer">
-                <input type="checkbox" name="fasilitas[]" value="Mushola" class="hidden">
-                <img src="{{ asset('assets/icons/icon_mosque.svg') }}" alt="">
-                <p class="ml-2">Mushola</p>
-            </label>
-            <label class="rounded-lg flex items-center space-x-8 text-2xl border border-gray-800 hover:border-red-500 p-4 cursor-pointer">
-                <input type="checkbox" name="fasilitas[]" value="Parkir Penonton" class="hidden">
-                <img src="{{ asset('assets/icons/icon_parking.svg') }}" alt="">
-                <h1>Parkir Penonton</h1>
-            </label>
-            <label class="rounded-lg flex items-center space-x-8 text-2xl border border-gray-800 hover:border-red-500 p-4 cursor-pointer">
-                <input type="checkbox" name="fasilitas[]" value="Tribun Area" class="hidden">
-                <img src="{{ asset('assets/icons/icon_bed.svg') }}" alt="">
-                <p>Tribun Area</p>
-            </label>
-            <label class="rounded-lg flex items-center space-x-8 text-2xl border border-gray-800 hover:border-red-500 p-4 cursor-pointer">
-                <input type="checkbox" name="fasilitas[]" value="Wifi" class="hidden">
-                <img src="{{ asset('assets/icons/icon_wifi.svg') }}" alt="">
-                <p>Wifi</p>
-            </label>
-
-        </div>
-    </div>
-    <div class="mt-4">
-        <p class="font-semibold mb-2 text-2xl">Fasilitas yang Dipilih:</p>
-        <ul id="selectedFacilities" class="list-disc pl-5 text-gray-700 dark:text-gray-300"></ul>
-    </div>
-</div> --}}
 @endsection
 @push('script')
     <script>
-        function facilitySelection(initialSelected) {
+        function fieldDescHandler() {
             return {
-                selected: initialSelected || [],
-                toggleSelection(facility) {
-                    if (this.selected.includes(facility)) {
-                        this.selected = this.selected.filter(item => item !== facility);
-                    } else {
-                        this.selected.push(facility);
-                    }
-                    this.updateFacilitiesOnServer();
+                loading: false,
+                fieldId: null,
+                field: {},
+                facilities: [],
+                selected: [],
+                async init() {
+                    await this.fetchField();
+                    await this.fetchAllFacilities();
                 },
-                updateFacilitiesOnServer() {
-                    axios.post('{{ route('facilities.update') }}', {
-                            facilities: this.selected
-                        })
-                        .then(response => {
-                            console.log('Facilities updated successfully');
-                            locaton.reload();
-                        })
-                        .catch(error => {
-                            console.error('Error updating facilities:', error);
+                async fetchField() {
+                    try {
+                        const resField = await axios.get('/fields'); // Mengambil ID field pertama
+                        console.log("resField: " + resField);
+                        this.fieldId = resField.data.data[0].id; // Mengambil ID field pertama
+                        console.log("fieldId: " + this.fieldId);
+                        const response = await axios.get(`/fields/${this.fieldId}`);
+                        this.field = response.data.data; // Menyimpan data field dari response
+                        this.selected = this.field.facilities.map(facility => facility
+                            .id); // Menyimpan ID fasilitas yang sudah dipilih
+                        console.log("description: " + this.description);
+                        console.log("facilities: " + this.facilities);
+                        console.log("selected: " + this.selected);
+                    } catch (error) {
+                        console.error('Error fetching field data:', error);
+                    }
+                },
+                async fetchAllFacilities() {
+                    try {
+                        const response = await axios.get('/field-facilities');
+                        this.facilities = response.data.data; // Menyimpan data fasilitas dari response
+                        console.log("facilities: " + this.facilities);
+                    } catch (error) {
+                        console.error('Error fetching facilities:', error);
+                    }
+                },
+                async updateField() {
+                    try {
+                        this.loading = true;
+                        const response = await axios.put(`/fields/${this.fieldId}`, {
+                            name: this.field.name,
+                            description: this.field.description,
+                            weekday_price: this.field.weekday_price,
+                            weekend_price: this.field.weekend_price,
                         });
+                        console.log('Description updated successfully:', response.data);
+                        // Optionally, you can show a success message or reload the page
+                        location.reload();
+                    } catch (error) {
+                        console.error('Error updating description:', error);
+                        alert('Gagal memperbarui deskripsi lapangan. Silakan coba lagi.');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+                async toggleSelection(facilityId) {
+                    console.log("facilityId sinii bro: " + facilityId);
+                    // const facility = this.facilities.find(item => item.name.toLowerCase() === facility);
+                    if (this.selected.includes(facilityId)) {
+                        this.selected = this.selected.filter(item => item !== facilityId);
+                        await this.removeFacility(facilityId);
+                    } else {
+                        this.selected.push(facilityId);
+                        await this.addFacility(facilityId);
+                    }
+                },
+                async addFacility(facilityId) {
+                    try {
+                        const response = await axios.post(`fields/${this.fieldId}/facilities/${facilityId}`)
+                        console.log('Facility updated successfully:', response.data);
+                    } catch (error) {
+                        console.error('Error updating facility:', error);
+                    }
+                },
+                async removeFacility(facilityId) {
+                    try {
+                        const response = await axios.delete(`fields/${this.fieldId}/facilities/${facilityId}`);
+                        console.log('Facility deleted successfully:', response.data);
+                    } catch (error) {
+                        console.error('Error deleting facility:', error);
+                    }
                 }
             }
         }
+
+        // function facilitySelection(initialSelected) {
+        //     return {
+        //         selected: initialSelected || [],
+        //         toggleSelection(facility) {
+        //             if (this.selected.includes(facility)) {
+        //                 this.selected = this.selected.filter(item => item !== facility);
+        //             } else {
+        //                 this.selected.push(facility);
+        //             }
+        //             this.updateFacilitiesOnServer();
+        //         },
+
+        //     }
+        // }
     </script>
 @endpush
