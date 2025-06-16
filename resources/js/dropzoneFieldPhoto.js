@@ -264,13 +264,43 @@ async function fetchFieldId() {
     }
 }
 
-// Inisialisasi Dropzone slider untuk setiap elemen dengan fileIndex yang sesuai
-initializeDropzoneSlider("#dropzone-slider-1", 1);
-initializeDropzoneSlider("#dropzone-slider-2", 2);
-initializeDropzoneSlider("#dropzone-slider-3", 3);
+async function initializeAllDropzones() {
+    // Inisialisasi Dropzone slider
+    initializeDropzoneSlider("#dropzone-slider-1", 1);
+    initializeDropzoneSlider("#dropzone-slider-2", 2);
+    initializeDropzoneSlider("#dropzone-slider-3", 3);
 
-// Inisialisasi Dropzone banner untuk setiap elemen dengan fileIndex yang sesuai
-initializeDropzoneBanner("#dropzone-banner-1", 1);
+    // Inisialisasi Dropzone banner
+    initializeDropzoneBanner("#dropzone-banner-1", 1);
 
-// Inisialisasi Dropzone image untuk setiap elemen dengan fileIndex yang sesuai
-initializeDropzoneImage("#dropzone-image", await fetchFieldId());
+    // Inisialisasi Dropzone image
+    try {
+        const fieldId = await fetchFieldId();
+        // Pastikan fieldId didapatkan sebelum menginisialisasi
+        if (fieldId) {
+            initializeDropzoneImage("#dropzone-image", fieldId);
+        } else {
+            console.error(
+                "Could not initialize Dropzone for images: fieldId is missing."
+            );
+        }
+    } catch (error) {
+        console.error(
+            "Failed to initialize Dropzone for images due to fetchFieldId error:",
+            error
+        );
+    }
+}
+
+initializeAllDropzones();
+
+// // Inisialisasi Dropzone slider untuk setiap elemen dengan fileIndex yang sesuai
+// initializeDropzoneSlider("#dropzone-slider-1", 1);
+// initializeDropzoneSlider("#dropzone-slider-2", 2);
+// initializeDropzoneSlider("#dropzone-slider-3", 3);
+
+// // Inisialisasi Dropzone banner untuk setiap elemen dengan fileIndex yang sesuai
+// initializeDropzoneBanner("#dropzone-banner-1", 1);
+
+// // Inisialisasi Dropzone image untuk setiap elemen dengan fileIndex yang sesuai
+// initializeDropzoneImage("#dropzone-image", await fetchFieldId());

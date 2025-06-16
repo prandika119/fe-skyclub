@@ -79,7 +79,7 @@
                                     {{-- <p x-text="slide"></p> --}}
                                     <div x-show="activeSlide === index"
                                         class="w-full h-64 bg-cover bg-center rounded-lg transition-all duration-500"
-                                        :style="`background-image: url('http://localhost:8000/storage/${slide}')`">
+                                        :style="`background-image: url('http://10.33.35.50/storage/${slide}')`">
                                     </div>
                                 </template>
 
