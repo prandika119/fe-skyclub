@@ -6,7 +6,7 @@ window.axios = axios;
 //     .querySelector('meta[name="csrf-token"]')
 //     .getAttribute("content");
 
-axios.defaults.baseURL = "http://127.0.0.1:8000/api";
+axios.defaults.baseURL = "http://api.skyclub.my.id/api";
 // axios.defaults.withCredentials = true;
 // Optionally, set the Authorization header if you have a token
 const token = localStorage.getItem("auth_token");
