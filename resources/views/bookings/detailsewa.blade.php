@@ -666,7 +666,8 @@
                         window.location.href = `/payment/${booking_id}`;
                     } catch (error) {
                         // alert('Gagal membuat booking');
-                        this.error = error.response?.data?.errors || 'Gagal melakukan pembayaran';
+                        this.error = "Pilih jadwal terlebih dahulu"
+                        // this.error = error.response?.data?.errors || 'Gagal melakukan pembayaran';
                         console.error('Gagal membuat booking:', error);
                     } finally {
                         this.isLoading = false;

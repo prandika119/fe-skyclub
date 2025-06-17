@@ -1,8 +1,8 @@
 @extends('layouts.adminFullPage')
 
 @section('content')
-    <div class="relative overflow-x-auto px-5 pt-2">
-        <table x-data="cancelHandler()" x-init="fetchCancel()" class="min-w-full leading-normal">
+    <div x-data="cancelHandler()" x-init="fetchCancel()" class="relative overflow-x-auto px-5 pt-2">
+        <table class="min-w-full leading-normal">
             <thead>
                 <tr class="shadow-lg rounded-xl ring-1 ring-gray-200">
                     <th scope="col"
@@ -31,10 +31,13 @@
                 <template x-if="cancels.length > 0">
                     <template x-for="cancel in cancels" :key="cancel.id">
                         <tr class="rounded-xl hover:bg-gray-50 divide-y divide-gray-200">
-                            <td x-text="cancel.booking.session" class="py-4 px-5 text-left text-sm align-middle"></td>
+                            <td x-text="`${$store.format.date(cancel.booking.date)} ${cancel.booking.session}`"
+                                class="py-4 px-5 text-left text-sm align-middle"></td>
                             <td x-text="cancel.user.name" class="py-4 px-5 text-left text-sm align-middle"></td>
-                            <td x-text="cancel.created_at" class="py-4 px-5 text-left text-sm align-middle"></td>
-                            <td class="py-4 px-5 text-left text-sm border-b border-gray-200 align-middle"> iyaa
+                            <td x-text="formatTanggal(cancel.created_at)" class="py-4 px-5 text-left text-sm align-middle">
+                            </td>
+                            <td x-text="cancel.reason"
+                                class="py-4 px-5 text-left text-sm border-b border-gray-200 align-middle"> iyaa
                                 {{-- <button
                                 class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2 dark:focus:ring-yellow-900"
                                 data-modal-target="payment-modal-{{ $listBooking->id }}"
@@ -64,21 +67,40 @@
                                 </div>
                             </div> --}}
                             </td>
-                            <td class="py-4 px-5 text-left text-sm align-middle"> iyaa
-                                {{-- <div class="inline-flex rounded-md shadow-sm" role="group">
-                                <button data-modal-target="approve-modal-{{ $listBooking->id }}"
-                                    data-modal-toggle="approve-modal-{{ $listBooking->id }}" type="button"
+                            <td class="py-4 px-5 text-left text-sm align-middle border-b border-gray-200">
+                                <div class="inline-flex rounded-md" role="group">
+                                    <button @click="acceptCancel(cancel.id)"
+                                        class="w-20 py-2 text-sm font-medium text-white bg-green-500 rounded-s-lg hover:bg-green-600 focus:text-white cursor-pointer">
+                                        <div x-show="isLoading">
+                                            <img src="{{ asset('assets/icons/loading.gif') }}" width="20"
+                                                alt="">
+                                        </div>
+                                        <span x-show="!isLoading">Terima</span>
+                                    </button>
+                                    <button @click="rejectCancel(cancel.id)"
+                                        class="w-20 py-2 text-sm font-medium text-white bg-red-500 rounded-e-lg hover:bg-red-600 focus:text-white cursor-pointer">
+                                        <div x-show="isLoading">
+                                            <img src="{{ asset('assets/icons/loading.gif') }}" width="20"
+                                                alt="">
+                                        </div>
+                                        <span x-show="!isLoading">Tolak</span>
+                                    </button>
+                                </div>
+                            </td>
+                            {{-- <div class="inline-flex rounded-md shadow-sm" role="group">
+                                <button :data-modal-target="`approve-modal-${cancel.booking.id}`"
+                                    :data-modal-toggle="`approve-modal-${cancel.booking.id}`" type="button"
                                     class="w-20 py-2 text-sm font-medium text-white bg-blue-500 rounded-s-lg hover:bg-blue-600 focus:text-white dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800 dark:focus:text-white">
                                     Terima
                                 </button> --}}
-                                {{-- modal approve --}}
-                                {{-- <div id="approve-modal-{{ $listBooking->id }}" tabindex="-1"
+                            {{-- modal approve --}}
+                            {{-- <div :id="`approve-modal-${cancel.booking.id}`" tabindex="-1"
                                     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                     <div class="relative p-4 w-full max-w-md max-h-full">
                                         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                             <button type="button"
                                                 class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                                data-modal-hide="approve-modal-{{ $listBooking->id }}">
+                                                :data-modal-hide="`approve-modal-${cancel.booking.id}`">
                                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                     fill="none" viewBox="0 0 14 14">
                                                     <path stroke="currentColor" stroke-linecap="round"
@@ -97,7 +119,7 @@
                                                 </svg>
                                                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apakah
                                                     anda yakin akan menerima pembatalan booking ini?</h3>
-                                                <form action="{{ route('admin.acceptCancelBooking', $listBooking->id) }}"
+                                                <form action="route('admin.acceptCancelBooking', $listBooking->id)"
                                                     method="POST" class="inline">
                                                     @csrf
                                                     @method('PUT')
@@ -106,19 +128,20 @@
                                                         Terima
                                                     </button>
                                                 </form>
-                                                <button data-modal-hide="approve-modal-{{ $listBooking->id }}" type="button"
+                                                <button :data-modal-hide="`approve-modal-${cancel.booking.id}`"
+                                                    type="button"
                                                     class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Batalkan</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <button data-modal-target="decline-modal-{{ $listBooking->id }}"
-                                    data-modal-toggle="decline-modal-{{ $listBooking->id }}" type="button"
+                                <button :data-modal-target="`decline-modal-${cancel.booking.id}`"
+                                    :data-modal-toggle="`decline-modal-${cancel.booking.id}`" type="button"
                                     class="w-20 py-2 text-sm font-medium text-white bg-red-500 rounded-e-lg hover:bg-red-600 focus:text-white dark:bg-red-700 dark:text-white dark:hover:bg-red-800 dark:focus:text-white">
                                     Tolak
                                 </button> --}}
-                                {{-- modal decline --}}
-                                {{-- <div id="decline-modal-{{ $listBooking->id }}" tabindex="-1"
+                            {{-- modal decline --}}
+                            {{-- <div id="decline-modal-{{ $listBooking->id }}" tabindex="-1"
                                     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                     <div class="relative p-4 w-full max-w-md max-h-full">
                                         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -159,7 +182,6 @@
                                     </div>
                                 </div>
                             </div> --}}
-                            </td>
                         </tr>
                     </template>
                 </template>
@@ -170,16 +192,19 @@
                 </template>
             </tbody>
         </table>
+
+        {{-- modal --}}
+        <x-modal-success message="Berhasil memproses" />
+        <x-modal-error />
     </div>
 
     <script>
         function cancelHandler() {
             return {
                 cancels: [],
-                selectedVoucher: {},
-                voucherModal: false,
-                showEditModal: false,
-                showDeleteModal: false,
+                error: null,
+                showAcceptModal: false,
+                showRejectModal: false,
                 isLoading: false,
                 async fetchCancel() {
                     this.isLoading = true;
@@ -193,39 +218,48 @@
                         this.isLoading = false;
                     }
                 },
-
-                async openEditModal(voucher) {
+                async acceptCancel(id) {
                     this.isLoading = true;
                     try {
-                        const res = await axios.get('/vouchers/${voucher}');
-                        this.selectedVoucher = res.data.data;
-                        console.log(selectedVoucher);
-                        this.showEditModal = true;
+                        const response = await axios.post(`/booking/${id}/accept-cancel`);
+                        this.alertSuccess = true;
+                        this.fetchCancel();
                     } catch (error) {
-                        console.error('Error fetching voucher by id:', error);
+                        this.error = error.response?.data?.errors || 'Failed to accept cancel';
+                        console.error('Error accepting cancel:', error);
                     } finally {
                         this.isLoading = false;
                     }
                 },
-
-                openDeleteModal(voucher) {
-                    this.selectedVoucher = {
-                        ...voucher
-                    }; // salin data
-                    this.showDeleteModal = true;
+                async rejectCancel(id) {
+                    this.isLoading = true;
+                    try {
+                        const response = await axios.post(`/booking/${id}/reject-cancel`);
+                        this.alertSuccess = true;
+                        this.fetchCancel();
+                    } catch (error) {
+                        this.error = error.response?.data?.errors || 'Failed to reject cancel';
+                        console.error('Error rejecting cancel:', error);
+                    } finally {
+                        this.isLoading = false;
+                    }
                 },
+                formatTanggal(isoString) {
+                    // 1. Buat objek Date dari string ISO
+                    const tanggal = new Date(isoString);
 
-                async submitEdit() {
-                    await axios.put(`/api/vouchers/${this.selectedVoucher.id}`, this.selectedVoucher);
-                    this.showEditModal = false;
-                    this.fetchVouchers(); // refresh data
-                },
+                    // 2. Tentukan opsi format HANYA untuk tanggal
+                    const options = {
+                        weekday: 'long', // "Jumat"
+                        day: 'numeric', // "6"
+                        month: 'long', // "Juni"
+                        year: 'numeric', // "2025"
+                        timeZone: 'Asia/Jakarta' // Penting untuk memastikan tanggal sesuai zona waktu Indonesia
+                    };
 
-                async submitDelete() {
-                    await axios.delete(`/api/vouchers/${this.selectedVoucher.id}`);
-                    this.showDeleteModal = false;
-                    this.fetchVouchers(); // refresh data
-                },
+                    // 3. Gunakan toLocaleString dengan locale 'id-ID' dan opsi baru
+                    return tanggal.toLocaleString('id-ID', options);
+                }
             }
         }
     </script>
