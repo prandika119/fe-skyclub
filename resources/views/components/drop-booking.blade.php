@@ -155,7 +155,7 @@
     </div>
 
     <!-- Modal Error Besar -->
-    <div x-show="error" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+    <div x-show="error" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
         <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-8 text-center relative">
             <button @click="error = null"
                 class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-2xl">&times;</button>
