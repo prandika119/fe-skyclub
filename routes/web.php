@@ -90,7 +90,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Profile
     Route::get('/profile', function () {
-        return view('profiles.profileAdmin');
+        return view('admin.profiles.profile');
     })->name('profile');
 
     // Bookings
