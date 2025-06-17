@@ -97,7 +97,7 @@
                             Alpine.store('user').setToken(response.data.data.token);
 
                             // set token expiry to 1 day
-                            const expiryTime = new Date().getTime() + 24 * 60 * 60 * 1000; // 1 hari
+                            const expiryTime = new Date().getTime() + 48 * 60 * 60 * 1000; // 1 hari
                             localStorage.setItem("token_expiry", expiryTime);
                             const alert = document.getElementById('alert');
                             alert.classList.remove('hidden');
@@ -105,7 +105,6 @@
                             alert.innerText = 'Login successful!';
                             console.log(response.data.data.user);
                             window.location.href = '/';
-
                         }
                     } catch (error) {
                         if (error.response) {

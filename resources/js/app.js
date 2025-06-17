@@ -84,13 +84,18 @@ document.addEventListener("alpine:init", () => {
         },
         async authCheck() {
             try {
+                console.log("authCheck..dimulai");
                 const cachedUser = localStorage.getItem("user_data");
                 const cachedToken = localStorage.getItem("auth_token");
                 const tokenExpiry = localStorage.getItem("token_expiry");
 
                 if (cachedUser && cachedToken && tokenExpiry) {
+                    console.log("semua cache lengkap");
                     const now = new Date().getTime();
                     if (now < parseInt(tokenExpiry)) {
+                        console.log(
+                            "Token masih valid, menggunakan cache, tidak expired"
+                        );
                         this.authenticated = true;
                         this.data = JSON.parse(cachedUser);
                         this.token = cachedToken;
@@ -99,10 +104,12 @@ document.addEventListener("alpine:init", () => {
                         ] = `Bearer ${cachedToken}`;
                         return;
                     } else {
+                        console.log("Token sudah kadaluarsa, menghapus cache");
                         // Jika token sudah kadaluarsa, hapus cache
-                        this.clearUser;
+                        //this.clearUser;
                     }
                 } else {
+                    console.log("Cache tidak lengkap, memanggil API");
                     // Jika token tidak valid atau tidak ada cache, panggil API
                     const response = await axios.get(
                         "http://10.33.35.50/api/users/current"
