@@ -100,22 +100,24 @@ document.addEventListener("alpine:init", () => {
                         return;
                     } else {
                         // Jika token sudah kadaluarsa, hapus cache
-                        this.clearUser();
+                        this.clearUser;
                     }
-                }
-                // Jika token tidak valid atau tidak ada cache, panggil API
-                const response = await axios.get(
-                    "http://10.33.35.50/api/users/current"
-                );
-                this.authenticated = true;
-                this.setUser(response.data.data.user);
-                this.setToken(response.data.data.token);
+                } else {
+                    // Jika token tidak valid atau tidak ada cache, panggil API
+                    const response = await axios.get(
+                        "http://10.33.35.50/api/users/current"
+                    );
+                    this.authenticated = true;
+                    this.setUser(response.data.data.user);
+                    this.setToken(response.data.data.token);
 
-                // Simpan token expiry (misalnya, 1 hari dari sekarang)
-                const expiryTime = new Date().getTime() + 24 * 60 * 60 * 1000; // 1 hari
-                localStorage.setItem("token_expiry", expiryTime);
+                    // Simpan token expiry (misalnya, 2 hari dari sekarang)
+                    const expiryTime =
+                        new Date().getTime() + 48 * 60 * 60 * 1000; // 2 hari
+                    localStorage.setItem("token_expiry", expiryTime);
+                }
             } catch (error) {
-                this.clearUser();
+                console.error("Authentication check failed:", error);
             }
         },
 

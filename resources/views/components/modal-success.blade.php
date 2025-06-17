@@ -1,6 +1,5 @@
 <!-- Modal Sukses -->
-<div x-show="alertSuccess" x-cloak x-transition
-    class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
+<div x-show="alertSuccess" x-cloak x-transition class="fixed inset-0 flex items-center justify-center z-50 bg-black/40">
     <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full text-center">
         <svg class="mx-auto mb-4 w-16 h-16 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
             viewBox="0 0 24 24">
