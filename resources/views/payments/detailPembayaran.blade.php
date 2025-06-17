@@ -270,7 +270,7 @@
                             booking_id: this.bookingId,
                             total_price: this.calculateTotal(),
                         });
-                        Alpine.store('user').refreshLocalStorage();
+                        await Alpine.store('user').refreshLocalStorage();
                         window.location.href = '/payment-success';
                     } catch (e) {
                         this.error = e.response.data.errors;

@@ -106,7 +106,7 @@ document.addEventListener("alpine:init", () => {
                     } else {
                         console.log("Token sudah kadaluarsa, menghapus cache");
                         // Jika token sudah kadaluarsa, hapus cache
-                        //this.clearUser;
+                        this.clearUser;
                     }
                 } else {
                     console.log("Cache tidak lengkap, memanggil API");
