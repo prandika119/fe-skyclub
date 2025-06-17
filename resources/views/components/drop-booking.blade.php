@@ -120,8 +120,11 @@
                 <button @click="cancelBookingModal = false"
                     class="px-4 py-2 w-1/2 bg-gray-300 rounded-lg mr-2">Kembali</button>
                 <button @click="cancelBooking(schedule.id ); cancelBookingModal = false"
-                    class="px-4 py-2 bg-red-700 text-white rounded-lg">Ya,
-                    Batalkan</button>
+                    class="px-4 py-2 bg-red-700 text-white rounded-lg">
+                    <div x-show="isLoading">
+                        <img src="{{ asset('assets/icons/loading.gif') }}" width="20" alt="">
+                    </div>Ya,Batalkan
+                </button>
             </div>
         </div>
     </div>
@@ -149,7 +152,11 @@
                 <button @click="sparingModal = false" type="button"
                     class="px-4 py-2 bg-gray-300 rounded-lg mr-2">Cancel</button>
                 <input type="hidden" name="id_list_booking">
-                <button type="submit" class="px-4 py-2 bg-red-700 text-white rounded-lg">Save</button>
+                <button type="submit" class="px-4 py-2 bg-red-700 text-white rounded-lg">
+                    <div x-show="isLoading">
+                        <img src="{{ asset('assets/icons/loading.gif') }}" width="20" alt="">
+                    </div>Save
+                </button>
             </div>
         </form>
     </div>

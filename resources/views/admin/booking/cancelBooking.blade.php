@@ -184,8 +184,8 @@
                 async fetchCancel() {
                     this.isLoading = true;
                     try {
-                        const response = await axios.get('/booking/request-reschedule');
-                        this.cancels = response.object.data || [];
+                        const response = await axios.get('/booking/request-cancel');
+                        this.cancels = response.data.data || [];
                     } catch (error) {
                         console.error('Error fetching cancels:', error);
                         this.cancels = [];

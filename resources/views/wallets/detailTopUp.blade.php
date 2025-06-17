@@ -9,8 +9,7 @@
                 <h4 class=" font-bold text-2xl mb-5" x-text="$store.user.data.name"></h4>
                 <hr class="h-px my-4 bg-gray-400 border-0">
                 <p>Nominal Top Up</p>
-                <input @input="nominal = nominal ? parseInt(nominal) : null" type="number" step="1" name="nominal"
-                    min="0" x-model="nominal"
+                <input type="number" name="nominal" min="0" x-model="nominal"
                     class="w-full border-2 border-gray-400 rounded-lg p-2 text-2xl font-bold text-gray-800 mb-4">
                 <div>
                     <div class="flex justify-between items-center mb-4">
