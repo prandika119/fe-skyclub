@@ -202,12 +202,14 @@
                             return 'Withdraw';
                         case 'booking':
                             return 'Payment';
+                        case 'refund':
+                            return 'Refund';
                         default:
                             return type.charAt(0).toUpperCase() + type.slice(1);
                     }
                 },
                 amountFormat(amount, type) {
-                    if (type == 'topup') {
+                    if (type == 'topup' || type == 'refund') {
                         return Alpine.store('format').rupiah(amount);
                     } else {
                         return '-' + Alpine.store('format').rupiah(amount);

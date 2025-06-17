@@ -77,16 +77,14 @@
                                         </div>
                                         <span x-show="!isLoading">Terima</span>
                                     </button>
-                                    <button @click="rejectCancel(cancel.id)"
+                                    <button @click="rejectModal = true ;cancelId = cancel.id"
                                         class="w-20 py-2 text-sm font-medium text-white bg-red-500 rounded-e-lg hover:bg-red-600 focus:text-white cursor-pointer">
-                                        <div x-show="isLoading">
-                                            <img src="{{ asset('assets/icons/loading.gif') }}" width="20"
-                                                alt="">
-                                        </div>
                                         <span x-show="!isLoading">Tolak</span>
                                     </button>
                                 </div>
                             </td>
+
+
                             {{-- <div class="inline-flex rounded-md shadow-sm" role="group">
                                 <button :data-modal-target="`approve-modal-${cancel.booking.id}`"
                                     :data-modal-toggle="`approve-modal-${cancel.booking.id}`" type="button"
@@ -193,6 +191,31 @@
             </tbody>
         </table>
 
+        <!-- Reply Modal -->
+        <div x-show="rejectModal" x-cloak class="fixed inset-0 flex items-center justify-center bg-black/50">
+            <form action="" method="POST" class="bg-white p-4 rounded-lg w-80"
+                @submit.prevent="rejectCancel(cancelId)">
+                <h2 class="text-xl text-center font-bold mb-4 font-2xl">Alasan Menolak Pengajuan
+                    Pembatalan Jadwal</h2>
+                <div class="mb-6">
+                    <label for="reply" class="block mb-2 text-sm font-medium text-gray-900">Alasan</label>
+                    <input type="text" id="reply" name="reply"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        placeholder="Wajib Memasukan Alasan" x-model="reply" />
+                </div>
+
+                <div class="flex justify-end">
+                    <button @click="rejectModal = false" type="button"
+                        class="px-4 py-2 bg-gray-300 rounded-lg mr-2">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-red-700 text-white rounded-lg">
+                        <div x-show="isLoading">
+                            <img src="{{ asset('assets/icons/loading.gif') }}" width="20" alt="">
+                        </div>Tolak
+                    </button>
+                </div>
+            </form>
+        </div>
+
         {{-- modal --}}
         <x-modal-success message="Berhasil memproses" />
         <x-modal-error />
@@ -202,9 +225,11 @@
         function cancelHandler() {
             return {
                 cancels: [],
+                cancelId: null,
+                reply: '',
                 error: null,
-                showAcceptModal: false,
-                showRejectModal: false,
+                rejectModal: false,
+                alertSuccess: false,
                 isLoading: false,
                 async fetchCancel() {
                     this.isLoading = true;
@@ -221,11 +246,15 @@
                 async acceptCancel(id) {
                     this.isLoading = true;
                     try {
-                        const response = await axios.post(`/booking/${id}/accept-cancel`);
+                        const response = await axios.post(`/booking/${id}/accept-cancel`, {
+                            reply: 'Terima pembatalan'
+                        });
+                        this.cancelId = null; // Reset cancelId
                         this.alertSuccess = true;
                         this.fetchCancel();
                     } catch (error) {
-                        this.error = error.response?.data?.errors || 'Failed to accept cancel';
+                        console.log(error.response.data.errors);
+                        this.error = error.response?.data?.errors.reply[0] || 'Failed to accept cancel';
                         console.error('Error accepting cancel:', error);
                     } finally {
                         this.isLoading = false;
@@ -234,14 +263,19 @@
                 async rejectCancel(id) {
                     this.isLoading = true;
                     try {
-                        const response = await axios.post(`/booking/${id}/reject-cancel`);
+                        const response = await axios.post(`/booking/${id}/reject-cancel`, {
+                            reply: this.reply
+                        });
+                        this.reply = ''; // Clear the reply input
+                        this.cancelId = null; // Reset cancelId
                         this.alertSuccess = true;
                         this.fetchCancel();
                     } catch (error) {
-                        this.error = error.response?.data?.errors || 'Failed to reject cancel';
+                        this.error = error.response?.data?.errors.reply[0];
                         console.error('Error rejecting cancel:', error);
                     } finally {
                         this.isLoading = false;
+                        this.rejectModal = false; // Close the modal after processing
                     }
                 },
                 formatTanggal(isoString) {
