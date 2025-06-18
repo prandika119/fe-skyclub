@@ -6,7 +6,7 @@
             <!-- Loading -->
             <template x-if="isLoading">
                 <div class="col-span-3 row-span-2 flex items-center justify-center">
-                    <svg class="animate-spin h-8 w-8 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    <svg class="animate-spin h-8 w-8 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                             stroke-width="4" />
@@ -127,450 +127,459 @@
 
 
         {{-- cart & desc --}}
-        <div class="flex flex-col xl:grid xl:grid-flow-col gap-2 xl:flex-row justify-between my-12">
-            <div class=" xl:max-w-[700px] xxl:max-w-full">
-                <div class=" space-y-1">
-                    <h1 class="text-4xl font-bold" x-text="field.name">SKY CLUB MINI SOCCER</h1>
-                    <div class="flex space-x-1">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z" />
-                        </svg>
-                        <p class="text-lg">Puncak Kab. Bogor</p>
-                    </div>
-                    <div class="flex">
-                        <div class="flex items-center border rounded-lg px-2.5">
-                            <p class="text-sm font-bold text-gray-900" x-text="field.review.average || 0">average rating</p>
-                            {{-- <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $averageRating }}</p> --}}
-                            <svg class="ms-1 w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor" viewBox="0 0 22 20">
-                                <path
-                                    d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+        <template x-if="!isLoading && field">
+            <div class="flex flex-col xl:grid xl:grid-flow-col gap-2 xl:flex-row justify-between my-12">
+                <div class=" xl:max-w-[700px] xxl:max-w-full">
+                    <div class=" space-y-1">
+                        <h1 class="text-4xl font-bold" x-text="field.name">SKY CLUB MINI SOCCER</h1>
+                        <div class="flex space-x-1">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z" />
                             </svg>
+                            <p class="text-lg">Puncak Kab. Bogor</p>
                         </div>
-                        <p class="p-2.5 text-sm font-medium"
-                            x-text="field.review.average >= 5 ? 'Sangat Baik' : field.review.average >= 4 ? 'Baik' : field.review.average >= 3 ? 'Cukup Baik' : field.review.average >= 2 ? 'Buruk' : field.review.average >=1 ? 'Sangat Buruk' : 'Belum Ada Ulasan'">
-                        </p>
-                        <p class="font-medium mt-1" x-text="` | ${field.review.count} reviews`"></p>
+                        <div class="flex">
+                            <div class="flex items-center border rounded-lg px-2.5">
+                                <p class="text-sm font-bold text-gray-900" x-text="field.review.average || 0">average rating
+                                </p>
+                                {{-- <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $averageRating }}</p> --}}
+                                <svg class="ms-1 w-4 h-4 text-yellow-300" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                    <path
+                                        d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                </svg>
+                            </div>
+                            <p class="p-2.5 text-sm font-medium"
+                                x-text="field.review.average >= 5 ? 'Sangat Baik' : field.review.average >= 4 ? 'Baik' : field.review.average >= 3 ? 'Cukup Baik' : field.review.average >= 2 ? 'Buruk' : field.review.average >=1 ? 'Sangat Buruk' : 'Belum Ada Ulasan'">
+                            </p>
+                            <p class="font-medium mt-1" x-text="` | ${field.review.count} reviews`"></p>
+                        </div>
                     </div>
-                </div>
-                <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700">
-                <div>
-                    <h3 class="mb-4 text-3xl font-bold">Deskripsi</h3>
-                    <p class="leading-loose"
-                        x-text="field.description && field.description.length > 500 ? field.description.slice(0, 500) + '...' : field.description">
-                        field desc</p>
-                </div>
-                <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700">
-                <div class="space-y-8">
-                    <h3 class=" text-3xl font-bold">Fasilitas</h3>
-                    {{-- <div x-data="facilitySliceSelection({{ json_encode($selectedSliceFacilities) }})" --}}
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-2 gap-8 xxl:grid-cols-4">
-                        <template x-if="facilities.includes('mushola')">
-                            <x-facility icon="icon_mosque.svg" name="Mushola" />
-                        </template>
-                        <template x-if="facilities.includes('parking')">
-                            <x-facility icon="icon_parking.svg" name="Parkir Area" />
-                        </template>
-                        <template x-if="facilities.includes('toilet')">
-                            <x-facility icon="icon_toilet.svg" name="Toilet" />
-                        </template>
-                        <template x-if="facilities.includes('medical')">
-                            <x-facility icon="icon_med.svg" name="Medis" />
-                        </template>
-                        <template x-if="facilities.includes('security')">
-                            <x-facility icon="icon_security.svg" name="Security" />
-                        </template>
-                        <template x-if="facilities.includes('tribune')">
-                            <x-facility icon="icon_tribune.svg" name="Tribun Penonton" />
-                        </template>
-                        <template x-if="facilities.includes('wifi')">
-                            <x-facility icon="icon_wifi.svg" name="Wifi" />
-                        </template>
-                        <template x-if="facilities.includes('shower')">
-                            <x-facility icon="icon_shower.svg" name="Shower" />
-                        </template>
-                        <template x-if="facilities.includes('gym')">
-                            <x-facility icon="icon_gym.svg" name="Gym" />
-                        </template>
-                        <template x-if="facilities.includes('locker')">
-                            <x-facility icon="icon_locker.svg" name="Locker" />
-                        </template>
-                        <template x-if="facilities.includes('canteen')">
-                            <x-facility icon="icon_eat.svg" name="Kantin" />
-                        </template>
-                        <template x-if="facilities.includes('sauna')">
-                            <x-facility icon="icon_sauna.svg" name="Sauna" />
-                        </template>
-                        <template x-if="facilities.includes('run')">
-                            <x-facility icon="icon_run.svg" name="Lintasan Lari" />
-                        </template>
+                    <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700">
+                    <div>
+                        <h3 class="mb-4 text-3xl font-bold">Deskripsi</h3>
+                        <p class="leading-loose"
+                            x-text="field.description && field.description.length > 500 ? field.description.slice(0, 500) + '...' : field.description">
+                            field desc</p>
                     </div>
-                    <div x-data="{ fasilitas: false }">
-                        <button @click="fasilitas = true"
-                            class="border border-red-400 rounded p-2 font-semibold text-red-500">Lihat Semua
-                            Fasilitas</button>
-                        <div x-show="fasilitas" x-cloak x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0 transform scale-90"
-                            x-transition:enter-end="opacity-100 transform scale-100"
-                            x-transition:leave="transition ease-in duration-300"
-                            x-transition:leave-start="opacity-100 transform scale-100"
-                            x-transition:leave-end="opacity-0 transform scale-90"
-                            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 ">
-                            <div @click.away="fasilitas = false"
-                                class="bg-white rounded-lg shadow-xl transform transition-all sm:max-w-4xl :w-full max-w-sm xs:max-w-md w-full h-4/5 overflow-scroll custom-scrollbar">
-                                <div class="px-4 py-5 sm:p-6">
-                                    <div class="flex justify-end">
-                                        <button @click="fasilitas = false" class="text-gray-400 hover:text-gray-500">
-                                            <svg class="h-6 w-6" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M6 18L18 6M6 6l12 12"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <h3 class="mb-8 text-3xl font-bold">Deskripsi</h3>
-                                    <div class="py-8 border-y-2">
-                                        <p x-data="{ expanded: false }" class="leading-loose">
-                                            <span x-show="!expanded"
-                                                x-text="field.description && field.description.length > 500 ? field.description.slice(0, 500) + '...' : field.description">fieldDescription</span>
-                                            <span {{-- <span x-show="!expanded">{{ Str::limit($fieldDescription, 500) }}</span> <span --}} x-show="expanded"
-                                                x-text="field.description">fieldDescription</span> <button
-                                                {{-- x-show="expanded">{{ $fieldDescription }}</span> <button --}} @click="expanded = !expanded"
-                                                class="text-red-500 font-semibold">
-                                                <span x-show="!expanded">lihat selengkapnya</span>
-                                                <span x-show="expanded">lihat lebih sedikit</span>
+                    <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700">
+                    <div class="space-y-8">
+                        <h3 class=" text-3xl font-bold">Fasilitas</h3>
+                        {{-- <div x-data="facilitySliceSelection({{ json_encode($selectedSliceFacilities) }})" --}}
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-2 gap-8 xxl:grid-cols-4">
+                            <template x-if="facilities.includes('mushola')">
+                                <x-facility icon="icon_mosque.svg" name="Mushola" />
+                            </template>
+                            <template x-if="facilities.includes('parking')">
+                                <x-facility icon="icon_parking.svg" name="Parkir Area" />
+                            </template>
+                            <template x-if="facilities.includes('toilet')">
+                                <x-facility icon="icon_toilet.svg" name="Toilet" />
+                            </template>
+                            <template x-if="facilities.includes('medical')">
+                                <x-facility icon="icon_med.svg" name="Medis" />
+                            </template>
+                            <template x-if="facilities.includes('security')">
+                                <x-facility icon="icon_security.svg" name="Security" />
+                            </template>
+                            <template x-if="facilities.includes('tribune')">
+                                <x-facility icon="icon_tribune.svg" name="Tribun Penonton" />
+                            </template>
+                            <template x-if="facilities.includes('wifi')">
+                                <x-facility icon="icon_wifi.svg" name="Wifi" />
+                            </template>
+                            <template x-if="facilities.includes('shower')">
+                                <x-facility icon="icon_shower.svg" name="Shower" />
+                            </template>
+                            <template x-if="facilities.includes('gym')">
+                                <x-facility icon="icon_gym.svg" name="Gym" />
+                            </template>
+                            <template x-if="facilities.includes('locker')">
+                                <x-facility icon="icon_locker.svg" name="Locker" />
+                            </template>
+                            <template x-if="facilities.includes('canteen')">
+                                <x-facility icon="icon_eat.svg" name="Kantin" />
+                            </template>
+                            <template x-if="facilities.includes('sauna')">
+                                <x-facility icon="icon_sauna.svg" name="Sauna" />
+                            </template>
+                            <template x-if="facilities.includes('run')">
+                                <x-facility icon="icon_run.svg" name="Lintasan Lari" />
+                            </template>
+                        </div>
+                        <div x-data="{ fasilitas: false }">
+                            <button @click="fasilitas = true"
+                                class="border border-red-400 rounded p-2 font-semibold text-red-500">Lihat Semua
+                                Fasilitas</button>
+                            <div x-show="fasilitas" x-cloak x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-90"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-90"
+                                class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 ">
+                                <div @click.away="fasilitas = false"
+                                    class="bg-white rounded-lg shadow-xl transform transition-all sm:max-w-4xl :w-full max-w-sm xs:max-w-md w-full h-4/5 overflow-scroll custom-scrollbar">
+                                    <div class="px-4 py-5 sm:p-6">
+                                        <div class="flex justify-end">
+                                            <button @click="fasilitas = false" class="text-gray-400 hover:text-gray-500">
+                                                <svg class="h-6 w-6" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
                                             </button>
-                                        </p>
-                                    </div>
-                                    <h3 class="text-3xl font-bold my-8">Fasilitas</h3>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-2 gap-8">
-                                        <template x-if="facilities.includes('mushola')">
-                                            <x-facility icon="icon_mosque.svg" name="Mushola" />
-                                        </template>
-                                        <template x-if="facilities.includes('parking')">
-                                            <x-facility icon="icon_parking.svg" name="Parkir Area" />
-                                        </template>
-                                        <template x-if="facilities.includes('toilet')">
-                                            <x-facility icon="icon_toilet.svg" name="Toilet" />
-                                        </template>
-                                        <template x-if="facilities.includes('medical')">
-                                            <x-facility icon="icon_med.svg" name="Medis" />
-                                        </template>
-                                        <template x-if="facilities.includes('security')">
-                                            <x-facility icon="icon_security.svg" name="Security" />
-                                        </template>
-                                        <template x-if="facilities.includes('tribune')">
-                                            <x-facility icon="icon_tribune.svg" name="Tribun Penonton" />
-                                        </template>
-                                        <template x-if="facilities.includes('wifi')">
-                                            <x-facility icon="icon_wifi.svg" name="Wifi" />
-                                        </template>
-                                        <template x-if="facilities.includes('shower')">
-                                            <x-facility icon="icon_shower.svg" name="Shower" />
-                                        </template>
-                                        <template x-if="facilities.includes('gym')">
-                                            <x-facility icon="icon_gym.svg" name="Gym" />
-                                        </template>
-                                        <template x-if="facilities.includes('locker')">
-                                            <x-facility icon="icon_locker.svg" name="Locker" />
-                                        </template>
-                                        <template x-if="facilities.includes('canteen')">
-                                            <x-facility icon="icon_eat.svg" name="Kantin" />
-                                        </template>
-                                        <template x-if="facilities.includes('sauna')">
-                                            <x-facility icon="icon_sauna.svg" name="Sauna" />
-                                        </template>
-                                        <template x-if="facilities.includes('run')">
-                                            <x-facility icon="icon_run.svg" name="Lintasan Lari" />
-                                        </template>
+                                        </div>
+                                        <h3 class="mb-8 text-3xl font-bold">Deskripsi</h3>
+                                        <div class="py-8 border-y-2">
+                                            <p x-data="{ expanded: false }" class="leading-loose">
+                                                <span x-show="!expanded"
+                                                    x-text="field.description && field.description.length > 500 ? field.description.slice(0, 500) + '...' : field.description">fieldDescription</span>
+                                                <span {{-- <span x-show="!expanded">{{ Str::limit($fieldDescription, 500) }}</span> <span --}} x-show="expanded"
+                                                    x-text="field.description">fieldDescription</span> <button
+                                                    {{-- x-show="expanded">{{ $fieldDescription }}</span> <button --}} @click="expanded = !expanded"
+                                                    class="text-red-500 font-semibold">
+                                                    <span x-show="!expanded">lihat selengkapnya</span>
+                                                    <span x-show="expanded">lihat lebih sedikit</span>
+                                                </button>
+                                            </p>
+                                        </div>
+                                        <h3 class="text-3xl font-bold my-8">Fasilitas</h3>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-2 gap-8">
+                                            <template x-if="facilities.includes('mushola')">
+                                                <x-facility icon="icon_mosque.svg" name="Mushola" />
+                                            </template>
+                                            <template x-if="facilities.includes('parking')">
+                                                <x-facility icon="icon_parking.svg" name="Parkir Area" />
+                                            </template>
+                                            <template x-if="facilities.includes('toilet')">
+                                                <x-facility icon="icon_toilet.svg" name="Toilet" />
+                                            </template>
+                                            <template x-if="facilities.includes('medical')">
+                                                <x-facility icon="icon_med.svg" name="Medis" />
+                                            </template>
+                                            <template x-if="facilities.includes('security')">
+                                                <x-facility icon="icon_security.svg" name="Security" />
+                                            </template>
+                                            <template x-if="facilities.includes('tribune')">
+                                                <x-facility icon="icon_tribune.svg" name="Tribun Penonton" />
+                                            </template>
+                                            <template x-if="facilities.includes('wifi')">
+                                                <x-facility icon="icon_wifi.svg" name="Wifi" />
+                                            </template>
+                                            <template x-if="facilities.includes('shower')">
+                                                <x-facility icon="icon_shower.svg" name="Shower" />
+                                            </template>
+                                            <template x-if="facilities.includes('gym')">
+                                                <x-facility icon="icon_gym.svg" name="Gym" />
+                                            </template>
+                                            <template x-if="facilities.includes('locker')">
+                                                <x-facility icon="icon_locker.svg" name="Locker" />
+                                            </template>
+                                            <template x-if="facilities.includes('canteen')">
+                                                <x-facility icon="icon_eat.svg" name="Kantin" />
+                                            </template>
+                                            <template x-if="facilities.includes('sauna')">
+                                                <x-facility icon="icon_sauna.svg" name="Sauna" />
+                                            </template>
+                                            <template x-if="facilities.includes('run')">
+                                                <x-facility icon="icon_run.svg" name="Lintasan Lari" />
+                                            </template>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700">
+                    <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700">
 
-                {{-- Date Picker & Time slot  --}}
-                <div class="w-full max-w-4xl">
-                    <div class="flex items-center justify-between p-4 bg-white shadow rounded-md mb-4">
+                    {{-- Date Picker & Time slot  --}}
+                    <div class="w-full max-w-4xl">
+                        <div class="flex items-center justify-between p-4 bg-white shadow rounded-md mb-4">
 
-                        {{-- button previous --}}
-                        <button @click="previousWeek" class="text-gray-500 hover:text-gray-900 w-12 cursor-pointer">
-                            &#8249;
-                        </button>
+                            {{-- button previous --}}
+                            <button @click="previousWeek" class="text-gray-500 hover:text-gray-900 w-12 cursor-pointer">
+                                &#8249;
+                            </button>
 
-                        <!-- week days -->
-                        <div class="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-7 gap-2">
-                            <template x-for="(day, index) in weekDays" :key="index">
-                                <div @click="isWithinRange(day.date) && selectDate(day.date)"
-                                    :class="{
-                                        'bg-red-500 text-white hover:bg-red-500': isSelected(day.date),
-                                        'text-gray-400 cursor-not-allowed': !isWithinRange(day.date),
-                                        'cursor-pointer hover:bg-gray-100 ': isWithinRange(day.date)
-                                    }"
-                                    class="text-center w-16 p-2 rounded-md">
-                                    <div class="text-xs font-medium" x-text="day.name"></div>
-                                    <div class="text-sm font-semibold"
-                                        x-text="day.date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })">
+                            <!-- week days -->
+                            <div class="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-7 gap-2">
+                                <template x-for="(day, index) in weekDays" :key="index">
+                                    <div @click="isWithinRange(day.date) && selectDate(day.date)"
+                                        :class="{
+                                            'bg-red-500 text-white hover:bg-red-500': isSelected(day.date),
+                                            'text-gray-400 cursor-not-allowed': !isWithinRange(day.date),
+                                            'cursor-pointer hover:bg-gray-100 ': isWithinRange(day.date)
+                                        }"
+                                        class="text-center w-16 p-2 rounded-md">
+                                        <div class="text-xs font-medium" x-text="day.name"></div>
+                                        <div class="text-sm font-semibold"
+                                            x-text="day.date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })">
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            {{-- next button --}}
+                            <button @click="nextWeek" class="text-gray-500 hover:text-gray-900 w-12 cursor-pointer">
+                                &#8250;
+                            </button>
+
+                            <div class="border-l border-gray-400 h-8 my-auto"></div>
+                            <!-- Date Picker -->
+                            <div class="relative w-14">
+                                <label class="flex items-center justify-center " for="datePicker">
+                                    <input id="datePicker" type="date" x-model="selectedDate"
+                                        @change="goToSelectedDate" :min="minDate.toISOString().split('T')[0]"
+                                        :max="maxDate.toISOString().split('T')[0]"
+                                        class="absolute opacity-1 z-100 w-full h-full cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor" class="w-6 h-6 text-gray-500 hover:text-gray-700">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-6 0h6m2 2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h12z" />
+                                    </svg>
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <!-- Time Slot -->
+                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 mb-4">
+                            <template x-for="(slot, index) in timeSlots" :key="index">
+                                <div :class="{
+                                    'bg-gray-200 text-gray-400': !slot.available || slotInCart(
+                                        slot),
+                                    'border border-red-500': slot.selected
+                                }"
+                                    @click="toggleSlotSelection(slot)"
+                                    class="p-2 bg-white shadow rounded-md cursor-pointer text-center"
+                                    :style="{ pointerEvents: slot.available && !slotInCart(slot) ? 'auto' : 'none' }">
+                                    {{-- <div class="text-sm font-medium" x-text="slot.duration + ' Menit'"></div> --}}
+                                    <div class="text-sm font-medium">60 Menit</div>
+                                    <div class="text-sm font-bold" x-text="slot.time"></div>
+                                    <div class="text-sm font-medium"
+                                        x-text="slot.available ? formatRupiah(slot.price) : 'Booked'">
                                     </div>
                                 </div>
                             </template>
                         </div>
 
-                        {{-- next button --}}
-                        <button @click="nextWeek" class="text-gray-500 hover:text-gray-900 w-12 cursor-pointer">
-                            &#8250;
-                        </button>
-
-                        <div class="border-l border-gray-400 h-8 my-auto"></div>
-                        <!-- Date Picker -->
-                        <div class="relative w-14">
-                            <label class="flex items-center justify-center " for="datePicker">
-                                <input id="datePicker" type="date" x-model="selectedDate" @change="goToSelectedDate"
-                                    :min="minDate.toISOString().split('T')[0]" :max="maxDate.toISOString().split('T')[0]"
-                                    class="absolute opacity-1 z-100 w-full h-full cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor" class="w-6 h-6 text-gray-500 hover:text-gray-700">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-6 0h6m2 2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h12z" />
-                                </svg>
-                            </label>
-                        </div>
-                    </div>
-
-
-                    <!-- Time Slot -->
-                    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 mb-4">
-                        <template x-for="(slot, index) in timeSlots" :key="index">
-                            <div :class="{
-                                'bg-gray-200 text-gray-400': !slot.available || slotInCart(
-                                    slot),
-                                'border border-red-500': slot.selected
-                            }"
-                                @click="toggleSlotSelection(slot)"
-                                class="p-2 bg-white shadow rounded-md cursor-pointer text-center"
-                                :style="{ pointerEvents: slot.available && !slotInCart(slot) ? 'auto' : 'none' }">
-                                {{-- <div class="text-sm font-medium" x-text="slot.duration + ' Menit'"></div> --}}
-                                <div class="text-sm font-medium">60 Menit</div>
-                                <div class="text-sm font-bold" x-text="slot.time"></div>
-                                <div class="text-sm font-medium"
-                                    x-text="slot.available ? formatRupiah(slot.price) : 'Booked'">
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-
-                    <div class="flex justify-between gap-2 xl:hidden">
-                        <button type="submit"
-                            class="bg-red-600 w-full text-center py-3 rounded-lg font-bold text-white hover:bg-red-800 cursor-pointer">Bayar</button>
-                    </div>
-                </div>
-            </div>
-
-            {{-- cart --}}
-            <div
-                class="border px-5 py-8 bg-white rounded-2xl max-h-fit space-y-7 sticky top-2 w-[490px] min-w-[360px] hidden xl:block">
-                <div>
-                    <h4 class="font-bold text-2xl">Mulai dari</h4>
-                    <p class=" font-bold text-4xl" x-text="formatRupiah(field.weekday_price)">Rp. 100.000,00 <span
-                            class=" text-xl">/Sesi</span></p>
-                </div>
-                <template x-if="cart.length > 0">
-                    <ul class=" space-y-4">
-                        <template x-for="(item, index) in cart" :key="index">
-                            <li
-                                class="w-full flex justify-between items-center border border-gray-500 text-lg rounded-xl py-2 px-4">
-                                <div>
-                                    <p
-                                        x-text="new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })">
-                                    </p>
-                                    <p x-text="item.time"></p>
-                                </div>
-                                <div class="flex space-x-7">
-                                    <p x-text="formatRupiah(item.price)"></p>
-                                    <button @click="removeFromCart(item)"
-                                        class="text-red-500 hover:text-red-700 cursor-pointer">X</button>
-                                </div>
-                            </li>
-                        </template>
-                    </ul>
-                </template>
-                <template x-if="cart.length === 0">
-                    <p class="text-gray-500">Keranjang kosong</p>
-                </template>
-
-                <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700">
-                <div class="flex justify-between text-2xl font-semibold">
-                    <p>Total Harga</p>
-                    <p x-text="totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })"></p>
-                </div>
-                <div>
-                    <form action="" method="POST" @submit.prevent="goToPayment">
-                        @csrf
-                        <template class="hidden" x-for="(item, index) in cart" :key="index">
-                            <div>
-                                <input type="hidden" :name="`schedule[${index}]`"
-                                    :value="item.date.toDateString('yyyy-mm-dd')">
-                                <input type="hidden" :name="`session[${index}]`" :value="item.time">
-                                <input type="hidden" :name="`price[${index}]`" :value="item.price">
-                            </div>
-                        </template>
-                        <div class="flex space-x-4">
+                        <div class="flex justify-between gap-2 xl:hidden">
                             <button type="submit"
-                                class="flex justify-center space-x-3 items-center bg-red-600 w-full text-center py-3 rounded-lg font-bold text-white hover:bg-red-800 cursor-pointer">
-                                <div x-show="isLoading">
-                                    <img src="{{ asset('assets/icons/loading.gif') }}" width="20" alt="">
-                                </div>
-                                <span>Bayar</span>
-                            </button>
+                                class="bg-red-600 w-full text-center py-3 rounded-lg font-bold text-white hover:bg-red-800 cursor-pointer">Bayar</button>
                         </div>
-                    </form>
+                    </div>
+                </div>
+
+                {{-- cart --}}
+                <div
+                    class="border px-5 py-8 bg-white rounded-2xl max-h-fit space-y-7 sticky top-24 w-[490px] min-w-[360px] hidden xl:block">
+                    <div>
+                        <h4 class="font-bold text-2xl">Mulai dari</h4>
+                        <p class=" font-bold text-4xl" x-text="formatRupiah(field.weekday_price)">Rp. 100.000,00 <span
+                                class=" text-xl">/Sesi</span></p>
+                    </div>
+                    <template x-if="cart.length > 0">
+                        <ul class=" space-y-4">
+                            <template x-for="(item, index) in cart" :key="index">
+                                <li
+                                    class="w-full flex justify-between items-center border border-gray-500 text-lg rounded-xl py-2 px-4">
+                                    <div>
+                                        <p
+                                            x-text="new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })">
+                                        </p>
+                                        <p x-text="item.time"></p>
+                                    </div>
+                                    <div class="flex space-x-7">
+                                        <p x-text="formatRupiah(item.price)"></p>
+                                        <button @click="removeFromCart(item)"
+                                            class="text-red-500 hover:text-red-700 cursor-pointer">X</button>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                    <template x-if="cart.length === 0">
+                        <p class="text-gray-500">Keranjang kosong</p>
+                    </template>
+
+                    <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700">
+                    <div class="flex justify-between text-2xl font-semibold">
+                        <p>Total Harga</p>
+                        <p x-text="totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })"></p>
+                    </div>
+                    <div>
+                        <form action="" method="POST" @submit.prevent="goToPayment">
+                            @csrf
+                            <template class="hidden" x-for="(item, index) in cart" :key="index">
+                                <div>
+                                    <input type="hidden" :name="`schedule[${index}]`"
+                                        :value="item.date.toDateString('yyyy-mm-dd')">
+                                    <input type="hidden" :name="`session[${index}]`" :value="item.time">
+                                    <input type="hidden" :name="`price[${index}]`" :value="item.price">
+                                </div>
+                            </template>
+                            <div class="flex space-x-4">
+                                <button type="submit"
+                                    class="flex justify-center space-x-3 items-center bg-red-600 w-full text-center py-3 rounded-lg font-bold text-white hover:bg-red-800 cursor-pointer">
+                                    <div x-show="isLoading">
+                                        <img src="{{ asset('assets/icons/loading.gif') }}" width="20" alt="">
+                                    </div>
+                                    <span>Bayar</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </template>
 
         {{-- customer testimoni --}}
-        <div x-data="{ testimoni: false }" class="">
-            <div class="flex items-center justify-between mb-5">
-                <div>
-                    <h2 class="text-4xl font-bold">Customer Testimonials</h2>
-                    <h6 class="text-lg">Kesan dari kawan kawan SKY CLUB</h6>
+        <template x-if="!isLoading && reviews">
+            <div x-data="{ testimoni: false }" class="">
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <h2 class="text-4xl font-bold">Customer Testimonials</h2>
+                        <h6 class="text-lg">Kesan dari kawan kawan SKY CLUB</h6>
+                    </div>
+                    <div>
+                        <button @click="testimoni = true" class="cursor-pointer hover:text-red-400">Lihat
+                            Selengkapnya</button>
+                    </div>
                 </div>
-                <div>
-                    <button @click="testimoni = true" class="cursor-pointer hover:text-red-400">Lihat
-                        Selengkapnya</button>
-                </div>
-            </div>
 
-            {{-- testimoni modal --}}
-            <div x-show="testimoni" x-cloak x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0 transform scale-90"
-                x-transition:enter-end="opacity-100 transform scale-100"
-                x-transition:leave="transition ease-in duration-300"
-                x-transition:leave-start="opacity-100 transform scale-100"
-                x-transition:leave-end="opacity-0 transform scale-90"
-                class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 cursor-pointer">
-                <div @click.away="testimoni = false"
-                    class="bg-white rounded-lg shadow-xl transform transition-all sm:max-w-4xl sm:w-full h-4/5 overflow-scroll custom-scrollbar max-w-sm xs:max-w-md w-full">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex justify-between items-center mb-5">
-                            <h3 class="text-3xl leading-6 font-bold text-gray-900">Ulasan</h3>
-                            <button @click="testimoni = false" class="text-gray-400 hover:text-gray-500">
-                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
+                {{-- testimoni modal --}}
+                <div x-show="testimoni" x-cloak x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 transform scale-90"
+                    x-transition:enter-end="opacity-100 transform scale-100"
+                    x-transition:leave="transition ease-in duration-300"
+                    x-transition:leave-start="opacity-100 transform scale-100"
+                    x-transition:leave-end="opacity-0 transform scale-90"
+                    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 cursor-pointer">
+                    <div @click.away="testimoni = false"
+                        class="bg-white rounded-lg shadow-xl transform transition-all sm:max-w-4xl sm:w-full h-4/5 overflow-scroll custom-scrollbar max-w-sm xs:max-w-md w-full">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex justify-between items-center mb-5">
+                                <h3 class="text-3xl leading-6 font-bold text-gray-900">Ulasan</h3>
+                                <button @click="testimoni = false" class="text-gray-400 hover:text-gray-500">
+                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            {{-- Fetch data --}}
+                            <div class="flex items-center space-x-6 mb-8">
+                                <p class=" text-gray-500 font-bold">
+                                    <span class="text-black text-3xl" x-text="field.review.average.toFixed(1)">0</span>/5
+                                </p>
+                                <div class="flex space-x-1">
+                                    <template x-for="star in 5" :key="star">
+                                        <svg class="w-6 h-6"
+                                            :class="star <= Math.round(field.review.average) ? 'text-yellow-300' :
+                                                'text-gray-300'"
+                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                            viewBox="0 0 22 20">
+                                            <path
+                                                d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        </svg>
+                                    </template>
+                                </div>
+                                <span class="text-gray-500" x-text="field.review.count + ' reviews'"></span>
+                            </div>
+                            <div class="mt-4 space-y-4">
+                                <template x-if="reviews.length === 0">
+                                    <div class="col-span-3 text-center text-gray-500 py-8">
+                                        Belum ada review.
+                                    </div>
+                                </template>
+                                <template x-for="(review, idx) in reviews" :key="idx">
+                                    <div class="p-4 rounded-lg border">
+                                        <div class="flex justify-between mb-6">
+                                            <div class="flex items-center space-x-4">
+                                                <img class="rounded-full w-12 h-12"
+                                                    :src="$store.storage.getPhoto(review.user.profile_photo)"
+                                                    alt="">
+                                                <div>
+                                                    <p class="text-base font-bold" x-text="review.user.name"></p>
+                                                    <p class="text-base" x-text="review.user.team"></p>
+                                                </div>
+                                            </div>
+                                            <div class="flex justify-between items-center p-2 rounded-lg border">
+                                                <svg class="w-6 h-6 text-yellow-300 me-3" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                    viewBox="0 0 22 20">
+                                                    <path
+                                                        d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                                </svg>
+                                                <p class="font-semibold text-2xl" x-text="review.rating"></p>
+                                            </div>
+                                        </div>
+                                        <p x-text="review.comment"></p>
+                                    </div>
+                                </template>
+                            </div>
                         </div>
+                    </div>
+                </div>
 
-                        {{-- Fetch data --}}
-                        <div class="flex items-center space-x-6 mb-8">
-                            <p class=" text-gray-500 font-bold">
-                                <span class="text-black text-3xl" x-text="averageRating.toFixed(1)">0</span>/5
-                            </p>
-                            <div class="flex space-x-1">
-                                <template x-for="star in 5" :key="star">
-                                    <svg class="w-6 h-6"
-                                        :class="star <= Math.round(averageRating) ? 'text-yellow-300' : 'text-gray-300'"
-                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        viewBox="0 0 22 20">
+                <!-- Testimoni -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+                    <template x-if="reviews.length === 0">
+                        <div class="col-span-3 text-center text-gray-500 py-8">
+                            Belum ada review.
+                        </div>
+                    </template>
+
+                    <template x-for="(review, idx) in reviews.slice(0, 3)" :key="idx">
+                        <div class="space-y-6 sm:space-y-8 border-b-2 pb-6 sm:border-b-0 sm:pb-0">
+                            <div class="flex items-center">
+                                <template x-for="(star, index) in Array.from({length: review.rating})"
+                                    :key="index">
+                                    <svg class="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
                                         <path
                                             d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
                                     </svg>
                                 </template>
                             </div>
-                            <span class="text-gray-500" x-text="countRating + ' reviews'"></span>
-                        </div>
-                        <div class="mt-4 space-y-4">
-                            <template x-if="reviews.length === 0">
-                                <div class="col-span-3 text-center text-gray-500 py-8">
-                                    Belum ada review.
+                            <p x-text="review.comment"></p>
+                            <div class="flex items-center sm:block">
+                                <img class="rounded-full w-14 sm:mb-4 mr-4"
+                                    :src="$store.storage.getPhoto(review.user.profile_photo)" alt="">
+                                <div>
+                                    <p class="text-base font-bold" x-text="review.user.name"></p>
+                                    <p class="text-base" x-text="review.user.team"></p>
                                 </div>
-                            </template>
-                            <template x-for="(review, idx) in reviews" :key="idx">
-                                <div class="p-4 rounded-lg border">
-                                    <div class="flex justify-between mb-6">
-                                        <div class="flex items-center space-x-4">
-                                            <img class="rounded-full w-12 h-12"
-                                                :src="`/storage/${review.user.profile_photo}`" alt="">
-                                            <div>
-                                                <p class="text-base font-bold" x-text="review.user.name"></p>
-                                                <p class="text-base" x-text="review.user.team"></p>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between items-center p-2 rounded-lg border">
-                                            <svg class="w-6 h-6 text-yellow-300 me-3" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                viewBox="0 0 22 20">
-                                                <path
-                                                    d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                            </svg>
-                                            <p class="font-semibold text-2xl" x-text="review.rating"></p>
-                                        </div>
-                                    </div>
-                                    <p x-text="review.comment"></p>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Testimoni -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
-                <template x-if="reviews.length === 0">
-                    <div class="col-span-3 text-center text-gray-500 py-8">
-                        Belum ada review.
-                    </div>
-                </template>
-
-                <template x-for="(review, idx) in reviews" :key="idx">
-                    <div class="space-y-6 sm:space-y-8 border-b-2 pb-6 sm:border-b-0 sm:pb-0">
-                        <div class="flex items-center">
-                            <template x-for="star in Array.from({length: review.rating})" :key="star">
-                                <svg class="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                    <path
-                                        d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                </svg>
-                            </template>
-                        </div>
-                        <p x-text="review.comment"></p>
-                        <div class="flex items-center sm:block">
-                            <img class="rounded-full w-14 sm:mb-4 mr-4" :src="`/storage/${review.user.profile_photo}`"
-                                alt="">
-                            <div>
-                                <p class="text-base font-bold" x-text="review.user.name"></p>
-                                <p class="text-base" x-text="review.user.team"></p>
                             </div>
                         </div>
+                    </template>
+                </div>
+                <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700">
+                <div class="rounded-lg border border-gray-300">
+                    <div class=" grid p-6 sm:p-12 space-y-8">
+                        <div>
+                            <p class="text-3xl font-bold">Lokasi Venue</p>
+                            <p class="text-xl font-bold">Jalan Raya Palsu No. 123, Kota Bogor, Jawa Barat, 16111</p>
+                        </div>
+                        <iframe class="w-full sm:h-[27rem] "
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7906.299606239549!2d110.36796849553049!3d-7.77393531109345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a584a6eaf7cbb%3A0x294cd98559dc9c8c!2sSekolah%20Vokasi%20UGM!5e0!3m2!1sid!2sid!4v1729779883264!5m2!1sid!2sid"
+                            style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
-                </template>
-            </div>
-            <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700">
-            <div class="rounded-lg border border-gray-300">
-                <div class=" grid p-6 sm:p-12 space-y-8">
-                    <div>
-                        <p class="text-3xl font-bold">Lokasi Venue</p>
-                        <p class="text-xl font-bold">Jalan Raya Palsu No. 123, Kota Bogor, Jawa Barat, 16111</p>
-                    </div>
-                    <iframe class="w-full sm:h-[27rem] "
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7906.299606239549!2d110.36796849553049!3d-7.77393531109345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a584a6eaf7cbb%3A0x294cd98559dc9c8c!2sSekolah%20Vokasi%20UGM!5e0!3m2!1sid!2sid!4v1729779883264!5m2!1sid!2sid"
-                        style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
-        </div>
+        </template>
 
         <!-- Modal Error Besar -->
-        <div x-show="error" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+        <div x-show="error" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
             <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-8 text-center relative">
                 <button @click="error = null"
                     class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-2xl">&times;</button>
@@ -612,6 +621,7 @@
                 async init() {
                     await this.fetchField();
                     await this.fetchSchedule();
+                    await this.fetchReviews();
                 },
 
                 async fetchField() {
@@ -637,7 +647,16 @@
                         this.isLoading = false;
                     }
                 },
-
+                async fetchReviews() {
+                    try {
+                        const response = await axios.get(`reviews`);
+                        this.reviews = response.data.data;
+                        console.log('Reviews:', this.reviews);
+                    } catch (error) {
+                        console.error('Gagal memuat reviews:', error);
+                        this.error = 'Gagal memuat ulasan';
+                    }
+                },
 
                 // method untuk schedule
                 // Inisialisasi kalender
