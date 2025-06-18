@@ -129,6 +129,7 @@
                 </div>
             </div>
         </div> --}}
+
     {{-- Banner Image --}}
     <div class="bg-white shadow rounded-lg border-gray-600 h-fit mb-4 p-6">
         <p class="font-semibold mb-2 text-2xl">Gambar Banner</p>
@@ -142,6 +143,7 @@
             </div>
         </div>
     </div>
+
     {{-- slider image --}}
     <div class="bg-white shadow rounded-lg border-gray-300 mb-4 p-6">
         <p class="font-semibold mb-2 text-2xl">Gambar Slider</p>

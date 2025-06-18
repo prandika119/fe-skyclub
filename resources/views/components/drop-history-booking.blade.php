@@ -106,7 +106,7 @@
                     <label for="review" class="block text-sm text-gray-600">Berikan ulasan untuk lapangan ini</label>
                     <textarea id="review" x-model="review" placeholder="Tulis review Anda mengenai lapangan ini..."
                         class="w-full mt-2 p-2 border border-gray-300 rounded-md h-40 overflow-hidden"></textarea>
-                    <p x-text="booking.session"></p>
+
                 </div>
                 <div class="mt-4 flex justify-end space-x-2">
                     <button @click="ratingBookingModal = false"
