@@ -121,7 +121,9 @@
                             Tanggal
                             <i class="fas fa-sort-down"></i>
                         </th>
-                        <th class="px-5 py-3 bg-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-e-xl">Lihat</th>
+                        <th
+                            class="px-5 py-3 bg-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-e-xl">
+                            Lihat</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -326,14 +328,14 @@
                     <template x-for="article in articles" :key="article.id">
                         <div
                             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 lg:grid-rows-2 lg:max-w-sm bg-white border border-gray-200 rounded-lg shadow transform hover:-translate-y-1 transition duration-300 hover:shadow-xl">
-                            <a class="hidden sm:block bg-cover h-72" :href="'/article/' + article.id">
+                            <a class="hidden sm:block bg-cover h-72" :href="'/articles/' + article.id">
                                 <img class="rounded-s-lg lg:rounded-none lg:rounded-t-lg h-full object-cover w-full"
                                     :src="article.image || '{{ asset('assets/images/blog-image.svg') }}'"
                                     :alt="article.title" />
                             </a>
                             <div class="p-4 text-left">
                                 <div class="">
-                                    <a :href="'/article/' + article.id">
+                                    <a :href="'/articles/' + article.id">
                                         <h5 x-text="article.title"
                                             class="mb-2 text-2xl font-bold tracking-tight text-gray-900"></h5>
                                     </a>

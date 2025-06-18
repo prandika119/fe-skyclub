@@ -12,7 +12,8 @@
                 $req_sparing->sparing->createdBy->team . ' VS ' . $req_sparing->user->team </p>
             <div class="border-l border-gray-400 h-7 my-auto"></div>
             <div>
-                <p class="font-xs" x-text="sparing.date">$req_sparing->sparing->listBooking->formatted_date</p>
+                <p class="font-xs" x-text="$store.format.date(sparing.date)">
+                    $req_sparing->sparing->listBooking->formatted_date</p>
                 <p class="font-semibold" x-text="sparing.session">
                     $req_sparing->sparing->listBooking->formatted_session </p>
             </div>
@@ -40,7 +41,7 @@
                             <div class="space-y-7">
                                 <div class=" space-y-1">
                                     <h6 class="font-semibold text-sm">Tanggal Pemesanan</h6>
-                                    <p x-text="sparing.date">
+                                    <p x-text="$store.format.date(sparing.date)">
                                         $req_sparing->sparing->listBooking->booking->formatted_order_date
                                     </p>
                                 </div>
@@ -182,7 +183,7 @@
                     <div class="space-y-7">
                         <div class="space-y-1">
                             <h6 class="font-semibold text-sm">Tanggal Pemesanan</h6>
-                            <p x-text="sparing.date"></p>
+                            <p x-text="$store.format.date(sparing.date)"></p>
                         </div>
                         <div class="space-y-1">
                             <h6 class="font-semibold text-sm">Alamat</h6>

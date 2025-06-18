@@ -72,7 +72,7 @@
                         x-for="field in [
                             { key: 'name', label: 'Nama', type: 'text' },
                             { key: 'email', label: 'Email', type: 'text' },
-                            { key: 'no_telp', label: 'No Handphone', type: 'text' },
+                            { key: 'no_telp', label: 'No Handphone', type: 'number' },
                             { key: 'address', label: 'Address', type: 'text' },
                             { key: 'date_of_birth', label: 'Tanggal Lahir', type: 'date' },
                             { key: 'team', label: 'Team', type: 'text' }
@@ -285,7 +285,7 @@
                         await this.fetchBookings();
                         console.log('schedules', this.schedules);
                         // fetch sparings data
-                        await this.fetchSparings();
+                        window.location.href = '/users/profile-user?tab=history&booking_tab=sparing';
                     } catch (error) {
                         console.error('Error creating sparing:', error);
                     } finally {

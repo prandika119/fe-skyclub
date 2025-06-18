@@ -19,7 +19,8 @@
                         class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 peer"
                         required />
                     <label for="username"
-                        class="absolute text-sm text-gray-500 dark:text-gray-400 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Username</label>
+                        class="absolute text-sm text-gray-500 dark:text-gray-400 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Username
+                        <span class="text-red-600">*</span></label>
                     <p x-text="errors.username?.[0]" x-show="errors.username" class="mt-2 text-sm text-red-600">
                     </p>
                 </div>
@@ -30,7 +31,8 @@
                         class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 peer"
                         required />
                     <label for="password"
-                        class="absolute text-sm text-gray-500 dark:text-gray-400 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Password</label>
+                        class="absolute text-sm text-gray-500 dark:text-gray-400 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Password
+                        <span class="text-red-600">*</span></label>
                     <span class="absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer"
                         @click="showPassword = !showPassword">
                         <img x-show="!showPassword" class="mx-auto" src="{{ asset('assets/icons/password-eye-off.svg') }}"

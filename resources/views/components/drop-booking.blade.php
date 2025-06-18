@@ -17,7 +17,7 @@
             <div class="border-l border-gray-400 h-8 my-auto"></div>
             <div>
                 {{-- <p class="font-xs ">22 September 2024</p> --}}
-                <p class="font-xs" x-text="schedule.date">$sesi->formatted_date</p>
+                <p class="font-xs" x-text="$store.format.date(schedule.date)">$sesi->formatted_date</p>
                 <p class="font-semibold" x-text="schedule.session">$sesi->formatted_session</p>
             </div>
             <div class="border-l border-gray-400 h-8 my-auto"></div>
@@ -39,7 +39,7 @@
             <div class=" space-y-7">
                 <div class=" space-y-1">
                     <h6 class="font-semibold text-sm">Tanggal Pemesanan</h6>
-                    <p x-text="schedule.order_date">$booking->formatted_order_date</p>
+                    <p x-text="$store.format.date(schedule.order_date)">$booking->formatted_order_date</p>
                 </div>
                 <div class=" space-y-1">
                     <h6 class="font-semibold text-sm">Alamat</h6>
