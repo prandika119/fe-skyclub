@@ -131,7 +131,7 @@
         </div> --}}
 
     {{-- Banner Image --}}
-    <div class="bg-white shadow rounded-lg border-gray-600 h-fit mb-4 p-6">
+    {{-- <div class="bg-white shadow rounded-lg border-gray-600 h-fit mb-4 p-6">
         <p class="font-semibold mb-2 text-2xl">Gambar Banner</p>
         <p class="mb-5 font-light text-gray-500 sm:text-xl">Ganti gambar untuk banner pada halaman
             dashboard</p>
@@ -142,10 +142,10 @@
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
             </div>
         </div>
-    </div>
+    </div> --}}
 
     {{-- slider image --}}
-    <div class="bg-white shadow rounded-lg border-gray-300 mb-4 p-6">
+    {{-- <div class="bg-white shadow rounded-lg border-gray-300 mb-4 p-6">
         <p class="font-semibold mb-2 text-2xl">Gambar Slider</p>
         <p class="mb-5 font-light text-gray-500 sm:text-xl">Ganti gambar untuk slider pada halaman
             dashboard</p>
@@ -171,7 +171,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
 @push('script')
     <script>

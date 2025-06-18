@@ -1,7 +1,9 @@
 import "./bootstrap";
+import ApexCharts from "apexcharts";
 import "flowbite";
 import Alpine from "alpinejs";
 
+window.ApexCharts = ApexCharts;
 document.addEventListener("alpine:init", () => {
     Alpine.store("user", {
         authenticated: false,

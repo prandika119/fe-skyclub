@@ -1,123 +1,152 @@
-import ApexCharts from 'apexcharts';
+import ApexCharts from "apexcharts";
 
-document.addEventListener('DOMContentLoaded', function () {
-    async function fetchData(days = 7) {
-      const response = await fetch(`/admin/bookings-data?days=${days}`);
-      const data = await response.json();
-      console.log('Fetched data:', data); // Tambahkan log ini
-      return data;
-    }
+// document.addEventListener("DOMContentLoaded", function () {
+//     const bookingsChart = {
+//         // Menyimpan instance chart untuk diakses nanti
+//         chart: null,
 
-    function formatData(data) {
-      const categories = data.map(item => item.date);
-      const seriesData = data.map(item => item.count);
-      console.log('Formatted data:', { categories, seriesData }); // Tambahkan log ini
-      return { categories, seriesData };
-    }
+//         // Elemen-elemen DOM yang akan dimanipulasi
+//         elements: {
+//             chartContainer: document.getElementById("area-chart"),
+//             totalBookings: document.getElementById("total-bookings"),
+//             totalBookingsLabel: document.getElementById("total-bookings-label"),
+//             dropdownLinks: document.querySelectorAll("#lastDaysdropdown a"),
+//             dropdownButton: document.getElementById("dropdownDefaultButton"),
+//         },
 
-    function calculateTotal(seriesData) {
-      return seriesData.reduce((total, num) => total + num, 0);
-    }
+//         // Konfigurasi awal untuk ApexCharts
+//         chartOptions: {
+//             chart: {
+//                 height: "100%",
+//                 width: "100%",
+//                 type: "area",
+//                 fontFamily: "Inter, sans-serif",
+//                 toolbar: { show: false },
+//                 locales: [
+//                     {
+//                         name: "en",
+//                         options: { chart: { loading: { text: "Loading..." } } },
+//                     },
+//                 ],
+//                 defaultLocale: "en",
+//             },
+//             tooltip: { enabled: true, x: { show: false } },
+//             fill: {
+//                 type: "gradient",
+//                 gradient: {
+//                     opacityFrom: 0.55,
+//                     opacityTo: 0,
+//                     shade: "#1C64F2",
+//                     gradientToColors: ["#1C64F2"],
+//                 },
+//             },
+//             dataLabels: { enabled: false },
+//             stroke: { width: 6, colors: ["#1C64F2"] },
+//             grid: { show: false },
+//             series: [], // Data series akan diisi dari API
+//             xaxis: {
+//                 categories: [], // Label tanggal akan diisi dari API
+//                 labels: {
+//                     show: true,
+//                     style: {
+//                         fontFamily: "Inter, sans-serif",
+//                         cssClass: "text-xs font-normal fill-gray-500",
+//                     },
+//                 },
+//                 axisBorder: { show: false },
+//                 axisTicks: { show: false },
+//             },
+//             yaxis: {
+//                 show: false,
+//                 labels: { formatter: (value) => `${value} bookings` },
+//             },
+//         },
 
-    const options = {
-      chart: {
-        height: "150%",
-        maxWidth: "150%",
-        type: "area",
-        fontFamily: "Inter, sans-serif",
-        dropShadow: {
-          enabled: false,
-        },
-        toolbar: {
-          show: false,
-        },
-      },
-      tooltip: {
-        enabled: true,
-        x: {
-          show: true,
-        },
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          opacityFrom: 0.55,
-          opacityTo: 0,
-          shade: "#FF0000", // Warna merah
-          gradientToColors: ["#FF0000"], // Warna merah
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        width: 6,
-        colors: ['#FF0000'], // Warna merah
-      },
-      grid: {
-        show: true,
-        strokeDashArray: 4,
-        padding: {
-          left: 2,
-          right: 2,
-          top: 10,
-          bottom: 10
-        },
-      },
-      series: [],
-      xaxis: {
-        categories: [],
-        labels: {
-          show: false,
-        },
-        axisBorder: {
-          show: true,
-        },
-        axisTicks: {
-          show: false,
-        },
-      },
-      yaxis: {
-        show: false,
-      },
-    };
+//         // Fungsi untuk mengambil data dari API time-series
+//         async fetchData(days) {
+//             // Tampilkan indikator loading pada chart
+//             this.chart.showLoading();
+//             try {
+//                 const response = await axios.get(`booking-stats?days=${days}`);
+//                 if (!response.ok) {
+//                     throw new Error(`HTTP error! Status: ${response.status}`);
+//                 }
+//                 const data = await response.json();
+//                 console.log("Fetched data:", data);
+//                 return data;
+//             } catch (error) {
+//                 console.error("Gagal mengambil data untuk chart:", error);
+//                 this.elements.chartContainer.innerHTML = `<p class="text-center text-red-500">Gagal memuat data.</p>`;
+//                 return []; // Kembalikan array kosong jika error
+//             } finally {
+//                 // Selalu sembunyikan loading setelah selesai, baik sukses maupun gagal
+//                 this.chart.hideLoading();
+//             }
+//         },
 
-    const chart = new ApexCharts(document.getElementById("area-chart"), options);
-    chart.render();
+//         // Fungsi untuk mengupdate chart dengan data baru
+//         async updateChart(days, label) {
+//             const apiData = await this.fetchData(days);
 
-    async function updateChart(days, label) {
-      const data = await fetchData(days);
-      const { categories, seriesData } = formatData(data);
-      chart.updateOptions({
-        xaxis: {
-          categories: categories
-        }
-      });
-      chart.updateSeries([{
-        name: "Bookings",
-        data: seriesData,
-        color: "#FF0000", // Warna merah
-      }]);
+//             // Format data untuk ApexCharts
+//             const categories = apiData.map((item) => item.date); // Sumbu X (tanggal)
+//             const seriesData = apiData.map((item) => item.count); // Sumbu Y (jumlah booking)
 
-      // Update total bookings
-      const totalBookings = calculateTotal(seriesData);
-      document.getElementById('total-bookings').innerText = totalBookings;
-      document.getElementById('total-bookings-label').innerText = label;
-    }
+//             // Update chart dengan data baru
+//             this.chart.updateOptions({
+//                 xaxis: { categories: categories },
+//             });
 
-    // Initial load
-    updateChart(7, 'Last 7 days');
+//             this.chart.updateSeries([
+//                 {
+//                     name: "Bookings",
+//                     data: seriesData,
+//                     color: "#1A56DB",
+//                 },
+//             ]);
 
-    // Event listener for dropdown
-    document.querySelectorAll('#lastDaysdropdown a').forEach(item => {
-      item.addEventListener('click', function (event) {
-        event.preventDefault();
-        const days = parseInt(this.getAttribute('data-days'));
-        const label = this.getAttribute('data-label');
-        if (days !== null) {
-          updateChart(days, label);
-          document.getElementById('dropdownDefaultButton').innerHTML = `${label} <svg class="w-2.5 m-2.5 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/></svg>`;
-        }
-      });
-    });
-});
+//             // Update total booking dan label
+//             const totalBookings = seriesData.reduce(
+//                 (total, num) => total + num,
+//                 0
+//             );
+//             this.elements.totalBookings.innerText = totalBookings;
+//             this.elements.totalBookingsLabel.innerText = label;
+
+//             // Update teks tombol dropdown
+//             this.elements.dropdownButton.firstChild.textContent = label + " ";
+//         },
+
+//         // Fungsi inisialisasi utama
+//         init() {
+//             // Pastikan elemen container ada sebelum membuat chart
+//             if (!this.elements.chartContainer) {
+//                 console.error("Elemen #area-chart tidak ditemukan.");
+//                 return;
+//             }
+
+//             // Render chart kosong pertama kali
+//             this.chart = new ApexCharts(
+//                 this.elements.chartContainer,
+//                 this.chartOptions
+//             );
+//             this.chart.render();
+
+//             // Pasang event listener untuk setiap link di dropdown
+//             this.elements.dropdownLinks.forEach((link) => {
+//                 link.addEventListener("click", (event) => {
+//                     event.preventDefault();
+//                     const days = parseInt(link.getAttribute("data-days"));
+//                     const label = link.getAttribute("data-label");
+//                     this.updateChart(days, label);
+//                 });
+//             });
+
+//             // Panggil updateChart untuk memuat data awal (7 hari terakhir)
+//             this.updateChart(7, "Last 7 days");
+//         },
+//     };
+
+//     // Jalankan semuanya
+//     bookingsChart.init();
+// });
