@@ -145,7 +145,8 @@
                         </div>
                         <div class="flex">
                             <div class="flex items-center border rounded-lg px-2.5">
-                                <p class="text-sm font-bold text-gray-900" x-text="field.review.average || 0">average rating
+                                <p class="text-sm font-bold text-gray-900" x-text="(field.review.average || 0).toFixed(2)">
+                                    average rating
                                 </p>
                                 {{-- <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $averageRating }}</p> --}}
                                 <svg class="ms-1 w-4 h-4 text-yellow-300" aria-hidden="true"
@@ -182,7 +183,7 @@
                                 <x-facility icon="icon_toilet.svg" name="Toilet" />
                             </template>
                             <template x-if="facilities.includes('medical')">
-                                <x-facility icon="icon_med.svg" name="Medis" />
+                                <x-facility icon="icon_medical.svg" name="Medis" />
                             </template>
                             <template x-if="facilities.includes('security')">
                                 <x-facility icon="icon_security.svg" name="Security" />
@@ -203,7 +204,7 @@
                                 <x-facility icon="icon_locker.svg" name="Locker" />
                             </template>
                             <template x-if="facilities.includes('canteen')">
-                                <x-facility icon="icon_eat.svg" name="Kantin" />
+                                <x-facility icon="icon_canteen.svg" name="Kantin" />
                             </template>
                             <template x-if="facilities.includes('sauna')">
                                 <x-facility icon="icon_sauna.svg" name="Sauna" />
