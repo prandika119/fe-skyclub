@@ -24,7 +24,7 @@
                         'bg-cover bg-center rounded-tr-3xl h-full w-full': index === 1,
                         'relative bg-cover bg-center rounded-br-3xl h-full w-full': index === 2
                     }"
-                        :style="`background-image: url('http://localhost:8000/storage/${photo.photo}')`">
+                        :style="`background-image: url('${$store.storage.getPhoto(photo.photo)}`">
                         <template x-if="index === 2">
                             <button @click="gallery = true"
                                 class="absolute bottom-2 right-2 sm:bottom-5 sm:right-5 bg-red-600 rounded p-1 sm:px-4 sm:py-2 font-semibold text-white sm:text-base text-sm">
@@ -144,7 +144,8 @@
                     </div>
                     <div class="flex">
                         <div class="flex items-center border rounded-lg px-2.5">
-                            <p class="text-sm font-bold text-gray-900" x-text="field.review.average || 0">average rating</p>
+                            <p class="text-sm font-bold text-gray-900" x-text="field.review.average.toFixed(2) || 0">average
+                                rating</p>
                             {{-- <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $averageRating }}</p> --}}
                             <svg class="ms-1 w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor" viewBox="0 0 22 20">
@@ -180,7 +181,7 @@
                             <x-facility icon="icon_toilet.svg" name="Toilet" />
                         </template>
                         <template x-if="facilities.includes('medical')">
-                            <x-facility icon="icon_med.svg" name="Medis" />
+                            <x-facility icon="icon_medical.svg" name="Medis" />
                         </template>
                         <template x-if="facilities.includes('security')">
                             <x-facility icon="icon_security.svg" name="Security" />
@@ -201,7 +202,7 @@
                             <x-facility icon="icon_locker.svg" name="Locker" />
                         </template>
                         <template x-if="facilities.includes('canteen')">
-                            <x-facility icon="icon_eat.svg" name="Kantin" />
+                            <x-facility icon="icon_canteen.svg" name="Kantin" />
                         </template>
                         <template x-if="facilities.includes('sauna')">
                             <x-facility icon="icon_sauna.svg" name="Sauna" />
@@ -468,7 +469,7 @@
                         {{-- Fetch data --}}
                         <div class="flex items-center space-x-6 mb-8">
                             <p class=" text-gray-500 font-bold">
-                                <span class="text-black text-3xl" x-text="averageRating.toFixed(1)">0</span>/5
+                                <span class="text-black text-3xl" x-text="averageRating.toFixed(2)">0</span>/5
                             </p>
                             <div class="flex space-x-1">
                                 <template x-for="star in 5" :key="star">
