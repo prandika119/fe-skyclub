@@ -111,6 +111,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/articles', function () {
         return view('admin.article.article');
     })->name('articles');
+    Route::get('/article-create', function () {
+        return view('admin.article.create-article');
+    })->name('article.create');
 
     // Voucher
     Route::get('/voucher', function () {

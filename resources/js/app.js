@@ -154,6 +154,7 @@ document.addEventListener("alpine:init", () => {
             if (!path) {
                 return defaultImage;
             }
+
             return `${this.url}${path}`;
         },
     });
