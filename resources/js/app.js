@@ -65,9 +65,7 @@ document.addEventListener("alpine:init", () => {
                 localStorage.removeItem("user_data");
 
                 // Ambil data user & token baru dari API
-                const response = await axios.get(
-                    "http://api.skyclub.my.id/api/users/current"
-                );
+                const response = await axios.get("users/current");
                 console.log("API response received:", response.data);
                 const user = response.data.data;
                 console.log("User data fetched:", user);
@@ -113,9 +111,7 @@ document.addEventListener("alpine:init", () => {
                 } else {
                     console.log("Cache tidak lengkap, memanggil API");
                     // Jika token tidak valid atau tidak ada cache, panggil API
-                    const response = await axios.get(
-                        "http://api.skyclub.my.id/api/users/current"
-                    );
+                    const response = await axios.get("users/current");
                     this.authenticated = true;
                     this.setUser(response.data.data.user);
                     this.setToken(response.data.data.token);
@@ -149,7 +145,8 @@ document.addEventListener("alpine:init", () => {
         // },
     });
     Alpine.store("storage", {
-        url: "http://api.skyclub.my.id/storage/",
+        // url: "http://api.skyclub.my.id/storage/",
+        url: "http://127.0.0.1:8000/storage/",
         getPhoto(path, defaultImage = "/assets/images/profile.svg") {
             if (!path) {
                 return defaultImage;
@@ -189,5 +186,5 @@ document.addEventListener("alpine:init", () => {
         },
     });
 });
-Alpine.start();
 window.Alpine = Alpine;
+Alpine.start();

@@ -3,7 +3,7 @@
     {{-- carousel --}}
     <x-auth-carousel />
     {{-- form Register --}}
-    <div class=" w-[600px]">
+    <div class=" w-[600px]" x-data="registerFormHandler()">
         <img class="mb-9" src="{{ asset('assets/icons/icon_auth.svg') }}" alt="">
         <div class=" space-y-4 mb-12">
             <h4 class="text-4xl font-bold">Sign up</h4>
@@ -12,7 +12,7 @@
             <div id="alert" class="hidden p-4 rounded-lg" role="alert"></div>
             {{-- alert end --}}
         </div>
-        <form id="form" action="" method="POST" x-data="registerFormHandler()" @submit.prevent="submitForm">
+        <form id="form" action="" method="POST" @submit.prevent="submitForm">
             @csrf
             <div class="space-y-6 mb-10">
                 <div class="sm:flex sm:space-x-6">
@@ -143,7 +143,8 @@
             <div class=" border w-full py-4 border-black rounded">
                 <img class="mx-auto" src="{{ asset('assets/icons/facebook.svg') }}" alt="">
             </div>
-            <div class=" border w-full py-4 border-black rounded">
+            <div @click="loginWithGoogle"
+                class="border w-full py-4 border-black rounded hover:bg-gray-200 cursor-pointer">
                 <img class="mx-auto" src="{{ asset('assets/icons/google.svg') }}" alt="">
             </div>
             <div class=" border w-full py-4 border-black rounded">
@@ -201,6 +202,17 @@
                         }
                     } finally {
                         this.isLoading = false;
+                    }
+                },
+                async loginWithGoogle() {
+                    try {
+                        const response = await axios.get('/auth/google');
+                        window.location.href = response.data.url;
+                    } catch (error) {
+                        console.error('Google login error:', error);
+                        document.getElementById('alert').classList.remove('hidden');
+                        document.getElementById('alert').classList.add('bg-red-50', 'text-red-800');
+                        document.getElementById('alert').innerText = 'An error occurred while logging in with Google.';
                     }
                 }
             };

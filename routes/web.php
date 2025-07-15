@@ -10,6 +10,9 @@ Route::get('/', function () {
 Route::get('users/login', function () {
     return view('auth.login');
 })->name('login');
+Route::get('auth/callback', function () {
+    return view('auth.callback');
+})->name('auth.callback');
 Route::get('users/register', function () {
     return view('auth.register');
 })->name('register');
